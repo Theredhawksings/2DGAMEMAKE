@@ -9,6 +9,9 @@ class Boy:
         self.image = load_image('run_animation1.png')
         self.dx = 0
         self.right = True
+        self.is_jumping = False
+        self.gravity = -1
+        self.ground_y = 80
 
     def update(self):
         self.dx = 0
@@ -19,9 +22,22 @@ class Boy:
             self.dx -= 7
             self.right = False
 
-        if(self.dx!=0):
+        if self.is_jumping:
+            self.y += self.jump_speed
+            self.jump_speed += self.gravity
+            if self.y <= self.ground_y:
+                self.y = self.ground_y
+                self.is_jumping = False
+                self.jump_speed = 0
+
+        if (self.dx!=0):
             self.frame = (self.frame + 1) % 3
         self.x += self.dx
+
+    def jump(self):
+        if not self.is_jumping:
+            self.is_jumping = True
+            self.jump_speed = 13
 
     def draw(self):
         if self.right:
@@ -58,19 +74,19 @@ def handle_events():
             elif event.key == SDLK_RIGHT:
                 key_states['right'] = True
             elif event.key == SDLK_SPACE:
-                key_states['space'] = True
+                boy.jump()
         elif event.type == SDL_KEYUP:
             if event.key == SDLK_LEFT:
                 key_states['left'] = False
             elif event.key == SDLK_RIGHT:
                 key_states['right'] = False
             elif event.key == SDLK_SPACE:
-                key_states['space'] = False
+               pass
             boy.frame = 0
 
 def reset_world():
     global boy, running, key_states, ground, grass
-    key_states = {'left': False, 'right': False, 'space': False}
+    key_states = {'left': False, 'right': False}
     boy = Boy()
     ground = Ground()
     grass = Grass()
@@ -94,7 +110,7 @@ reset_world()
 
 pygame.mixer.init()
 pygame.mixer.music.load("Green Greens.mp3")
-pygame.mixer.music.play(-1)  # -1은 무한 반복을 의미합니다
+pygame.mixer.music.play(-1)
 
 while running:
     handle_events()

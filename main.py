@@ -8,13 +8,18 @@ class Boy:
         self.frame = 0
         self.image = load_image('run_animation1.png')
         self.dx = 0
+        self.right = True
 
     def update(self):
-        self.frame = (self.frame + 1) % 3
+        if(self.dx!=0):
+            self.frame = (self.frame + 1) % 3
         self.x += self.dx
 
     def draw(self):
-        self.image.clip_draw(self.frame * 64, 64, 64, 64, self.x, self.y, 64, 64)
+        if self.right:
+            self.image.clip_draw(self.frame * 64, 64, 64, 64, self.x, self.y, 64, 64)
+        else:
+            self.image.clip_draw(self.frame * 64, 128, 64, 64, self.x, self.y, 64, 64)
 
 class Ground:
     def __init__(self):

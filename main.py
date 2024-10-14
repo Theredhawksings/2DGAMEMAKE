@@ -4,7 +4,7 @@ import pygame
 
 class Boy:
     def __init__(self):
-        self.x, self.y = 80, 90
+        self.x, self.y = 80, 80
         self.frame = 0
         self.image = load_image('run_animation1.png')
         self.dx = 0
@@ -28,6 +28,13 @@ class Ground:
     def draw(self):
         self.image1.draw(400,300)
 
+class Grass:
+    def __init__(self):
+        self.frame = 0
+        self.image = load_image('grass.png')
+
+    def draw(self,x, y):
+        self.image.draw(x,y)
 
 def handle_events():
     global running, boy
@@ -51,6 +58,7 @@ def handle_events():
                 key_states['right'] = False
             elif event.key == SDLK_SPACE:
                 key_states['space'] = False
+            boy.frame = -1
 
 
 def update_boy_movement():
@@ -63,10 +71,11 @@ def update_boy_movement():
         boy.right = False
 
 def reset_world():
-    global boy, running, key_states, ground
+    global boy, running, key_states, ground, grass
     key_states = {'left': False, 'right': False, 'space': False}
     boy = Boy()
     ground = Ground()
+    grass = Grass()
     running = True
 
 
@@ -77,6 +86,7 @@ def update_world():
 def render_world():
     clear_canvas()
     ground.draw()
+    grass.draw(400,30)
     boy.draw()
     update_canvas()
 

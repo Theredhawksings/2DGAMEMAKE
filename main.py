@@ -16,6 +16,13 @@ class Boy:
     def draw(self):
         self.image.clip_draw(self.frame * 64, 64, 64, 64, self.x, self.y, 64, 64)
 
+class Ground:
+    def __init__(self):
+        self.image1 = load_image('Ground1.png')
+
+    def draw(self):
+        self.image1.draw(400,300)
+
 
 def handle_events():
     global running, boy
@@ -51,9 +58,10 @@ def update_boy_movement():
         boy.right = False
 
 def reset_world():
-    global boy, running, key_states
+    global boy, running, key_states, ground
     key_states = {'left': False, 'right': False, 'space': False}
     boy = Boy()
+    ground = Ground()
     running = True
 
 
@@ -63,6 +71,7 @@ def update_world():
 
 def render_world():
     clear_canvas()
+    ground.draw()
     boy.draw()
     update_canvas()
 

@@ -92,6 +92,10 @@ open_canvas(800, 600)
 reset_world()
 
 
+pygame.mixer.init()
+pygame.mixer.music.load("Green Greens.mp3")
+pygame.mixer.music.play(-1)  # -1은 무한 반복을 의미합니다
+
 while running:
     handle_events()
     update_world()

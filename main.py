@@ -1,15 +1,23 @@
+# main.py
 from pico2d import *
-import pygame
-from stage1 import Stage1
-# from stage2 import Stage2  # 추후 추가
+import stage1
+import stage2
+from boy import Boy
 
 class GameWorld:
     def __init__(self):
         self.current_stage = None
         self.running = True
+        self.last_stage = 1
+        self.boy = Boy()
 
-    def change_stage(self, new_stage):
-        self.current_stage = new_stage
+    def change_stage(self, stage_number):
+        if stage_number == 1:
+            self.current_stage = stage1.Stage1(self.change_stage, self.boy)
+            self.last_stage = 1
+        elif stage_number == 2:
+            self.current_stage = stage2.Stage2(self.change_stage, self.boy)
+            self.last_stage = 2
 
     def handle_events(self):
         events = get_events()
@@ -32,11 +40,7 @@ class GameWorld:
 def main():
     open_canvas(1024, 768)
     game_world = GameWorld()
-    game_world.change_stage(Stage1())
-
-    pygame.mixer.init()
-    pygame.mixer.music.load("Green Greens.mp3")
-    pygame.mixer.music.play(-1)
+    game_world.change_stage(1)
 
     while game_world.running:
         game_world.handle_events()

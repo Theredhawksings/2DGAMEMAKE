@@ -47,7 +47,7 @@ def main():
     game_world = GameWorld()
     game_world.change_stage(2)
     game_world.boy.x = 700
-    game_world.boy.y = 150
+    game_world.boy.y = 200
 
     pygame.mixer.init()
     pygame.mixer.music.load("Green Greens.mp3")

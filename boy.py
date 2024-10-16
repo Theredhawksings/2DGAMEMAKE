@@ -18,9 +18,11 @@ class Boy:
         self.key_states = {'left': False, 'right': False}
         self.falling = False
         self.height = 48
+        self.apply_gravity = True
 
     def update(self, grass):
         self.dx = 0
+
         if self.key_states['right']:
             self.dx += 7
             self.right = True
@@ -28,38 +30,36 @@ class Boy:
             self.dx -= 7
             self.right = False
 
-        if self.is_jumping:
-            next_y = self.y + self.jump_speed
+        self.x += self.dx
 
-            next_y = self.y + self.jump_speed
-            if self.check_wall_collision(grass.get_positions(), next_y):
-                self.is_jumping = False
-                self.jump_speed = 0
-                self.falling = True
+        if self.apply_gravity:
+            if self.is_jumping:
+                next_y = self.y + self.jump_speed
 
+                if self.check_wall_collision(grass.get_positions(), next_y):
+                    self.is_jumping = False
+                    self.jump_speed = 0
+                    self.falling = True
+                else:
+                    self.y = next_y
+                    self.jump_speed += self.jump_gravity
+
+                if self.y > 768:
+                    self.y = 768
+                    self.jump_speed = 0
+
+                if self.jump_speed < 0:
+                    self.check_grass_collision(grass.get_positions())
             else:
-                self.y = next_y
-                self.jump_speed += self.jump_gravity
-
-            if self.y > 768:
-                self.y = 768
-                self.jump_speed = 0
-
-            if self.jump_speed < 0:
                 self.check_grass_collision(grass.get_positions())
 
-        else:
-            self.check_grass_collision(grass.get_positions())
-
-        if self.falling:
-            self.y += self.fall_gravity
-            self.fall_gravity -= 1
-            self.check_grass_collision(grass.get_positions())
+            if self.falling:
+                self.y += self.fall_gravity
+                self.fall_gravity -= 1
+                self.check_grass_collision(grass.get_positions())
 
         if (self.dx != 0):
             self.frame = (self.frame + 1) % 3
-
-        self.x += self.dx
 
         if (self.x < 0):
             self.x = 0

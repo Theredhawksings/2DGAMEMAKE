@@ -33,7 +33,7 @@ class Stage1:
             self.boy.y = 700
 
     def draw(self):
-        self.ground.draw(400,300)
+        self.ground.draw(512,384)
         self.grass.draw()
         self.boy.draw()
         self.obstacle.draw()

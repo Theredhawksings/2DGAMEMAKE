@@ -20,13 +20,15 @@ class Stage2:
             self.boy.x = 1020
             self.boy.y = 80
             self.stage_change_call(1)
+
         elif self.boy.x > 1024:
             self.boy.x = 1024
-        elif self.boy.x < 217 and self.boy.y < 0:
+
+        elif self.boy.x <= 280 and self.boy.y < 0:
             self.stage_change_call(3)
 
 
     def draw(self):
-        self.ground.draw(400,300)
+        self.ground.draw(512,384)
         self.grass.draw()
         self.boy.draw()

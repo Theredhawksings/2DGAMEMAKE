@@ -11,6 +11,10 @@ class Ground:
 
     def draw(self,x,y):
         if self.current_stage == 3:
-            self.image2.draw(x, y)
+           pass
         else:
-            self.image1.draw(400, 300)
+            self.image1.draw(x,y)
+
+    def fallingdraw(self,x,y,background_y):
+        if self.current_stage == 3:
+            self.image2.clip_draw(0, background_y, 1024, 768, x, y, 1024, 768)

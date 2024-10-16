@@ -10,6 +10,14 @@ class Stage1:
         self.grass = Grass(grass_positions)
         self.ground = Ground()
 
+        obstacle_data = [
+            (400, 65, 0),
+            (600, 65, 0),
+            (800, 65, 0),
+            (200, 65, 0)
+        ]
+        self.obstacle = Obstacle(obstacle_data)
+
         self.stage_change_call = stage_change_call
 
     def handle_event(self, event):
@@ -28,3 +36,4 @@ class Stage1:
         self.ground.draw()
         self.grass.draw()
         self.boy.draw()
+        self.obstacle.draw()

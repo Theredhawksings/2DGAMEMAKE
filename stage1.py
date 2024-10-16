@@ -1,6 +1,7 @@
 from pico2d import *
 from grass import Grass
 from ground import Ground
+from obstacle import Obstacle
 
 class Stage1:
     def __init__(self, stage_change_call, boy):
@@ -8,7 +9,7 @@ class Stage1:
         grass_positions = [(512, 30)]
         self.grass = Grass(grass_positions)
         self.ground = Ground()
-    
+
         self.stage_change_call = stage_change_call
 
     def handle_event(self, event):

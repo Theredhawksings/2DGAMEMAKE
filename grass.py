@@ -2,7 +2,7 @@ from pico2d import load_image
 
 class Grass:
     def __init__(self, positions):
-        self.image = load_image('grass.png')
+        self.image = load_image('Grass.png')
         self.positions = positions
         self.width = 800
         self.height = 50

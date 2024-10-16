@@ -17,6 +17,7 @@ class Boy:
         self.jump_speed = 0
         self.key_states = {'left': False, 'right': False}
         self.falling = False
+        self.height = 48
 
     def update(self, grass):
         self.dx = 0
@@ -28,18 +29,25 @@ class Boy:
             self.right = False
 
         if self.is_jumping:
-            self.y += self.jump_speed
-            self.jump_speed += self.jump_gravity
+            next_y = self.y + self.jump_speed
+
+            next_y = self.y + self.jump_speed
+            if self.check_wall_collision(grass.get_positions(), next_y):
+                self.is_jumping = False
+                self.jump_speed = 0
+                self.falling = True
+
+            else:
+                self.y = next_y
+                self.jump_speed += self.jump_gravity
+
+            if self.y > 768:
+                self.y = 768
+                self.jump_speed = 0
 
             if self.jump_speed < 0:
                 self.check_grass_collision(grass.get_positions())
-            '''
-            if self.y <= self.ground_y:
-                self.y = self.ground_y
-                self.is_jumping = False
-                self.jump_speed = 0
-            '''
-            
+
         else:
             self.check_grass_collision(grass.get_positions())
 
@@ -55,6 +63,7 @@ class Boy:
 
         if (self.x < 0):
             self.x = 0
+
         print(f"Boy position: x={self.x:.2f}, y={self.y:.2f}")
 
     def check_grass_collision(self, grass_positions):
@@ -68,6 +77,12 @@ class Boy:
                 self.fall_gravity = -1
                 self.falling = False
                 break
+
+    def check_wall_collision(self, grass_positions, next_y):
+        for grass_x, grass_y in grass_positions:
+            if (self.y <= grass_y and next_y + self.height > grass_y):
+                return True
+        return False
 
     def jump(self):
         if not self.is_jumping and not self.falling:

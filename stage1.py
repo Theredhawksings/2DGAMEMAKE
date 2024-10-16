@@ -8,7 +8,7 @@ class Stage1:
         self.boy = boy
         grass_positions = [(512, 30)]
         self.grass = Grass(grass_positions)
-        self.ground = Ground()
+        self.ground = Ground(current_stage=1)
 
         obstacle_data = [
             (400, 65, 0),
@@ -33,7 +33,7 @@ class Stage1:
             self.boy.y = 700
 
     def draw(self):
-        self.ground.draw()
+        self.ground.draw(400,300)
         self.grass.draw()
         self.boy.draw()
         self.obstacle.draw()

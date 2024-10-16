@@ -8,7 +8,7 @@ class Stage2:
         self.boy = boy
         grass_positions = [(400, 650), (800, 100), (400, 330), (800, 500)]
         self.grass = Grass(grass_positions)
-        self.ground = Ground()
+        self.ground = Ground(current_stage=2)
         self.stage_change_call = stage_change_call
 
     def handle_event(self, event):
@@ -22,8 +22,11 @@ class Stage2:
             self.stage_change_call(1)
         elif self.boy.x > 1024:
             self.boy.x = 1024
+        elif self.boy.x < 217 and self.boy.y < 0:
+            self.stage_change_call(3)
+
 
     def draw(self):
-        self.ground.draw()
+        self.ground.draw(400,300)
         self.grass.draw()
         self.boy.draw()

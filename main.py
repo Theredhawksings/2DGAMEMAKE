@@ -2,6 +2,7 @@
 from pico2d import *
 import stage1
 import stage2
+import stage3
 import pygame
 from boy import Boy
 
@@ -19,6 +20,9 @@ class GameWorld:
         elif stage_number == 2:
             self.current_stage = stage2.Stage2(self.change_stage, self.boy)
             self.last_stage = 2
+        elif stage_number == 3:
+            self.current_stage = stage3.Stage3(self.change_stage, self.boy)
+            self.last_stage = 3
 
     def handle_events(self):
         events = get_events()
@@ -41,7 +45,9 @@ class GameWorld:
 def main():
     open_canvas(1024, 768)
     game_world = GameWorld()
-    game_world.change_stage(1)
+    game_world.change_stage(2)
+    game_world.boy.x = 700
+    game_world.boy.y = 150
 
     pygame.mixer.init()
     pygame.mixer.music.load("Green Greens.mp3")

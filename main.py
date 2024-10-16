@@ -2,6 +2,7 @@
 from pico2d import *
 import stage1
 import stage2
+import pygame
 from boy import Boy
 
 class GameWorld:
@@ -41,6 +42,10 @@ def main():
     open_canvas(1024, 768)
     game_world = GameWorld()
     game_world.change_stage(1)
+
+    pygame.mixer.init()
+    pygame.mixer.music.load("Green Greens.mp3")
+    pygame.mixer.music.play(-1)
 
     while game_world.running:
         game_world.handle_events()

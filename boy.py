@@ -1,5 +1,7 @@
 from pico2d import load_image
 from pico2d import load_image, SDL_KEYDOWN, SDL_KEYUP, SDLK_SPACE, SDLK_LEFT, SDLK_RIGHT
+import grass
+
 
 class Boy:
     def __init__(self):
@@ -9,12 +11,14 @@ class Boy:
         self.dx = 0
         self.right = True
         self.is_jumping = False
-        self.gravity = -1
+        self.jump_gravity = -1
+        self.fall_gravity = -1
         self.ground_y = 80
         self.jump_speed = 0
         self.key_states = {'left': False, 'right': False}
+        self.falling = False
 
-    def update(self):
+    def update(self, grass):
         self.dx = 0
         if self.key_states['right']:
             self.dx += 7
@@ -25,20 +29,50 @@ class Boy:
 
         if self.is_jumping:
             self.y += self.jump_speed
-            self.jump_speed += self.gravity
+            self.jump_speed += self.jump_gravity
+
+            if self.jump_speed < 0:
+                self.check_grass_collision(grass.get_positions())
+            '''
             if self.y <= self.ground_y:
                 self.y = self.ground_y
                 self.is_jumping = False
                 self.jump_speed = 0
+            '''
+            
+        else:
+            self.check_grass_collision(grass.get_positions())
 
-        if (self.dx!=0):
+        if self.falling:
+            self.y += self.fall_gravity
+            self.fall_gravity -= 1
+            self.check_grass_collision(grass.get_positions())
+
+        if (self.dx != 0):
             self.frame = (self.frame + 1) % 3
+
         self.x += self.dx
 
+        if (self.x < 0):
+            self.x = 0
+        print(f"Boy position: x={self.x:.2f}, y={self.y:.2f}")
+
+    def check_grass_collision(self, grass_positions):
+        self.falling = True
+        for grass_x, grass_y in grass_positions:
+            if (grass_x - 511 < self.x < grass_x + 511 and self.y <= grass_y + 50 and self.y > grass_y):
+                self.y = grass_y + 50
+                self.ground_y = grass_y + 50
+                self.is_jumping = False
+                self.jump_speed = 0
+                self.fall_gravity = -1
+                self.falling = False
+                break
+
     def jump(self):
-        if not self.is_jumping:
+        if not self.is_jumping and not self.falling:
             self.is_jumping = True
-            self.jump_speed = 13
+            self.jump_speed = 12
 
     def draw(self):
         if self.right:

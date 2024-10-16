@@ -1,4 +1,3 @@
-# stage2.py
 from pico2d import *
 from grass import Grass
 from ground import Ground
@@ -6,7 +5,8 @@ from ground import Ground
 class Stage2:
     def __init__(self, stage_change_call, boy):
         self.boy = boy
-        self.grass = Grass()
+        grass_positions = [(400, 650), (800, 100), (400, 330), (800, 500)]
+        self.grass = Grass(grass_positions)
         self.ground = Ground()
         self.stage_change_call = stage_change_call
 
@@ -14,14 +14,15 @@ class Stage2:
         self.boy.handle_event(event)
 
     def update(self):
-        self.boy.update()
-        if self.boy.x < 0:
+        self.boy.update(self.grass)
+        if self.boy.x < 1 and self.boy.y == 700:
             self.boy.x = 1020
-            self.stage_change_call(1)  # Stage1로 전환
+            self.boy.y = 80
+            self.stage_change_call(1)
         elif self.boy.x > 1024:
             self.boy.x = 1024
 
     def draw(self):
         self.ground.draw()
-        self.grass.draw(0, 30)
+        self.grass.draw()
         self.boy.draw()

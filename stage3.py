@@ -17,22 +17,30 @@ class Stage3:
         self.boy.handle_event(event)
 
     def update(self):
-        self.boy.update(self.grass)  # grass 대신 None을 전달
-        self.background_y -= 5
-
-        if self.background_y <= 384:
-            self.background_y = 384
+        self.boy.update(self.grass)
+        self.background_y -= 3
 
         if self.background_y < 400:
             self.boy.y -= 2
 
-        if  self.boy.y <= 50:
-            self.boy.y=50
+        if self.background_y <= 384:
+            self.background_y = 384
+
+        if self.boy.y <= 50:
+            self.boy.y = 50
             self.boy.apply_gravity = True
+
+        if self.boy.y > 50 and self.boy.x < 0:
+            self.boy.x = 0
+        elif self.boy.y > 50 and self.boy.x > 1024:
+            self.boy.x = 1024
+
+
 
     def draw(self):
         self.ground.fallingdraw(512, 384, self.background_y)
 
-        if self.background_y < 500:
+        if self.background_y < 400:
             self.grass.draw()
+
         self.boy.draw()

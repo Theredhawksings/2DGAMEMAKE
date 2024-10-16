@@ -18,23 +18,21 @@ class Stage3:
 
     def update(self):
         self.boy.update(self.grass)  # grass 대신 None을 전달
-        self.background_y -= 7
+        self.background_y -= 5
 
         if self.background_y <= 384:
             self.background_y = 384
-        else:
-            self.background_y -= 5
 
-        if self.boy.y <= 50:
-            self.boy.y = 50
+        if self.background_y < 400:
+            self.boy.y -= 2
+
+        if  self.boy.y <= 50:
+            self.boy.y=50
             self.boy.apply_gravity = True
-        else:
-            self.boy.y -= 1
-
 
     def draw(self):
         self.ground.fallingdraw(512, 384, self.background_y)
+
         if self.background_y < 500:
             self.grass.draw()
-
         self.boy.draw()

@@ -2,6 +2,7 @@ from pico2d import *
 from grass import Grass
 from ground import Ground
 
+
 class Stage2:
     def __init__(self, stage_change_call, boy):
         self.boy = boy

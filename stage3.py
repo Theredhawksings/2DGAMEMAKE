@@ -8,7 +8,8 @@ class Stage3:
         self.ground = Ground(current_stage=3)
         self.stage_change_call = stage_change_call
         self.background_y = 5414
-        self.boy.y = 540
+        self.boy.x = 512
+        self.boy.y = 580
         self.boy.apply_gravity = False
         self.height = 1
         self.grass = Grass([(512, 0)], current_stage=3)
@@ -34,7 +35,6 @@ class Stage3:
             self.boy.x = 0
         elif self.boy.y > 50 and self.boy.x > 1024:
             self.boy.x = 1024
-
 
 
     def draw(self):

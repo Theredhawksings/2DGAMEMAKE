@@ -45,9 +45,9 @@ class GameWorld:
 def main():
     open_canvas(1024, 768)
     game_world = GameWorld()
-    game_world.change_stage(2)
-    game_world.boy.x = 700
-    game_world.boy.y = 200
+    game_world.change_stage(1)
+    game_world.boy.x = 50
+    game_world.boy.y = 600
 
     pygame.mixer.init()
     pygame.mixer.music.load("Green Greens.mp3")

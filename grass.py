@@ -1,9 +1,15 @@
 from pico2d import load_image
 
 class Grass:
+    image1 = None
+    image2 = None
+
     def __init__(self, positions, current_stage=1):
-        self.image1 = load_image('Grass.png')
-        self.image2 = load_image('Grass2.png')
+        if Grass.image1 is None:
+            Grass.image1 = load_image('Grass.png')
+        if Grass.image2 is None:
+            Grass.image2 = load_image('Grass2.png')
+
         self.current_stage = current_stage
         self.positions = positions
         self.width = 800
@@ -12,9 +18,9 @@ class Grass:
     def draw(self):
         for x, y in self.positions:
             if self.current_stage == 3:
-                self.image2.draw(x, y)
+                Grass.image2.draw(x, y)
             else:
-                self.image1.draw(x, y)
+                Grass.image1.draw(x, y)
 
     def get_positions(self):
         return self.positions

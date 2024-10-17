@@ -2,6 +2,7 @@ from pico2d import *
 from grass import Grass
 from ground import Ground
 from obstacle import Obstacle
+from collision_utils import check_collision, handle_collision
 
 class Stage1:
     def __init__(self, stage_change_call, boy):
@@ -20,20 +21,33 @@ class Stage1:
 
         self.stage_change_call = stage_change_call
 
+        self.boy.savepointX = 80
+        self.boy.savepointY = 80
+
+
     def handle_event(self, event):
         self.boy.handle_event(event)
 
     def update(self):
         self.boy.update(self.grass)
-        if self.boy.x < 0:
-            self.boy.x = 0
+
+        if self.boy.x <= 0:
+            self.boy.x = 1
+            self.boy.y = 80
+
         elif self.boy.x > 1024:
             self.stage_change_call(2)
             self.boy.x = 2
             self.boy.y = 700
+
+        for x, y, angle_index in self.obstacle.obstacles:
+            if check_collision(self.boy, x, y, angle_index):
+                handle_collision(self.boy)
+                break
 
     def draw(self):
         self.ground.draw(512,384)
         self.grass.draw()
         self.boy.draw()
         self.obstacle.draw()
+

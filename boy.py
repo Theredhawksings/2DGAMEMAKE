@@ -19,6 +19,9 @@ class Boy:
         self.falling = False
         self.height = 48
         self.apply_gravity = True
+        self.savepointX = 0
+        self.savepointY = 0
+
 
     def update(self, grass):
         self.dx = 0
@@ -30,7 +33,11 @@ class Boy:
             self.dx -= 7
             self.right = False
 
+        if self.is_jumping or self.falling:
+            self.dx = max(min(self.dx, 5), -5)
+
         self.x += self.dx
+
 
         if self.apply_gravity:
             if self.is_jumping:
@@ -64,12 +71,12 @@ class Boy:
         if (self.x < 0):
             self.x = 0
 
-        print(f"Boy position: x={self.x:.2f}, y={self.y:.2f}")
+        print(f" x={self.x:.2f}, y={self.y:.2f}")
 
     def check_grass_collision(self, grass_positions):
         self.falling = True
         for grass_x, grass_y in grass_positions:
-            if (grass_x - 511 < self.x < grass_x + 511 and self.y <= grass_y + 50 and self.y > grass_y):
+            if (grass_x - 512 < self.x < grass_x + 512 and self.y <= grass_y + 50 and self.y > grass_y):
                 self.y = grass_y + 50
                 self.ground_y = grass_y + 50
                 self.is_jumping = False
@@ -109,3 +116,7 @@ class Boy:
             elif event.key == SDLK_RIGHT:
                 self.key_states['right'] = False
             self.frame = 0
+
+    def get_bb(self):
+        return self.x, self.y, self.x + 32, self.y + 32
+

@@ -12,8 +12,7 @@ class Grass:
 
         self.current_stage = current_stage
         self.positions = positions
-        self.width = 800
-        self.height = 50
+
 
     def draw(self):
         for x, y in self.positions:

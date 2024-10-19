@@ -5,9 +5,9 @@ def check_collision(boy, obstacle_x, obstacle_y, angle_index):
 
     if angle_index == 0 or angle_index == 2:  # 위쪽 또는 아래쪽
         obstacle_left = obstacle_x + 10
-        obstacle_right = obstacle_x + 5
-        obstacle_bottom = obstacle_y + 5
-        obstacle_top = obstacle_y + 15
+        obstacle_right = obstacle_x + 20
+        obstacle_bottom = obstacle_y
+        obstacle_top = obstacle_y + 25
 
     else:  # 왼쪽 또는 오른쪽으로 90도 회전
         obstacle_left = obstacle_x
@@ -23,13 +23,13 @@ def check_collision(boy, obstacle_x, obstacle_y, angle_index):
     collision_direction = ""
 
     if boy_right >= obstacle_left and boy_left < obstacle_left:
-        collision_direction = "왼쪽"  # 장애물의 왼쪽과 충돌
+        collision_direction = "왼쪽"  
     elif boy_left <= obstacle_right and boy_right > obstacle_right:
-        collision_direction = "오른쪽"  # 장애물의 오른쪽과 충돌
+        collision_direction = "오른쪽"
     elif boy_top >= obstacle_bottom and boy_bottom < obstacle_bottom:
-        collision_direction = "아래쪽"  # 장애물의 아래쪽과 충돌
+        collision_direction = "아래쪽"
     elif boy_bottom <= obstacle_top and boy_top > obstacle_top:
-        collision_direction = "위쪽"  # 장애물의 위쪽과 충돌
+        collision_direction = "위쪽"
 
     print(
         f"충돌 감지: 소년({boy_left}, {boy_bottom}, {boy_right}, {boy_top}), "

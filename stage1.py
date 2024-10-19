@@ -12,10 +12,10 @@ class Stage1:
         self.ground = Ground(current_stage=1)
 
         obstacle_data = [
-            (400, 65, 0),
-            (600, 65, 0),
-            (800, 65, 0),
-            (200, 65, 0)
+            (400, 65, 0, 0, 0),
+            (600, 65, 0, 0, 0),
+            (800, 65, 0, 0, 0),
+            (200, 65, 0, 0, 0),
         ]
         self.obstacle = Obstacle(obstacle_data)
 

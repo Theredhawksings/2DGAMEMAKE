@@ -10,7 +10,7 @@ class Stage2:
         grass_positions = [(400, 650), (800, 100), (400, 330), (800, 500)]
         self.grass = Grass(grass_positions)
         self.ground = Ground(current_stage=2)
-
+        '''
         obstacle_data = [
             (280, 680, 0),
             (400, 680, 0),
@@ -50,8 +50,10 @@ class Stage2:
             (890, 456, 2),
             #3
         ]
-
+        
+        
         self.obstacle = Obstacle(obstacle_data)
+        '''
 
         self.stage_change_call = stage_change_call
 
@@ -74,13 +76,15 @@ class Stage2:
         elif self.boy.x <= 280 and self.boy.y < 0:
             self.stage_change_call(3)
 
+        '''
         for x, y, angle_index in self.obstacle.obstacles:
             if check_collision(self.boy, x, y, angle_index):
                 handle_collision(self.boy)
                 break
+        '''
 
     def draw(self):
         self.ground.draw(512, 384)
         self.grass.draw()
         self.boy.draw()
-        self.obstacle.draw()
+        #self.obstacle.draw()

@@ -49,9 +49,11 @@ def main():
     game_world.boy.x = 50
     game_world.boy.y = 900
 
+    '''
     pygame.mixer.init()
     pygame.mixer.music.load("Green Greens.mp3")
     pygame.mixer.music.play(-1)
+    '''
 
     while game_world.running:
         game_world.handle_events()

@@ -10,7 +10,13 @@ class Obstacle:
         self.screen_height = 768
 
         for x, y, image_direction, move_direction, move_speed in obstacle_data:
-            self.obstacles.append({x, y, image_direction, move_direction, move_speed})
+            self.obstacles.append({
+                'x': x,
+                'y': y,
+                'image_direction': image_direction,
+                'move_direction': move_direction,
+                'move_speed': move_speed
+            })
 
 
 
@@ -25,4 +31,20 @@ class Obstacle:
                                            25, 30)
 
     def update(self):
-        pass
+        for obstacle in self.obstacles:
+
+            if obstacle['move_direction'] == 1:
+                obstacle['x']+=obstacle['move_speed']
+
+            elif obstacle['move_direction'] == 2:
+                obstacle['x']-=obstacle['move_speed']
+
+            elif obstacle['move_direction'] == 3:
+                obstacle['y'] -= obstacle['move_speed']
+
+            elif obstacle['move_direction'] == 4:
+                obstacle['y'] += obstacle['move_speed']
+
+            if (obstacle['x'] < 0 or obstacle['x'] > 1024 or
+                    obstacle['y'] < 0 or obstacle['y'] > 768):
+                self.obstacles.remove(obstacle)

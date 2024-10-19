@@ -30,6 +30,7 @@ class Stage1:
 
     def update(self):
         self.boy.update(self.grass)
+        self.obstacle.update()
 
         if self.boy.x <= 0:
             self.boy.x = 1
@@ -40,8 +41,8 @@ class Stage1:
             self.boy.x = 2
             self.boy.y = 700
 
-        for x, y, angle_index in self.obstacle.obstacles:
-            if check_collision(self.boy, x, y, angle_index):
+        for obstacle in self.obstacle.obstacles:
+            if check_collision(self.boy, obstacle['x'], obstacle['y'], obstacle['image_direction']):
                 handle_collision(self.boy)
                 break
 

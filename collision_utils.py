@@ -23,7 +23,7 @@ def check_collision(boy, obstacle_x, obstacle_y, angle_index):
     collision_direction = ""
 
     if boy_right >= obstacle_left and boy_left < obstacle_left:
-        collision_direction = "왼쪽"  
+        collision_direction = "왼쪽"
     elif boy_left <= obstacle_right and boy_right > obstacle_right:
         collision_direction = "오른쪽"
     elif boy_top >= obstacle_bottom and boy_bottom < obstacle_bottom:

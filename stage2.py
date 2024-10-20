@@ -62,8 +62,8 @@ class Stage2:
 
         self.stage_change_call = stage_change_call
 
-        self.boy.savepointX = 900
-        self.boy.savepointY = 300
+        self.boy.savepointX = 300
+        self.boy.savepointY = 200
 
     def handle_event(self, event):
         self.boy.handle_event(event)
@@ -71,9 +71,6 @@ class Stage2:
     def update(self):
         self.boy.update(self.grass)
         self.obstacle.update()
-
-        current_time = time.time()
-
 
         current_time = time.time()
 

@@ -45,4 +45,4 @@ def handle_collision(boy):
     boy.is_jumping = False
     boy.jump_speed = 0
     boy.falling = False
-    print(f"충돌 발생! 세이브포인트로 이동: x={boy.x}, y={boy.y}")
+    print(f'충돌 발생! 세이브포인트로 이동: x={boy.x}, y={boy.y}')

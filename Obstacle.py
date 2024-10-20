@@ -45,6 +45,6 @@ class Obstacle:
             elif obstacle['move_direction'] == 4:
                 obstacle['y'] += obstacle['move_speed']
 
-            if (obstacle['x'] < 0 or obstacle['x'] > 1024 or
-                    obstacle['y'] < 0 or obstacle['y'] > 768):
+            if (obstacle['x'] < -30 or obstacle['x'] > 1054 or
+                    obstacle['y'] < -30 or obstacle['y'] > 798):
                 self.obstacles.remove(obstacle)

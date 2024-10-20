@@ -45,13 +45,16 @@ class Stage2:
             (265, 360, 0, 0, 0),
             (380, 360, 0, 0, 0),
             (420, 456, 2, 0, 0),
+            (470, 360, 0, 0, 0),
             (520, 456, 2, 0, 0),
-            (580, 360, 0, 0, 0),
+            (570, 360, 0, 0, 0),
             (620, 456, 2, 0, 0),
-            (720, 360, 0, 0, 0),
+            (670, 360, 0, 0, 0),
+            (720, 456, 2, 0, 0),
+            (770, 360, 0, 0, 0),
             (810, 456, 2, 0, 0),
-            (870, 456, 2, 0, 0),
-            (890, 456, 2, 0, 0)
+            (890, 360, 0, 0, 0),
+            (925, 330, 0, 0, 0),
             #3
         ]
         
@@ -59,8 +62,8 @@ class Stage2:
 
         self.stage_change_call = stage_change_call
 
-        self.boy.savepointX = 347
-        self.boy.savepointY = 380
+        self.boy.savepointX = 900
+        self.boy.savepointY = 300
 
     def handle_event(self, event):
         self.boy.handle_event(event)

@@ -27,10 +27,10 @@ class Boy:
         self.dx = 0
 
         if self.key_states['right']:
-            self.dx += 7
+            self.dx += 5
             self.right = True
         if self.key_states['left']:
-            self.dx -= 7
+            self.dx -= 5
             self.right = False
 
         if self.is_jumping or self.falling:

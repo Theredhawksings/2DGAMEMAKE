@@ -36,7 +36,7 @@ class Stage3:
         elif self.boy.y > 50 and self.boy.x > 1024:
             self.boy.x = 1024
 
-
+        
     def draw(self):
         self.ground.fallingdraw(512, 384, self.background_y)
 

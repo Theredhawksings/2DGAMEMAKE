@@ -46,7 +46,7 @@ class Stage3:
 
         current_time = time.time()
 
-        if current_time % 0.05 <= 0.01 and self.background_y > 400:
+        if current_time % 0.03 < 0.01 and self.background_y > 400:
             new_obstacle = {
                 'x': random.randint(0, 1024),
                 'y': -20,

@@ -16,7 +16,7 @@ class Stage2:
         self.last_obstacle_time = time.time()
 
         obstacle_data = [
-            (280, 680, 0, 0, 0),
+            (270, 680, 0, 0, 0),
             (400, 680, 0, 0, 0),
             (460, 755, 2, 0 ,0),
             (600, 755, 2, 0, 0),
@@ -62,8 +62,8 @@ class Stage2:
 
         self.stage_change_call = stage_change_call
 
-        self.boy.savepointX = 1
-        self.boy.savepointY = 1000
+        self.boy.savepointX = 356
+        self.boy.savepointY = 500
         self.boy.update_stage_info(2)
 
     def handle_event(self, event):

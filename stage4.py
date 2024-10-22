@@ -27,12 +27,9 @@ class Stage4:
     def update(self):
         self.boy.update(self.grass)
 
-        if self.boy.x < 1 and self.boy==50:
+        if self.boy.x < 2 and self.boy.y==50:
             self.stage_change_call(3)
 
-        if self.boy.y < -1:
-            self.boy.x = 5
-            self.boy.y = 50
 
     def draw(self):
         self.ground.draw(512, 384)

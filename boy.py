@@ -21,7 +21,7 @@ class Boy:
         self.apply_gravity = True
         self.savepointX = 0
         self.savepointY = 0
-
+        self.previous_stage = None
 
     def update(self, grass):
         self.dx = 0
@@ -38,18 +38,12 @@ class Boy:
 
         self.x += self.dx
 
-
         if self.apply_gravity:
             if self.is_jumping:
                 next_y = self.y + self.jump_speed
 
-                if self.check_wall_collision(grass.get_positions(), next_y):
-                    self.is_jumping = False
-                    self.jump_speed = 0
-                    self.falling = True
-                else:
-                    self.y = next_y
-                    self.jump_speed += self.jump_gravity
+                self.y = next_y
+                self.jump_speed += self.jump_gravity
 
                 if self.y > 768:
                     self.y = 768
@@ -75,21 +69,16 @@ class Boy:
 
     def check_grass_collision(self, grass_positions):
         self.falling = True
-        for grass_x, grass_y, width in grass_positions:  # width 값도 받아옵니다
-            if (grass_x - width < self.x < grass_x + width and self.y <= grass_y + 50 and self.y > grass_y):
+        for grass_x, grass_y, width in grass_positions:
+            if (grass_x - width < self.x < grass_x + width and self.y <= grass_y + 50 and self.y > grass_y+45):
                 self.y = grass_y + 50
                 self.ground_y = grass_y + 50
                 self.is_jumping = False
                 self.jump_speed = 0
                 self.fall_gravity = -1
                 self.falling = False
+                print(f"풀 위치 x={grass_x:.2f}, y={grass_y:.2f}")
                 break
-
-    def check_wall_collision(self, grass_positions, next_y):
-        for grass_x, grass_y in grass_positions:
-            if (self.y <= grass_y and next_y + self.height > grass_y):
-                return True
-        return False
 
     def jump(self):
         if not self.is_jumping and not self.falling:
@@ -119,4 +108,7 @@ class Boy:
 
     def get_bb(self):
         return self.x, self.y, self.x + 32, self.y + 32
+
+    def update_stage_info(self, stage_number):  # 스테이지 정보를 업데이트하는 메서드 추가
+        self.previous_stage = stage_number
 

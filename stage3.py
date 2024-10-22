@@ -11,13 +11,14 @@ class Stage3:
         self.boy = boy
         self.ground = Ground(current_stage=3)
         self.stage_change_call = stage_change_call
-        self.background_y = 5229
-        self.boy.x = 512
-        self.boy.y = 630
+        self.background_y = 384 if self.boy.previous_stage == 4 else 5229
+        self.boy.x = 1020 if self.boy.previous_stage == 4 else 512
+        self.boy.y = 50 if self.boy.previous_stage == 4 else 630
         self.boy.apply_gravity = False
         self.grass = Grass([(512, 0, 512)], current_stage=3)
         self.time = time.time()
         self.obstacle = Obstacle([])
+        self.boy.update_stage_info(3)
 
     def handle_event(self, event):
         self.boy.handle_event(event)
@@ -36,8 +37,10 @@ class Stage3:
             self.boy.y = 50
             self.boy.apply_gravity = True
 
-        if self.boy.y > 50 and self.boy.x < 0:
-            self.boy.x = 0
+        if self.boy.y == 50 and self.boy.x < 1:
+            self.boy.x = 1
+            self.boy.y = 50
+
         elif self.boy.y > 50 and self.boy.x > 1024:
             self.boy.x = 1024
 
@@ -68,7 +71,7 @@ class Stage3:
         if self.boy.x > 1024 and self.boy.y == 50:
             self.boy.x = 1020
             self.boy.y = 80
-            self.stage_change_call(1)
+            self.stage_change_call(4)
 
 
     def draw(self):

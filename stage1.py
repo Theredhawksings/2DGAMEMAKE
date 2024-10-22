@@ -23,7 +23,7 @@ class Stage1:
 
         self.boy.savepointX = 80
         self.boy.savepointY = 80
-
+        self.boy.update_stage_info(1)
 
     def handle_event(self, event):
         self.boy.handle_event(event)

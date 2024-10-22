@@ -13,13 +13,12 @@ class Grass:
         self.current_stage = current_stage
         self.positions = positions
 
-
     def draw(self):
-        for x, y in self.positions:
+        for x, y, width in self.positions:
             if self.current_stage == 3:
-                Grass.image2.draw(x, y)
+                Grass.image2.clip_draw(0, 0, width * 2, 60, x, y, width * 2, 60)
             else:
-                Grass.image1.draw(x, y)
+                Grass.image1.clip_draw(0, 0, width * 2, 60, x, y, width * 2, 60)
 
     def get_positions(self):
         return self.positions

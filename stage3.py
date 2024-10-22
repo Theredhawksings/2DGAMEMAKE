@@ -13,9 +13,9 @@ class Stage3:
         self.stage_change_call = stage_change_call
         self.background_y = 5229
         self.boy.x = 512
-        self.boy.y = 580
+        self.boy.y = 630
         self.boy.apply_gravity = False
-        self.grass = Grass([(512, 0)], current_stage=3)
+        self.grass = Grass([(512, 0, 512)], current_stage=3)
         self.time = time.time()
         self.obstacle = Obstacle([])
 
@@ -64,6 +64,12 @@ class Stage3:
                 self.boy.savepointY = 150
                 self.boy.apply_gravity = True
                 break
+
+        if self.boy.x > 1024 and self.boy.y == 50:
+            self.boy.x = 1020
+            self.boy.y = 80
+            self.stage_change_call(1)
+
 
     def draw(self):
         self.ground.fallingdraw(512, 384, self.background_y)

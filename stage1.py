@@ -7,7 +7,7 @@ from collision_utils import check_collision, handle_collision
 class Stage1:
     def __init__(self, stage_change_call, boy):
         self.boy = boy
-        grass_positions = [(512, 30)]
+        grass_positions = [(512, 30, 512)]
         self.grass = Grass(grass_positions)
         self.ground = Ground(current_stage=1)
 

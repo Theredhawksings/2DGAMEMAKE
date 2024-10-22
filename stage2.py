@@ -10,7 +10,7 @@ import random
 class Stage2:
     def __init__(self, stage_change_call, boy):
         self.boy = boy
-        grass_positions = [(400, 650), (800, 100), (400, 330), (800, 500)]
+        grass_positions = [(400, 650, 512), (800, 100, 512), (400, 330, 512), (800, 500, 512)]
         self.grass = Grass(grass_positions)
         self.ground = Ground(current_stage=2)
         self.last_obstacle_time = time.time()

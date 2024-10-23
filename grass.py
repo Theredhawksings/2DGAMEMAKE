@@ -11,7 +11,7 @@ class Grass:
         if Grass.image2 is None:
             Grass.image2 = load_image('Grass2.png')
         if Grass.image3 is None:
-            Grass.image3 = load_image('Grass3.png')
+            Grass.image3 = load_image('Grass3-3.png')
 
         self.current_stage = current_stage
         self.positions = positions

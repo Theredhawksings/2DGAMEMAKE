@@ -71,7 +71,7 @@ class Boy:
     def check_grass_collision(self, grass_positions):
         self.falling = True
         for grass_x, grass_y, width in grass_positions:
-            if (grass_x - width < self.x < grass_x + width and self.y <= grass_y + 60 and self.y > grass_y + 40):
+            if (grass_x - width < self.x < grass_x + width and self.y <= grass_y + 70 and self.y > grass_y + 40):
                 self.y = grass_y + 50
                 self.ground_y = grass_y + 50
                 self.is_jumping = False

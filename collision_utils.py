@@ -5,7 +5,7 @@ def check_collision(boy, obstacle_x, obstacle_y, angle_index):
 
     if angle_index == 0 or angle_index == 2:  # 위쪽 또는 아래쪽
         obstacle_left = obstacle_x + 15
-        obstacle_right = obstacle_x + 20
+        obstacle_right = obstacle_x + 17
         obstacle_bottom = obstacle_y
         obstacle_top = obstacle_y + 20
 

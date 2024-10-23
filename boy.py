@@ -70,7 +70,7 @@ class Boy:
     def check_grass_collision(self, grass_positions):
         self.falling = True
         for grass_x, grass_y, width in grass_positions:
-            if (grass_x - width < self.x < grass_x + width and self.y <= grass_y + 70 and self.y > grass_y + 45):
+            if (grass_x - width < self.x < grass_x + width and self.y <= grass_y + 60 and self.y > grass_y + 45):
                 self.y = grass_y + 50
                 self.ground_y = grass_y + 50
                 self.is_jumping = False
@@ -109,6 +109,6 @@ class Boy:
     def get_bb(self):
         return self.x, self.y, self.x + 32, self.y + 32
 
-    def update_stage_info(self, stage_number):  # 스테이지 정보를 업데이트하는 메서드 추가
+    def update_stage_info(self, stage_number):
         self.previous_stage = stage_number
 

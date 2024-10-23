@@ -22,6 +22,7 @@ class Boy:
         self.savepointX = 0
         self.savepointY = 0
         self.previous_stage = None
+        self.is_invincible = False
 
     def update(self, grass):
         self.dx = 0
@@ -99,6 +100,8 @@ class Boy:
                 self.key_states['right'] = True
             elif event.key == SDLK_SPACE:
                 self.jump()
+            elif event.key == ord('h'):  # h키를 눌렀을 때
+                self.is_invincible = not self.is_invincible  # 무적 상태 토글
         elif event.type == SDL_KEYUP:
             if event.key == SDLK_LEFT:
                 self.key_states['left'] = False
@@ -107,6 +110,8 @@ class Boy:
             self.frame = 0
 
     def get_bb(self):
+        if self.is_invincible:  # 무적 상태일 때는 충돌 박스를 반환하지 않음
+            return 0, 0, 0, 0
         return self.x, self.y, self.x + 32, self.y + 32
 
     def update_stage_info(self, stage_number):

@@ -32,7 +32,8 @@ class Stage4:
         self.time = time.time()
         self.obstacle = Obstacle([])
         self.boy.update_stage_info(4)
-        self.obstacle_created = [False] * 5
+        self.obstacle_created = [False] * 10
+
 
     def handle_event(self, event):
         self.boy.handle_event(event)
@@ -44,15 +45,15 @@ class Stage4:
         if self.boy.x < 2 and self.boy.y==50:
             self.stage_change_call(3)
 
-        if self.boy.y < -1:
-            self.boy.x = 20
+        if self.boy.y < -10:
+            self.boy.x = 30
             self.boy.y = 70
             self.obstacle_created = [False] * 5
 
         for obstacle in self.obstacle.obstacles:
             if check_collision(self.boy, obstacle['x'], obstacle['y'], obstacle['image_direction']):
                 handle_collision(self.boy)
-                self.stage_change_call(4)
+                #self.stage_change_call(4)
                 self.boy.savepointX = 5
                 self.boy.savepointY = 50
                 self.obstacle_created = [False] * 5
@@ -82,7 +83,7 @@ class Stage4:
 
         if not self.obstacle_created[2] and self.boy.x >= 490 and self.boy.x < 510:
             new_obstacle = {
-                'x': 510,
+                'x': 530,
                 'y': 0,
                 'image_direction': 0,
                 'move_direction': 4,
@@ -91,25 +92,39 @@ class Stage4:
             self.obstacle.obstacles.append(new_obstacle)
             self.obstacle_created[2] = True
 
-        if not self.obstacle_created[3] and self.boy.x >= 530 and self.boy.x < 550:
+        if not self.obstacle_created[3] and self.boy.x >= 560 and self.boy.x < 590:
             new_obstacle = {
-                'x': 530,
-                'y': 800,
-                'image_direction': 2,
-                'move_direction': 2,
+                'x': 580,
+                'y': -15,
+                'image_direction': 0,
+                'move_direction': 4,
                 'move_speed': 30
             }
-
-            new_obstacle = {
-                'x': 530,
-                'y': 850,
-                'image_direction': 2,
-                'move_direction': 2,
-                'move_speed': 30
-            }
-
             self.obstacle.obstacles.append(new_obstacle)
             self.obstacle_created[3] = True
+
+        if not self.obstacle_created[4] and self.boy.x >= 610 and self.boy.x < 640:
+            new_obstacle = {
+                'x': 630,
+                'y': 750,
+                'image_direction': 0,
+                'move_direction': 3,
+                'move_speed': 30
+            }
+            self.obstacle.obstacles.append(new_obstacle)
+            self.obstacle_created[4] = True
+
+        if not self.obstacle_created[5] and self.boy.x >= 610 and self.boy.x < 630:
+            new_obstacle = {
+                'x': -20,
+                'y': 625,
+                'image_direction': 3,
+                'move_direction': 1,
+                'move_speed': 30
+            }
+            self.obstacle.obstacles.append(new_obstacle)
+            self.obstacle_created[5] = True
+
 
     def draw(self):
         self.ground.draw(512, 384)

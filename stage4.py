@@ -160,11 +160,11 @@ class Stage4:
 
         if not self.obstacle_created[9] and self.boy.x >= 237 and self.boy.y>= 720:
             new_obstacle = {
-                'x': -10,
+                'x': 20,
                 'y': 740,
                 'image_direction': 3,
                 'move_direction': 1,
-                'move_speed': 3
+                'move_speed': 5
             }
             self.obstacle.obstacles.append(new_obstacle)
             self.obstacle_created[6] = True

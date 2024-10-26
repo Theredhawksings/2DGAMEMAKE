@@ -75,7 +75,7 @@ class Stage2:
 
         current_time = time.time()
 
-        if current_time % 0.05 < 0.01 and self.boy.y < 300:
+        if current_time % 0.05 <= 0.01 and self.boy.y < 300:#좀 느리게
             new_obstacle = {
                 'x': random.randint(350, 900),
                 'y': 300,

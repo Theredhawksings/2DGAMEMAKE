@@ -15,6 +15,7 @@ class Stage4:
         self.boy.x = 5
         self.boy.y = 50
         self.boy.apply_gravity = True
+
         self.grass = Grass([(0, 0, 128),
                             (130, 60, 30),
                             (250, 100, 30),
@@ -34,8 +35,24 @@ class Stage4:
                             ],
 
                            current_stage=4)
-        self.time = time.time()
         self.obstacle = Obstacle([])
+
+        obstacle_data = [
+            (270, 680, 0, 0, 0),
+            (400, 680, 0, 0, 0),
+            (460, 755, 2, 0, 0),
+            (600, 755, 2, 0, 0),
+            (800, 680, 0, 0, 0),
+            (200, 755, 2, 0, 0),
+            (520, 680, 0, 0, 0),
+            (680, 680, 0, 0, 0),
+            (780, 680, 0, 0, 0),
+            # 1
+        ]
+        self.obstacle = Obstacle(obstacle_data)
+
+        self.time = time.time()
+
         self.boy.update_stage_info(4)
         self.obstacle_created = [False] * 10
 
@@ -61,7 +78,7 @@ class Stage4:
 
         if not self.obstacle_created[0] and self.boy.x >= 110 and self.boy.x < 130:
             new_obstacle = {
-                'x': 130,
+                'x': 160,
                 'y': -15,
                 'image_direction': 0,
                 'move_direction': 4,

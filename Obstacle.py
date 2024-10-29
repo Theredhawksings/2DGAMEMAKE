@@ -1,9 +1,9 @@
 from pico2d import load_image
-import math
+import math, os
 
 class Obstacle:
     def __init__(self, obstacle_data):
-        self.image = load_image('obstacle.png')
+        self.image = load_image(os.path.join('obstacle', 'obstacle.png'))
         self.obstacles = []
         self.angles = [0, math.pi/2, math.pi, 3*math.pi/2]
         self.screen_width = 1024

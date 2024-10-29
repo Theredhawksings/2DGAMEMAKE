@@ -49,8 +49,16 @@ class Stage4:
             (840, 580, 0, 0, 0),
             (815, 580, 0, 0, 0),
 
-            (665, 385, 0, 0, 0)
 
+            (665, 385, 0, 0, 0),
+
+            (445, 550, 0, 0, 0),
+            (475, 550, 0, 0, 0),
+
+            (445, 400, 0, 0, 0),
+            (445, 430, 0, 0, 0),
+
+            (755, 480, 1, 0, 0)
         ]
         self.obstacle = Obstacle(obstacle_data)
 
@@ -178,7 +186,7 @@ class Stage4:
             self.obstacle.obstacles.append(new_obstacle)
             self.obstacle_created[8] = True
 
-        if not self.obstacle_created[9] and self.boy.x >= 237 and self.boy.y>= 720:
+        if not self.obstacle_created[9] and self.boy.x >= 180 and self.boy.y>= 720:
             new_obstacle = {
                 'x': 20,
                 'y': 740,

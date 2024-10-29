@@ -1,23 +1,22 @@
 from pico2d import load_image
 from pico2d import load_image, SDL_KEYDOWN, SDL_KEYUP, SDLK_SPACE, SDLK_LEFT, SDLK_RIGHT
 import grass
+import os
 
 
 class Boy:
     def __init__(self):
         self.x, self.y = 80, 80
         self.frame = 0
-        self.image = load_image('run_animation1.png')
+        self.image = load_image(os.path.join('charcater', 'run_animation1.png'))
         self.dx = 0
         self.right = True
         self.is_jumping = False
         self.jump_gravity = -1
         self.fall_gravity = -1
-        self.ground_y = 80
         self.jump_speed = 0
         self.key_states = {'left': False, 'right': False}
         self.falling = False
-        self.height = 48
         self.apply_gravity = True
         self.savepointX = 0
         self.savepointY = 0
@@ -73,7 +72,6 @@ class Boy:
         for grass_x, grass_y, width in grass_positions:
             if (grass_x - width < self.x < grass_x + width and self.y <= grass_y + 70 and self.y > grass_y + 40):
                 self.y = grass_y + 50
-                self.ground_y = grass_y + 50
                 self.is_jumping = False
                 self.jump_speed = 0
                 self.fall_gravity = -1
@@ -110,7 +108,7 @@ class Boy:
             self.frame = 0
 
     def get_bb(self):
-        if self.is_invincible:  # 무적 상태일 때는 충돌 박스를 반환하지 않음
+        if self.is_invincible: 
             return 0, 0, 0, 0
         return self.x, self.y, self.x + 32, self.y + 32
 

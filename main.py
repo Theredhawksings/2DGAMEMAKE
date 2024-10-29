@@ -26,7 +26,7 @@ class GameWorld:
             return
 
         if self.current_music != music_path:
-            if self.current_music is not None:  
+            if self.current_music is not None:
                 pygame.mixer.music.stop()
             pygame.mixer.music.load(music_path)
             pygame.mixer.music.play(-1)

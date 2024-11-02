@@ -62,8 +62,8 @@ class Stage2:
 
         self.stage_change_call = stage_change_call
 
-        self.boy.savepointX = 356
-        self.boy.savepointY = 500
+        self.boy.savepointX = 62
+        self.boy.savepointY = 700
         self.boy.update_stage_info(2)
 
     def handle_event(self, event):

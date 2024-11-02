@@ -59,7 +59,9 @@ class Stage4:
             (445, 430, 0, 0, 0),
 
             (755, 480, 1, 0, 0),
-            (785, 480, 1, 0, 0)
+            (785, 480, 1, 0, 0),
+
+
         ]
         self.obstacle = Obstacle(obstacle_data)
 

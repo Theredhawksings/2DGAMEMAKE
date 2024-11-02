@@ -2,7 +2,8 @@ from pico2d import *
 from grass import Grass
 from ground import Ground
 from obstacle import Obstacle
-from collision_utils import check_collision, handle_collision,
+from collision_utils import check_collision, handle_collision
+from Font import Font
 
 
 class Stage1:
@@ -26,6 +27,8 @@ class Stage1:
         self.boy.savepointY = 80
         self.boy.update_stage_info(1)
 
+        self.font = Font(30)
+
     def handle_event(self, event):
         self.boy.handle_event(event)
 
@@ -48,8 +51,10 @@ class Stage1:
                 break
 
     def draw(self):
-        self.ground.draw(512,384)
+        self.ground.draw(512, 384)
         self.grass.draw()
         self.boy.draw()
         self.obstacle.draw()
 
+        self.font.draw(200, 490, "조작법", (0, 0, 0))
+        self.font.draw(200, 450, "조작: ← → 이동, Space 점프", (0, 0, 0))

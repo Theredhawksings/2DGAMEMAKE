@@ -1,8 +1,11 @@
 from pico2d import *
+
+import collision_utils
 from grass import Grass
 from ground import Ground
 from obstacle import Obstacle
-from collision_utils import check_collision, handle_collision
+from collision_utils import check_collision, handle_collision, get_death_count
+from Font import Font
 import time
 import random
 
@@ -61,10 +64,10 @@ class Stage2:
         self.obstacle = Obstacle(obstacle_data)
 
         self.stage_change_call = stage_change_call
-
-        self.boy.savepointX = 62
-        self.boy.savepointY = 700
         self.boy.update_stage_info(2)
+
+
+        self.font = Font(30)
 
     def handle_event(self, event):
         self.boy.handle_event(event)
@@ -75,7 +78,7 @@ class Stage2:
 
         current_time = time.time()
 
-        if current_time % 0.05 <= 0.01 and self.boy.y < 300:#좀 느리게
+        if current_time % 0.05 <= 0.01 and self.boy.y < 300 and self.boy.x>=315:#좀 느리게
             new_obstacle = {
                 'x': random.randint(350, 900),
                 'y': 300,
@@ -98,6 +101,8 @@ class Stage2:
 
         for obstacle in self.obstacle.obstacles:
             if check_collision(self.boy, obstacle['x'], obstacle['y'], obstacle['image_direction']):
+                self.boy.savepointX = 67
+                self.boy.savepointY = 700
                 handle_collision(self.boy)
                 break
 
@@ -106,3 +111,4 @@ class Stage2:
         self.grass.draw()
         self.boy.draw()
         self.obstacle.draw()
+        self.font.draw(30, 750, f"죽은 횟수: {collision_utils.get_death_count()}", (0, 0, 0))

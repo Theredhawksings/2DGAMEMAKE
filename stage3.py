@@ -61,11 +61,11 @@ class Stage3:
 
         for obstacle in self.obstacle.obstacles:
             if check_collision(self.boy, obstacle['x'], obstacle['y'], obstacle['image_direction']):
-                handle_collision(self.boy)
-                self.stage_change_call(2)
-                self.boy.savepointX = 300
+                self.boy.savepointX = 310
                 self.boy.savepointY = 150
                 self.boy.apply_gravity = True
+                handle_collision(self.boy)
+                self.stage_change_call(2)
                 break
 
         if self.boy.x > 1024 and self.boy.y == 50:

@@ -15,15 +15,14 @@ class Stage5:
         self.boy.y = 50
         self.boy.apply_gravity = True
 
-        # 플랫폼 위치 데이터 - (x, y, width) 형식
-        self.grass = Grass([
-            (0, 0, 100),
-
-            (180, 0, 20),
-            (300, 0, 20),
-            (240, 60, 20),
-            (360, 60, 20)
-        ], current_stage=5)
+        self.grass = Grass(
+            [(0, 0, 100)] +  # 첫 번째 기본 위치
+            [(x, y, 33)
+             for y in range(0, 721, 60)
+             for x in range(180 if y % 120 == 0 else 240, 841, 120)]+
+            [(960, 720, 80)],
+            current_stage=5
+        )
 
         # 빈 장애물 리스트로 초기화
         self.obstacle = Obstacle([])
@@ -39,20 +38,17 @@ class Stage5:
         self.boy.update(self.grass)
         self.obstacle.update()
 
-        # 이전 스테이지로 돌아가기
         if self.boy.x < 2 and self.boy.y == 50:
             self.stage_change_call(4)
             self.boy.x = 1020
             self.boy.y = 720
 
-        # 낙사 처리
         if self.boy.y < -10:
-            self.boy.x = 20
-            self.boy.y = 70
+            self.boy.x = 30
+            self.boy.y = 50
             self.boy.falling = False
             self.boy.is_jumping = False
             self.boy.jump_speed = 0
-            self.obstacle_created = [False] * 10
 
     def draw(self):
         self.ground.draw(512, 384)

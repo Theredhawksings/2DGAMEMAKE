@@ -2,6 +2,7 @@ from pico2d import load_image
 import math, os
 
 class Obstacle:
+
     def __init__(self, obstacle_data):
         self.image = load_image(os.path.join('obstacle', 'obstacle.png'))
         self.obstacles = []

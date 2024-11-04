@@ -19,7 +19,7 @@ class Grass:
 
     def draw(self):
         for x, y, width in self.positions:
-            if self.current_stage == 4:
+            if self.current_stage == 4 or 5:
                 Grass.image3.clip_draw(0, 0, width * 2, 60, x, y, width * 2, 60)
             elif self.current_stage == 3:
                 Grass.image2.clip_draw(0, 0, width * 2, 60, x, y, width * 2, 60)

@@ -4,6 +4,8 @@ import stage1
 import stage2
 import stage3
 import stage4
+import stage5
+
 import pygame
 from boy import Boy
 import os
@@ -43,6 +45,8 @@ class GameWorld:
             self.current_stage = stage3.Stage3(self.change_stage, self.boy)
         elif stage_number == 4:
             self.current_stage = stage4.Stage4(self.change_stage, self.boy)
+        elif stage_number == 5:
+            self.current_stage = stage5.Stage5(self.change_stage, self.boy)
 
         self.last_stage = stage_number
 
@@ -66,7 +70,7 @@ class GameWorld:
 def main():
     open_canvas(1024, 768)
     game_world = GameWorld()
-    game_world.change_stage(1)
+    game_world.change_stage(4)
     game_world.boy.x = 5
     game_world.boy.y = 200
 

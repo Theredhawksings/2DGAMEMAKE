@@ -210,6 +210,12 @@ class Stage4:
                 self.boy.jump_speed = 0
                 self.obstacle_created = [False] * 10
 
+        if self.boy.x > 1024 and self.boy.y == 720:
+            self.boy.x = 1020
+            self.boy.y = 80
+            self.stage_change_call(5)
+
+
     def draw(self):
         self.ground.draw(512, 384)
         self.grass.draw()

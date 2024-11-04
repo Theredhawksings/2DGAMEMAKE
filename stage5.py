@@ -42,6 +42,8 @@ class Stage5:
         # 이전 스테이지로 돌아가기
         if self.boy.x < 2 and self.boy.y == 50:
             self.stage_change_call(4)
+            self.boy.x = 1020
+            self.boy.y = 720
 
         # 낙사 처리
         if self.boy.y < -10:

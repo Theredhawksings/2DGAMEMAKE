@@ -108,10 +108,9 @@ class Boy:
             self.frame = 0
 
     def get_bb(self):
-        if self.is_invincible: 
+        if self.is_invincible:
             return 0, 0, 0, 0
         return self.x, self.y, self.x + 32, self.y + 32
 
     def update_stage_info(self, stage_number):
         self.previous_stage = stage_number
-

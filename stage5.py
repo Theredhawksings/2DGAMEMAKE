@@ -29,8 +29,8 @@ class Stage5:
        self.obstacle = Obstacle([])
 
        self.cyclic_obstacle = CyclicObstacle(
-           x=90,
-           y=50,
+           x=180,
+           y=120,
            image_direction=0,
            move_direction=4,
            move_speed=0,

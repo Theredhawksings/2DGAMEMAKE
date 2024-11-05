@@ -48,10 +48,11 @@ def handle_collision(boy):
     boy.y = boy.savepointY
     boy.is_jumping = False
     boy.jump_speed = 0
+    boy.frame = 0
     boy.falling = False
     print(f'충돌 발생! 세이브포인트로 이동: x={boy.x}, y={boy.y}')
-
 
 def get_death_count():
     global death_count
     return death_count
+''''''

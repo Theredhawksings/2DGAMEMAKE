@@ -1,6 +1,8 @@
 
+death_count = 0
 
 def check_collision(boy, obstacle_x, obstacle_y, angle_index):
+    global death_count
     boy_left, boy_bottom, boy_right, boy_top = boy.get_bb()
 
     if angle_index == 0 or angle_index == 2:  # 위쪽 또는 아래쪽
@@ -31,6 +33,8 @@ def check_collision(boy, obstacle_x, obstacle_y, angle_index):
     elif boy_bottom <= obstacle_top and boy_top > obstacle_top:
         collision_direction = "위쪽"
 
+    death_count += 1
+
     print(
         f"충돌 감지: 소년({boy_left}, {boy_bottom}, {boy_right}, {boy_top}), "
         f"장애물({obstacle_left}, {obstacle_bottom}, {obstacle_right}, {obstacle_top}), "
@@ -46,3 +50,8 @@ def handle_collision(boy):
     boy.jump_speed = 0
     boy.falling = False
     print(f'충돌 발생! 세이브포인트로 이동: x={boy.x}, y={boy.y}')
+
+
+def get_death_count():
+    global death_count
+    return death_count

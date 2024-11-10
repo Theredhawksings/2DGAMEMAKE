@@ -1,4 +1,3 @@
-'''
 class StateMachine:
     def __init__(self, boy):
         self.boy = boy
@@ -30,4 +29,4 @@ class StateMachine:
 
     def set_transitions(self, transitions):
         self.transitions = transitions
-'''
+

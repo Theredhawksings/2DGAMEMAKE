@@ -2,8 +2,8 @@ from pico2d import *
 from grass import Grass
 from ground import Ground
 from obstacle import Obstacle
-import random
 import time
+from font import Font
 
 class Stage4:
     def __init__(self, stage_change_call, boy):
@@ -11,6 +11,7 @@ class Stage4:
         self.ground = Ground(current_stage=4)
         self.stage_change_call = stage_change_call
         self.boy.apply_gravity = True
+        self.font = Font(30)
 
         grass_positions = [
             (0, 0, 128),
@@ -48,6 +49,7 @@ class Stage4:
             (475, 550, 0, 0, 0),
             (445, 400, 0, 0, 0),
             (445, 430, 0, 0, 0),
+            (575, 515, 0, 0, 0),
             (755, 480, 1, 0, 0),
             (785, 480, 1, 0, 0),
         ]
@@ -111,8 +113,8 @@ class Stage4:
 
         if self.boy.x > 1024 and self.boy.y == 720:
             self.stage_change_call(5)
-            self.boy.x = 20
-            self.boy.y = 50
+            self.boy.x = 5
+            self.boy.y = 730
 
         for obstacle in self.obstacle.obstacles:
             if self.obstacle.check_collision(self.boy):
@@ -137,6 +139,8 @@ class Stage4:
 
     def draw(self):
         self.ground.draw(512, 384)
+        self.font.draw(100, 300, "날아오는 장애물들을 피하세요", (255, 255, 255))
         self.grass.draw()
         self.boy.draw()
         self.obstacle.draw()
+

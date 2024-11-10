@@ -2,7 +2,7 @@ from pico2d import *
 from grass import Grass
 from ground import Ground
 from obstacle import Obstacle
-from Font import Font
+from font import Font
 
 class Stage1:
     def __init__(self, stage_change_call, boy):

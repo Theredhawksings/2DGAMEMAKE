@@ -5,7 +5,6 @@ import stage2
 import stage3
 import stage4
 import stage5
-
 import pygame
 from boy import Boy
 import os
@@ -21,10 +20,10 @@ class GameWorld:
 
     def load_music(self, stage_number):
         if stage_number in [1, 2, 3]:
-            #music_path = os.path.join('bgm', 'Green Greens.mp3')
+            # music_path = os.path.join('bgm', 'Green Greens.mp3')
             music_path = os.path.join('bgm', '1,000,000 Monsters Attack.mp3')
-        elif stage_number == [4, 5]:
-            #music_path = os.path.join('bgm', 'sleepwood.mp3')
+        elif stage_number in [4, 5]:
+            # music_path = os.path.join('bgm', 'sleepwood.mp3')
             music_path = os.path.join('bgm', '1,000,000 Monsters Attack.mp3')
         else:
             return

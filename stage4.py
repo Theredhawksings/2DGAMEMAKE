@@ -2,10 +2,8 @@ from pico2d import *
 from grass import Grass
 from ground import Ground
 from obstacle import Obstacle
-from collision_utils import check_collision, handle_collision
 import random
 import time
-
 
 class Stage4:
     def __init__(self, stage_change_call, boy):
@@ -14,7 +12,6 @@ class Stage4:
         self.stage_change_call = stage_change_call
         self.boy.apply_gravity = True
 
-        # 풀(발판) 위치 정의
         grass_positions = [
             (0, 0, 128),
             (130, 60, 30),
@@ -33,9 +30,9 @@ class Stage4:
             (480, 670, 300),
             (1000, 670, 200),
         ]
+
         self.grass = Grass(grass_positions, current_stage=4)
 
-        # 고정 장애물 정의
         static_obstacle_data = [
             (220, 400, 0, 0, 0),
             (245, 400, 0, 0, 0),
@@ -54,79 +51,30 @@ class Stage4:
             (755, 480, 1, 0, 0),
             (785, 480, 1, 0, 0),
         ]
+
         self.obstacle = Obstacle(static_obstacle_data)
 
         self.obstacle_definitions = [
-            {
-                'trigger': {'x_min': 110, 'x_max': 130, 'y_min': None, 'y_max': None},
-                'obstacle': {
-                    'x': 160, 'y': -15,
-                    'image_direction': 0, 'move_direction': 4, 'move_speed': 15
-                }
-            },
-            {
-                'trigger': {'x_min': 350, 'x_max': 380, 'y_min': 200, 'y_max': None},
-                'obstacle': {
-                    'x': -30, 'y': 220,
-                    'image_direction': 3, 'move_direction': 1, 'move_speed': 20
-                }
-            },
-            {
-                'trigger': {'x_min': 490, 'x_max': 510, 'y_min': None, 'y_max': None},
-                'obstacle': {
-                    'x': 530, 'y': 0,
-                    'image_direction': 0, 'move_direction': 4, 'move_speed': 30
-                }
-            },
-            {
-                'trigger': {'x_min': 560, 'x_max': 590, 'y_min': None, 'y_max': None},
-                'obstacle': {
-                    'x': 580, 'y': -15,
-                    'image_direction': 0, 'move_direction': 4, 'move_speed': 30
-                }
-            },
-            {
-                'trigger': {'x_min': 610, 'x_max': 640, 'y_min': None, 'y_max': None},
-                'obstacle': {
-                    'x': 630, 'y': 730,
-                    'image_direction': 2, 'move_direction': 3, 'move_speed': 20
-                }
-            },
-            {
-                'trigger': {'x_min': 610, 'x_max': 630, 'y_min': 500, 'y_max': None},
-                'obstacle': {
-                    'x': -10, 'y': 565,
-                    'image_direction': 3, 'move_direction': 1, 'move_speed': 10
-                }
-            },
-            {
-                'trigger': {'x_min': 300, 'x_max': 320, 'y_min': 600, 'y_max': None},
-                'obstacle': {
-                    'x': 1030, 'y': 580,
-                    'image_direction': 1, 'move_direction': 2, 'move_speed': 30
-                }
-            },
-            {
-                'trigger': {'x_min': 180, 'x_max': 210, 'y_min': 600, 'y_max': None},
-                'obstacle': {
-                    'x': 1030, 'y': 580,
-                    'image_direction': 1, 'move_direction': 2, 'move_speed': 30
-                }
-            },
-            {
-                'trigger': {'x_min': 140, 'x_max': 170, 'y_min': 660, 'y_max': None},
-                'obstacle': {
-                    'x': 150, 'y': 0,
-                    'image_direction': 0, 'move_direction': 4, 'move_speed': 30
-                }
-            },
-            {
-                'trigger': {'x_min': 180, 'x_max': 800, 'y_min': 720, 'y_max': None},
-                'obstacle': {
-                    'x': 20, 'y': 740,
-                    'image_direction': 3, 'move_direction': 1, 'move_speed': 5
-                }
-            }
+            {'trigger': {'x_min': 110, 'x_max': 130, 'y_min': None, 'y_max': None},
+             'obstacle': {'x': 160, 'y': -15, 'image_direction': 0, 'move_direction': 4, 'move_speed': 15}},
+            {'trigger': {'x_min': 350, 'x_max': 380, 'y_min': 200, 'y_max': None},
+             'obstacle': {'x': -30, 'y': 220, 'image_direction': 3, 'move_direction': 1, 'move_speed': 20}},
+            {'trigger': {'x_min': 490, 'x_max': 510, 'y_min': None, 'y_max': None},
+             'obstacle': {'x': 530, 'y': 0, 'image_direction': 0, 'move_direction': 4, 'move_speed': 30}},
+            {'trigger': {'x_min': 560, 'x_max': 590, 'y_min': None, 'y_max': None},
+             'obstacle': {'x': 580, 'y': -15, 'image_direction': 0, 'move_direction': 4, 'move_speed': 30}},
+            {'trigger': {'x_min': 610, 'x_max': 640, 'y_min': None, 'y_max': None},
+             'obstacle': {'x': 630, 'y': 730, 'image_direction': 2, 'move_direction': 3, 'move_speed': 20}},
+            {'trigger': {'x_min': 610, 'x_max': 630, 'y_min': 500, 'y_max': None},
+             'obstacle': {'x': -10, 'y': 565, 'image_direction': 3, 'move_direction': 1, 'move_speed': 10}},
+            {'trigger': {'x_min': 300, 'x_max': 320, 'y_min': 600, 'y_max': None},
+             'obstacle': {'x': 1030, 'y': 580, 'image_direction': 1, 'move_direction': 2, 'move_speed': 30}},
+            {'trigger': {'x_min': 180, 'x_max': 210, 'y_min': 600, 'y_max': None},
+             'obstacle': {'x': 1030, 'y': 580, 'image_direction': 1, 'move_direction': 2, 'move_speed': 30}},
+            {'trigger': {'x_min': 140, 'x_max': 170, 'y_min': 660, 'y_max': None},
+             'obstacle': {'x': 150, 'y': 0, 'image_direction': 0, 'move_direction': 4, 'move_speed': 30}},
+            {'trigger': {'x_min': 180, 'x_max': 800, 'y_min': 720, 'y_max': None},
+             'obstacle': {'x': 20, 'y': 740, 'image_direction': 3, 'move_direction': 1, 'move_speed': 5}}
         ]
 
         self.time = time.time()
@@ -142,8 +90,7 @@ class Stage4:
                 continue
 
             trigger = definition['trigger']
-            x_condition = (self.boy.x >= trigger['x_min'] and
-                           self.boy.x < trigger['x_max'])
+            x_condition = (self.boy.x >= trigger['x_min'] and self.boy.x < trigger['x_max'])
 
             y_condition = True
             if trigger['y_min'] is not None:
@@ -168,10 +115,11 @@ class Stage4:
             self.boy.y = 50
 
         for obstacle in self.obstacle.obstacles:
-            if check_collision(self.boy, obstacle['x'], obstacle['y'], obstacle['image_direction']):
-                handle_collision(self.boy)
+            if self.obstacle.check_collision(self.boy):
                 self.boy.x = 20
                 self.boy.y = 50
+                self.boy.savepointX = 20
+                self.boy.savepointY = 50
                 self.obstacle_created = [False] * len(self.obstacle_definitions)
                 break
 
@@ -180,6 +128,8 @@ class Stage4:
         if self.boy.y < -10:
             self.boy.x = 30
             self.boy.y = 70
+            self.boy.savepointX = 30
+            self.boy.savepointY = 70
             self.boy.falling = False
             self.boy.is_jumping = False
             self.boy.jump_speed = 0

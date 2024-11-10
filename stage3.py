@@ -67,8 +67,8 @@ class Stage3:
                 break
 
         if self.boy.x > 1024 and self.boy.y == 50:
-            self.boy.x = 1020
-            self.boy.y = 80
+            self.boy.x = 30
+            self.boy.y = 50
             self.stage_change_call(4)
 
     def draw(self):

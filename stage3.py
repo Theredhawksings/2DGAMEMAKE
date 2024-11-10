@@ -2,7 +2,6 @@ from pico2d import *
 from grass import Grass
 from ground import Ground
 from obstacle import Obstacle
-from collision_utils import check_collision, handle_collision
 import random
 import time
 
@@ -57,14 +56,13 @@ class Stage3:
             self.obstacle.obstacles.append(new_obstacle)
 
         if current_time % 0.1 <= 0.01:
-            self.boy.y-=1
+            self.boy.y -= 1
 
         for obstacle in self.obstacle.obstacles:
-            if check_collision(self.boy, obstacle['x'], obstacle['y'], obstacle['image_direction']):
-                self.boy.savepointX = 310
-                self.boy.savepointY = 150
+            if self.obstacle.check_collision(self.boy):
+                self.boy.x = 310
+                self.boy.y = 150
                 self.boy.apply_gravity = True
-                handle_collision(self.boy)
                 self.stage_change_call(2)
                 break
 
@@ -72,7 +70,6 @@ class Stage3:
             self.boy.x = 1020
             self.boy.y = 80
             self.stage_change_call(4)
-
 
     def draw(self):
         self.ground.fallingdraw(512, 384, self.background_y)

@@ -11,7 +11,7 @@ def check_collision(boy, obstacle_x, obstacle_y, angle_index):
         obstacle_bottom = obstacle_y
         obstacle_top = obstacle_y + 20
 
-    else:  # 왼쪽 또는 오른쪽으로 90도 회전
+    else:
         obstacle_left = obstacle_x
         obstacle_right = obstacle_x + 25
         obstacle_bottom = obstacle_y + 10

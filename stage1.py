@@ -2,9 +2,7 @@ from pico2d import *
 from grass import Grass
 from ground import Ground
 from obstacle import Obstacle
-from collision_utils import check_collision, handle_collision
 from Font import Font
-
 
 class Stage1:
     def __init__(self, stage_change_call, boy):
@@ -39,16 +37,12 @@ class Stage1:
         if self.boy.x <= 0:
             self.boy.x = 1
             self.boy.y = 80
-
         elif self.boy.x > 1024:
             self.stage_change_call(2)
             self.boy.x = 2
             self.boy.y = 700
 
-        for obstacle in self.obstacle.obstacles:
-            if check_collision(self.boy, obstacle['x'], obstacle['y'], obstacle['image_direction']):
-                handle_collision(self.boy)
-                break
+        self.obstacle.check_collision(self.boy)
 
     def draw(self):
         self.ground.draw(512, 384)

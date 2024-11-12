@@ -14,7 +14,6 @@ class Stage3:
 
         is_from_stage4 = self.boy.previous_stage == 4
 
-        # 이전 스테이지에 따른 초기 위치 설정
         self.background_y = 384 if is_from_stage4 else 5229
         self.boy.x = 1020 if is_from_stage4 else 512
         self.boy.y = 50 if is_from_stage4 else 630

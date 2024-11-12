@@ -2,6 +2,7 @@ from pico2d import *
 import os
 from state_machine import StateMachine, RIGHT_DOWN, LEFT_DOWN, RIGHT_UP, LEFT_UP, SPACE
 from state_machine import right_down, left_down, right_up, left_up, space_down
+import time
 
 PIXEL_PER_METER = (10.0 / 0.3)
 
@@ -15,6 +16,13 @@ JUMP_SPEED_PPS = JUMP_SPEED_MPS * PIXEL_PER_METER
 
 GRAVITY_ACCEL = 0.03
 GRAVITY_PPS = GRAVITY_ACCEL * PIXEL_PER_METER
+
+TIME_PER_ACTION = 0.5
+ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
+FRAMES_PER_ACTION = 4
+
+frame_time = 0.0
+current_time = time.time()
 
 class IdleState:
    @staticmethod
@@ -39,9 +47,9 @@ class IdleState:
    @staticmethod
    def draw(boy):
        if boy.right:
-           boy.image.clip_draw(boy.frame * 64, 64, 64, 64, boy.x, boy.y, 64, 64)
+           boy.image.clip_draw(boy.frame * 64, 64, 64, 64, boy.x, boy.y, 48, 48)
        else:
-           boy.image.clip_draw(boy.frame * 64, 128, 64, 64, boy.x, boy.y, 64, 64)
+           boy.image.clip_draw(boy.frame * 64, 128, 64, 64, boy.x, boy.y, 48, 48)
 
 class RunState:
    @staticmethod
@@ -71,9 +79,10 @@ class RunState:
            boy.state_machine.add_event(('INPUT', LEFT_UP))
 
        boy.x += boy.dx
+       frame_time = time.time() - current_time
 
        if boy.dx != 0:
-           boy.frame = (boy.frame + 1) % 3
+           boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * frame_time) % 4
 
        # 중력과 점프 처리
        boy.handle_gravity_and_jump(grass)
@@ -81,9 +90,9 @@ class RunState:
    @staticmethod
    def draw(boy):
        if boy.right:
-           boy.image.clip_draw(boy.frame * 64, 64, 64, 64, boy.x, boy.y, 64, 64)
+           boy.image.clip_draw(int(boy.frame) * 64, 64, 64, 64, boy.x, boy.y, 48, 48)
        else:
-           boy.image.clip_draw(boy.frame * 64, 128, 64, 64, boy.x, boy.y, 64, 64)
+           boy.image.clip_draw(int(boy.frame) * 64, 128, 64, 64, boy.x, boy.y, 48, 48)
 
 class Boy:
    def __init__(self):
@@ -194,8 +203,8 @@ class Boy:
 
        for grass_x, grass_y, width in grass_positions:
            if (grass_x - width < self.x < grass_x + width and
-                   self.y <= grass_y + 70 and self.y > grass_y + 40):
-               self.y = grass_y + 50
+                   self.y <= grass_y + 60 and self.y > grass_y + 30):
+               self.y = grass_y + 40
                self.is_jumping = False
                self.jump_speed = 0
                self.gravity = -GRAVITY_PPS
@@ -215,11 +224,12 @@ class Boy:
 
    def draw(self):
        self.state_machine.cur_state.draw(self)
+       draw_rectangle(*self.get_bb())
 
    def get_bb(self):
        if self.is_invincible:
            return 0, 0, 0, 0
-       return self.x, self.y, self.x + 32, self.y + 32
+       return self.x-12, self.y-15, self.x + 12, self.y + 15
 
    def update_stage_info(self, stage_number):
        self.previous_stage = self.current_stage

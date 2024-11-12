@@ -20,7 +20,7 @@ class Stage2:
             (400, 680, 0, 0, 0),
             (460, 755, 2, 0, 0),
             (600, 755, 2, 0, 0),
-            (800, 680, 0, 0, 0),
+            (820, 680, 0, 0, 0),
             (200, 755, 2, 0, 0),
             (520, 680, 0, 0, 0),
             (680, 680, 0, 0, 0),
@@ -41,14 +41,14 @@ class Stage2:
             (80, 360, 0, 0, 0),
             (240, 360, 0, 0, 0),
             (265, 360, 0, 0, 0),
-            (380, 360, 0, 0, 0),
+
             (420, 456, 2, 0, 0),
             (470, 360, 0, 0, 0),
-            (520, 456, 2, 0, 0),
+
             (570, 360, 0, 0, 0),
             (620, 456, 2, 0, 0),
             (670, 360, 0, 0, 0),
-            (720, 456, 2, 0, 0),
+
             (770, 360, 0, 0, 0),
             (810, 456, 2, 0, 0),
             (890, 360, 0, 0, 0),
@@ -69,7 +69,7 @@ class Stage2:
 
         current_time = time.time()
 
-        if current_time % 0.05 <= 0.01 and self.boy.y < 300 and self.boy.x >= 315:
+        if current_time - self.last_obstacle_time >= 0.1 and self.boy.y < 300 and self.boy.x >= 315:
             new_obstacle = {
                 'x': random.randint(350, 900),
                 'y': 300,
@@ -78,6 +78,7 @@ class Stage2:
                 'move_speed': 4
             }
             self.obstacle.obstacles.append(new_obstacle)
+            self.last_obstacle_time = current_time
 
         if self.boy.x < 1 and self.boy.y == 700:
             self.boy.x = 1020

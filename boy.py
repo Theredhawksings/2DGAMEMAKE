@@ -80,10 +80,10 @@ class Boy:
         self.dx = 0
         self.right = True
         self.is_jumping = False
-        self.gravity = -1  # 중력 통합 변수
+        self.gravity = -1
         self.jump_speed = 0
         self.key_states = {'left': False, 'right': False}
-        self.apply_gravity = True  # 이 변수로 중력 적용 여부를 제어
+        self.apply_gravity = True
         self.savepointX = 0
         self.savepointY = 0
         self.previous_stage = None
@@ -91,6 +91,7 @@ class Boy:
         self.time_since_last_frame = 0
         self.current_stage = None
         self.event_queue = []
+        self.falling = False
 
         self.state_machine = StateMachine(self)
         self.state_machine.set_transitions({
@@ -110,32 +111,44 @@ class Boy:
         self.state_machine.start(IdleState)
 
     def handle_gravity_and_jump(self, grass):
-        if self.is_jumping:
-            self.y += self.jump_speed
-            self.jump_speed += self.gravity  # 중력을 점프 중에 합산
+        if self.apply_gravity:
+            if self.is_jumping:
+                self.y += self.jump_speed
+                self.jump_speed += self.gravity
 
-            if self.jump_speed < 0:  # 최고점에 도달했으면 낙하 시작
-                self.is_jumping = False
+                if self.y > 768:  # 화면 위쪽 경계
+                    self.y = 768
+                    self.jump_speed = 0
 
-        else:  # 낙하 상태
-            self.y += self.gravity
-            self.gravity = max(self.gravity - 1, -12)  # 하강 속도 증가
+                # 낙하 전환
+                if self.jump_speed < 0:
+                    self.is_jumping = False
+                    self.falling = True
 
+            # 낙하 중일 때
+            if self.falling:
+                self.y += self.gravity
+                self.gravity = max(self.gravity - 1, -10)  # 중력 최대값을 -10으로 제한
+
+                # 착지 체크
+                if self.check_grass_collision(grass.get_positions()):
+                    self.falling = False
+                    self.gravity = -1
+
+            print(f" x={self.x:.2f}, y={self.y:.2f}")
 
     def update(self, grass):
-        # 상태 머신 업데이트 (이동 상태)
         self.state_machine.update(grass)
 
-        if self.apply_gravity:
-            # 점프 중이 아니고 바닥에 닿지 않았다면 항상 낙하 상태 유지
-            if not self.is_jumping:
-                self.gravity = max(self.gravity - 1, -12)  # 하강 가속도 적용
-                self.check_grass_collision(grass.get_positions())
+        if self.apply_gravity and not self.is_jumping and not self.check_grass_collision(grass.get_positions()):
+            self.falling = True
+            self.gravity = max(self.gravity - 1, -10)
 
-            if self.x < 0:
-                self.x = 0
-            elif self.x > 1024:
-                self.x = 1024
+        # 화면 경계 체크
+        if self.x < 0:
+            self.x = 0
+        elif self.x > 1024:
+            self.x = 1024
 
     def handle_event(self, event):
         if event.type == SDL_KEYDOWN:
@@ -146,18 +159,21 @@ class Boy:
                 self.key_states['right'] = True
                 self.add_event(('INPUT', RIGHT_DOWN))
             elif event.key == SDLK_SPACE:
-                if not self.is_jumping:
+                if not self.is_jumping and not self.falling:  # 점프 중이거나 떨어지는 중이 아닐 때만 점프
                     self.is_jumping = True
-                    self.jump_speed = 10  # 점프 초기 속도 설정
-                    self.gravity = -1  # 상승 중 중력
+                    self.jump_speed = 12
+                    self.gravity = -1
             elif event.key == ord('h'):
                 self.is_invincible = not self.is_invincible
+
         elif event.type == SDL_KEYUP:
             if event.key == SDLK_LEFT:
                 self.key_states['left'] = False
+                self.frame = 0
                 self.add_event(('INPUT', LEFT_UP))
             elif event.key == SDLK_RIGHT:
                 self.key_states['right'] = False
+                self.frame = 0
                 self.add_event(('INPUT', RIGHT_UP))
 
     def check_grass_collision(self, grass_positions):
@@ -170,11 +186,16 @@ class Boy:
                 self.is_jumping = False
                 self.jump_speed = 0
                 self.gravity = -1
+                self.falling = False
                 collided = True
                 break
 
-        if not collided and not self.is_jumping:
-            self.gravity = max(self.gravity, -12)
+        if collided:
+            self.is_on_ground = True
+        else:
+            self.is_on_ground = False
+
+        return collided
 
     def add_event(self, event):
         self.event_queue.append(event)

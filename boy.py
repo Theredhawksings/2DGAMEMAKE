@@ -1,8 +1,76 @@
-from pico2d import load_image
-from pico2d import load_image, SDL_KEYDOWN, SDL_KEYUP, SDLK_SPACE, SDLK_LEFT, SDLK_RIGHT
-import grass
+from pico2d import *
 import os
+from state_machine import StateMachine, RIGHT_DOWN, LEFT_DOWN, RIGHT_UP, LEFT_UP, SPACE
+from state_machine import right_down, left_down, right_up, left_up, space_down
 
+class IdleState:
+    @staticmethod
+    def enter(boy, event):
+        boy.frame = 0
+        boy.dx = 0
+
+    @staticmethod
+    def exit(boy, event):
+        pass
+
+    @staticmethod
+    def do(boy, grass):
+        if boy.key_states['right'] and not boy.key_states['left']:
+            boy.state_machine.add_event(('INPUT', RIGHT_DOWN))
+        elif boy.key_states['left'] and not boy.key_states['right']:
+            boy.state_machine.add_event(('INPUT', LEFT_DOWN))
+
+        # 중력과 점프 처리
+        boy.handle_gravity_and_jump(grass)
+
+    @staticmethod
+    def draw(boy):
+        if boy.right:
+            boy.image.clip_draw(boy.frame * 64, 64, 64, 64, boy.x, boy.y, 64, 64)
+        else:
+            boy.image.clip_draw(boy.frame * 64, 128, 64, 64, boy.x, boy.y, 64, 64)
+
+class RunState:
+    @staticmethod
+    def enter(boy, event):
+        if boy.key_states['right'] and not boy.key_states['left']:
+            boy.dx = 5
+            boy.right = True
+        elif boy.key_states['left'] and not boy.key_states['right']:
+            boy.dx = -5
+            boy.right = False
+
+    @staticmethod
+    def exit(boy, event):
+        pass
+
+    @staticmethod
+    def do(boy, grass):
+        # 이동 처리
+        if boy.key_states['right'] and not boy.key_states['left']:
+            boy.dx = 5
+            boy.right = True
+        elif boy.key_states['left'] and not boy.key_states['right']:
+            boy.dx = -5
+            boy.right = False
+        else:
+            boy.dx = 0
+            boy.state_machine.add_event(('INPUT', LEFT_UP))
+
+        boy.x += boy.dx
+
+        if boy.dx != 0:
+            boy.frame = (boy.frame + 1) % 3
+
+        # 중력과 점프 처리
+        boy.handle_gravity_and_jump(grass)
+
+    @staticmethod
+    def draw(boy):
+        if boy.right:
+            boy.image.clip_draw(boy.frame * 64, 64, 64, 64, boy.x, boy.y, 64, 64)
+        else:
+            boy.image.clip_draw(boy.frame * 64, 128, 64, 64, boy.x, boy.y, 64, 64)
 
 class Boy:
     def __init__(self):
@@ -12,100 +80,107 @@ class Boy:
         self.dx = 0
         self.right = True
         self.is_jumping = False
-        self.jump_gravity = -1
-        self.fall_gravity = -1
+        self.gravity = -1  # 중력 통합 변수
         self.jump_speed = 0
         self.key_states = {'left': False, 'right': False}
-        self.falling = False
-        self.apply_gravity = True
+        self.apply_gravity = True  # 이 변수로 중력 적용 여부를 제어
         self.savepointX = 0
         self.savepointY = 0
         self.previous_stage = None
         self.is_invincible = False
+        self.time_since_last_frame = 0
+        self.current_stage = None
+        self.event_queue = []
+
+        self.state_machine = StateMachine(self)
+        self.state_machine.set_transitions({
+            IdleState: {
+                right_down: RunState,
+                left_down: RunState,
+            },
+            RunState: {
+                right_down: RunState,
+                left_down: RunState,
+                right_up: RunState,
+                left_up: RunState,
+                lambda e: (right_up(e) and not self.key_states['left']) or
+                          (left_up(e) and not self.key_states['right']): IdleState,
+            }
+        })
+        self.state_machine.start(IdleState)
+
+    def handle_gravity_and_jump(self, grass):
+        if self.is_jumping:
+            self.y += self.jump_speed
+            self.jump_speed += self.gravity  # 중력을 점프 중에 합산
+
+            if self.jump_speed < 0:  # 최고점에 도달했으면 낙하 시작
+                self.is_jumping = False
+
+        else:  # 낙하 상태
+            self.y += self.gravity
+            self.gravity = max(self.gravity - 1, -12)  # 하강 속도 증가
+
 
     def update(self, grass):
-        self.dx = 0
-
-        if self.key_states['right']:
-            self.dx += 5
-            self.right = True
-        if self.key_states['left']:
-            self.dx -= 5
-            self.right = False
-
-        if self.is_jumping or self.falling:
-            self.dx = max(min(self.dx, 5), -5)
-
-        self.x += self.dx
+        # 상태 머신 업데이트 (이동 상태)
+        self.state_machine.update(grass)
 
         if self.apply_gravity:
-            if self.is_jumping:
-                next_y = self.y + self.jump_speed
-
-                self.y = next_y
-                self.jump_speed += self.jump_gravity
-
-                if self.y > 768:
-                    self.y = 768
-                    self.jump_speed = 0
-
-                if self.jump_speed < 0:
-                    self.check_grass_collision(grass.get_positions())
-            else:
+            # 점프 중이 아니고 바닥에 닿지 않았다면 항상 낙하 상태 유지
+            if not self.is_jumping:
+                self.gravity = max(self.gravity - 1, -12)  # 하강 가속도 적용
                 self.check_grass_collision(grass.get_positions())
 
-            if self.falling:
-                self.y += self.fall_gravity
-                self.fall_gravity -= 1
-                self.check_grass_collision(grass.get_positions())
-
-        if (self.dx != 0):
-            self.frame = (self.frame + 1) % 3
-
-        if (self.x < 0):
-            self.x = 0
-
-        print(f" x={self.x:.2f}, y={self.y:.2f}")
-
-    def check_grass_collision(self, grass_positions):
-        self.falling = True
-        for grass_x, grass_y, width in grass_positions:
-            if (grass_x - width < self.x < grass_x + width and self.y <= grass_y + 70 and self.y > grass_y + 40):
-                self.y = grass_y + 50
-                self.is_jumping = False
-                self.jump_speed = 0
-                self.fall_gravity = -1
-                self.falling = False
-                print(f"풀 위치 x={grass_x:.2f}, y={grass_y:.2f}")
-                break
-
-    def jump(self):
-        if not self.is_jumping and not self.falling:
-            self.is_jumping = True
-            self.jump_speed = 12
-
-    def draw(self):
-        if self.right:
-            self.image.clip_draw(self.frame * 64, 64, 64, 64, self.x, self.y, 64, 64)
-        else:
-            self.image.clip_draw(self.frame * 64, 128, 64, 64, self.x, self.y, 64, 64)
+            if self.x < 0:
+                self.x = 0
+            elif self.x > 1024:
+                self.x = 1024
 
     def handle_event(self, event):
         if event.type == SDL_KEYDOWN:
             if event.key == SDLK_LEFT:
                 self.key_states['left'] = True
+                self.add_event(('INPUT', LEFT_DOWN))
             elif event.key == SDLK_RIGHT:
                 self.key_states['right'] = True
+                self.add_event(('INPUT', RIGHT_DOWN))
             elif event.key == SDLK_SPACE:
-                self.jump()
-            elif event.key == ord('h'):  # h키를 눌렀을 때
-                self.is_invincible = not self.is_invincible  # 무적 상태 토글
+                if not self.is_jumping:
+                    self.is_jumping = True
+                    self.jump_speed = 10  # 점프 초기 속도 설정
+                    self.gravity = -1  # 상승 중 중력
+            elif event.key == ord('h'):
+                self.is_invincible = not self.is_invincible
         elif event.type == SDL_KEYUP:
             if event.key == SDLK_LEFT:
                 self.key_states['left'] = False
+                self.add_event(('INPUT', LEFT_UP))
             elif event.key == SDLK_RIGHT:
                 self.key_states['right'] = False
-            self.frame = 0
+                self.add_event(('INPUT', RIGHT_UP))
+
+    def check_grass_collision(self, grass_positions):
+        collided = False
+
+        for grass_x, grass_y, width in grass_positions:
+            if (grass_x - width < self.x < grass_x + width and
+                    self.y <= grass_y + 70 and self.y > grass_y + 40):
+                self.y = grass_y + 50
+                self.is_jumping = False
+                self.jump_speed = 0
+                self.gravity = -1
+                collided = True
+                break
+
+        if not collided and not self.is_jumping:
+            self.gravity = max(self.gravity, -12)
+
+    def add_event(self, event):
+        self.event_queue.append(event)
+
+    def draw(self):
+        self.state_machine.cur_state.draw(self)
 
     def get_bb(self):
         if self.is_invincible:
@@ -113,4 +188,5 @@ class Boy:
         return self.x, self.y, self.x + 32, self.y + 32
 
     def update_stage_info(self, stage_number):
-        self.previous_stage = stage_number
+        self.previous_stage = self.current_stage
+        self.current_stage = stage_number

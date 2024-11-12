@@ -5,18 +5,26 @@ from obstacle import Obstacle
 import random
 import time
 
+
 class Stage3:
     def __init__(self, stage_change_call, boy):
         self.boy = boy
         self.ground = Ground(current_stage=3)
         self.stage_change_call = stage_change_call
-        self.background_y = 384 if self.boy.previous_stage == 4 else 5229
-        self.boy.x = 1020 if self.boy.previous_stage == 4 else 512
-        self.boy.y = 50 if self.boy.previous_stage == 4 else 630
+
+        is_from_stage4 = self.boy.previous_stage == 4
+
+        # 이전 스테이지에 따른 초기 위치 설정
+        self.background_y = 384 if is_from_stage4 else 5229
+        self.boy.x = 1020 if is_from_stage4 else 512
+        self.boy.y = 50 if is_from_stage4 else 630
+
         self.boy.apply_gravity = False
+
         self.grass = Grass([(512, 0, 512)], current_stage=3)
         self.time = time.time()
         self.obstacle = Obstacle([])
+
         self.boy.update_stage_info(3)
 
     def handle_event(self, event):
@@ -32,15 +40,21 @@ class Stage3:
         if self.background_y <= 384:
             self.background_y = 384
 
-        if self.boy.y <= 50:
+
+        if self.boy.y < 50:
             self.boy.y = 50
             self.boy.apply_gravity = True
+            self.boy.gravity = -1
+            self.boy.falling = False
+            self.boy.is_jumping = False
+            self.boy.jump_speed = 0
 
-        if self.boy.y == 50 and self.boy.x < 1:
+        if self.boy.x < 1:
             self.boy.x = 1
             self.boy.y = 50
 
-        elif self.boy.y > 50 and self.boy.x > 1024:
+
+        elif self.boy.y == 50 and self.boy.x > 1024:
             self.boy.x = 1024
 
         current_time = time.time()
@@ -66,7 +80,7 @@ class Stage3:
                 self.stage_change_call(2)
                 break
 
-        if self.boy.x > 1024 and self.boy.y == 50:
+        if self.boy.x >= 1024 and self.boy.y == 50:
             self.boy.x = 30
             self.boy.y = 50
             self.stage_change_call(4)

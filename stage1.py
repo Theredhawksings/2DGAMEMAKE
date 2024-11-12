@@ -34,10 +34,13 @@ class Stage1:
         self.boy.update(self.grass)
         self.obstacle.update()
 
-        if self.boy.x <= 0:
+        if self.boy.x <= 1:
             self.boy.x = 1
             self.boy.y = 80
-        elif self.boy.x > 1024:
+            self.boy.falling = False
+            self.boy.gravity = -1
+
+        elif self.boy.x >= 1024:
             self.stage_change_call(2)
             self.boy.x = 2
             self.boy.y = 700

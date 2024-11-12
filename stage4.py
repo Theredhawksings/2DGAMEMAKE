@@ -83,6 +83,9 @@ class Stage4:
         self.boy.update_stage_info(4)
         self.obstacle_created = [False] * len(self.obstacle_definitions)
 
+        self.boy.savepointX = 20
+        self.boy.savepointY = 50
+
     def handle_event(self, event):
         self.boy.handle_event(event)
 
@@ -109,19 +112,26 @@ class Stage4:
         self.obstacle.update()
 
         if self.boy.x < 2 and self.boy.y == 50:
+            self.boy.previous_stage = 4
+            self.boy.current_stage = 3
+            self.boy.x = 1020
+            self.boy.y = 50
+            self.boy.falling = False
+            self.boy.is_jumping = False
+            self.boy.apply_gravity = True
             self.stage_change_call(3)
+            return
 
-        if self.boy.x > 1024 and self.boy.y == 720:
+        if self.boy.x >= 1024 and self.boy.y == 720:
             self.stage_change_call(5)
             self.boy.x = 5
             self.boy.y = 730
 
         for obstacle in self.obstacle.obstacles:
             if self.obstacle.check_collision(self.boy):
-                self.boy.x = 20
-                self.boy.y = 50
-                self.boy.savepointX = 20
-                self.boy.savepointY = 50
+                self.boy.x = self.boy.savepointX
+                self.boy.y = self.boy.savepointY
+
                 self.obstacle_created = [False] * len(self.obstacle_definitions)
                 break
 

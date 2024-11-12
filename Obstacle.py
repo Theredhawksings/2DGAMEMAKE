@@ -1,5 +1,12 @@
-from pico2d import load_image
+from pico2d import load_image, draw_rectangle
 import math, os
+
+PIXEL_PER_METER = (10.0 / 0.3)
+
+OBSTACLE_SPEED_KMPH = 0.108
+OBSTACLE_SPEED_MPM = OBSTACLE_SPEED_KMPH * 1000.0 / 60.0
+OBSTACLE_SPEED_MPS = OBSTACLE_SPEED_MPM / 60.0
+OBSTACLE_SPEED_PPS = OBSTACLE_SPEED_MPS * PIXEL_PER_METER  # = 1 픽셀/프레임
 
 class Obstacle:
     death_count = 0
@@ -17,18 +24,46 @@ class Obstacle:
                 'y': y,
                 'image_direction': image_direction,
                 'move_direction': move_direction,
-                'move_speed': move_speed
+                'move_speed': OBSTACLE_SPEED_PPS * move_speed
             })
 
-    def draw(self):
+    def get_triangle_points(self, obstacle):
+        if obstacle['image_direction'] == 0:  # 위쪽 삼각형
+            return [(obstacle['x'] - 10, obstacle['y'] - 15),  # 왼쪽 아래
+                   (obstacle['x'], obstacle['y'] + 10),       # 꼭대기
+                   (obstacle['x'] + 10, obstacle['y'] - 15)]  # 오른쪽 아래
+        elif obstacle['image_direction'] == 2:  # 아래쪽 삼각형
+            return [(obstacle['x'] - 10, obstacle['y'] + 10),  # 왼쪽 위
+                   (obstacle['x'], obstacle['y'] - 15),       # 아래 꼭지점
+                   (obstacle['x'] + 10, obstacle['y'] + 10)]  # 오른쪽 위
+        return None
+
+    def get_bb(self):
+        bbs = []
         for obstacle in self.obstacles:
+            if obstacle['image_direction'] == 0 or obstacle['image_direction'] == 2:
+                bb = (obstacle['x'] - 10,
+                      obstacle['y'] - 15,
+                      obstacle['x'] + 10,
+                      obstacle['y'] + 10)
+            else:
+                bb = (obstacle['x'] - 15,
+                      obstacle['y'] - 15,
+                      obstacle['x'] + 15,
+                      obstacle['y'] + 15)
+            bbs.append(bb)
+        return bbs
+
+    def draw(self):
+        for obstacle, bb in zip(self.obstacles, self.get_bb()):
             angle = self.angles[obstacle['image_direction']]
             self.image.clip_composite_draw(0, 0, 100, 120,
-                                           angle,
-                                           '',
-                                           obstacle['x'],
-                                           obstacle['y'],
-                                           25, 30)
+                                        angle,
+                                        '',
+                                        obstacle['x'],
+                                        obstacle['y'],
+                                        25, 30)
+            draw_rectangle(*bb)  # 충돌 박스 표시
 
     def update(self):
         obstacles_to_remove = []
@@ -51,19 +86,12 @@ class Obstacle:
                 self.obstacles.remove(obstacle)
 
     def check_collision(self, boy):
-        for obstacle in self.obstacles:
-            boy_left, boy_bottom, boy_right, boy_top = boy.get_bb()
+        if boy.is_invincible:
+            return False
 
-            if obstacle['image_direction'] == 0 or obstacle['image_direction'] == 2:
-                obstacle_left = obstacle['x'] + 15
-                obstacle_right = obstacle['x'] + 17
-                obstacle_bottom = obstacle['y']
-                obstacle_top = obstacle['y'] + 20
-            else:
-                obstacle_left = obstacle['x']
-                obstacle_right = obstacle['x'] + 25
-                obstacle_bottom = obstacle['y'] + 10
-                obstacle_top = obstacle['y'] + 20
+        for obstacle, bb in zip(self.obstacles, self.get_bb()):
+            boy_left, boy_bottom, boy_right, boy_top = boy.get_bb()
+            obstacle_left, obstacle_bottom, obstacle_right, obstacle_top = bb
 
             if boy_right < obstacle_left: continue
             if boy_left > obstacle_right: continue
@@ -80,14 +108,13 @@ class Obstacle:
             elif boy_bottom <= obstacle_top and boy_top > obstacle_top:
                 collision_direction = "위쪽"
 
-            Obstacle.death_count += 1
-
             print(
                 f"충돌 감지: 소년({boy_left}, {boy_bottom}, {boy_right}, {boy_top}), "
                 f"장애물({obstacle_left}, {obstacle_bottom}, {obstacle_right}, {obstacle_top}), "
                 f"방향: {obstacle['image_direction']}, 충돌 방향: {collision_direction}"
             )
 
+            Obstacle.death_count += 1
             self.handle_collision(boy)
             return True
 

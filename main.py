@@ -71,9 +71,9 @@ class GameWorld:
 def main():
     open_canvas(1024, 768)
     game_world = GameWorld()
-    game_world.change_stage(1)
+    game_world.change_stage(4)
     game_world.boy.x = 15
-    game_world.boy.y = 200
+    game_world.boy.y = 70
 
     while game_world.running:
         game_world.handle_events()

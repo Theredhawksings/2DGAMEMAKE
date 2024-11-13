@@ -34,15 +34,15 @@ class Stage5:
             for y in range(95, 577, 120):
                 self.cyclic_obstacles.append(
                     CyclicObstacle(x, y, 0, 4, 0,
-                                   random.uniform(1.0, 3.0),
-                                   random.uniform(1.0, 3.0))
+                                   random.uniform(1.0, 2.0),
+                                   random.uniform(4.0, 5.0))
                 )
         for x in range(180, 840, 120):
             for y in range(155, 697, 120):
                 self.cyclic_obstacles.append(
                     CyclicObstacle(x, y, 0, 4, 0,
-                                   random.uniform(1.0, 3.0),
-                                   random.uniform(1.0, 3.0))
+                                   random.uniform(1.0, 2.0),
+                                   random.uniform(4.0, 5.0))
                 )
 
         self.time = time.time()

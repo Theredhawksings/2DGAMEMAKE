@@ -27,25 +27,15 @@ class Obstacle:
                 'move_speed': OBSTACLE_SPEED_PPS * move_speed
             })
 
-    def get_triangle_points(self, obstacle):
-        if obstacle['image_direction'] == 0:  # 위쪽 삼각형
-            return [(obstacle['x'] - 10, obstacle['y'] - 15),  # 왼쪽 아래
-                   (obstacle['x'], obstacle['y'] + 10),       # 꼭대기
-                   (obstacle['x'] + 10, obstacle['y'] - 15)]  # 오른쪽 아래
-        elif obstacle['image_direction'] == 2:  # 아래쪽 삼각형
-            return [(obstacle['x'] - 10, obstacle['y'] + 10),  # 왼쪽 위
-                   (obstacle['x'], obstacle['y'] - 15),       # 아래 꼭지점
-                   (obstacle['x'] + 10, obstacle['y'] + 10)]  # 오른쪽 위
-        return None
 
     def get_bb(self):
         bbs = []
         for obstacle in self.obstacles:
             if obstacle['image_direction'] == 0 or obstacle['image_direction'] == 2:
-                bb = (obstacle['x'] - 10,
-                      obstacle['y'] - 15,
-                      obstacle['x'] + 10,
-                      obstacle['y'] + 10)
+                bb = (obstacle['x'] - 8,
+                      obstacle['y'] - 13,
+                      obstacle['x'] + 8,
+                      obstacle['y'] + 8)
             else:
                 bb = (obstacle['x'] - 15,
                       obstacle['y'] - 15,

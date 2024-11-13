@@ -72,8 +72,6 @@ class Stage4:
             'obstacle': {'x': 1030, 'y': 580, 'image_direction': 1, 'move_direction': 2, 'move_speed': 30}},
            {'trigger': {'x_min': 180, 'x_max': 210, 'y_min': 600, 'y_max': None},
             'obstacle': {'x': 1030, 'y': 580, 'image_direction': 1, 'move_direction': 2, 'move_speed': 30}},
-           {'trigger': {'x_min': 140, 'x_max': 170, 'y_min': 660, 'y_max': None},
-            'obstacle': {'x': 150, 'y': 0, 'image_direction': 0, 'move_direction': 4, 'move_speed': 30}},
            {'trigger': {'x_min': 180, 'x_max': 800, 'y_min': 720, 'y_max': None},
             'obstacle': {'x': 20, 'y': 740, 'image_direction': 3, 'move_direction': 1, 'move_speed': 5}}
        ]

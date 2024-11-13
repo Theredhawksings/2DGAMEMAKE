@@ -80,7 +80,7 @@ class Stage2:
             self.obstacle.obstacles.append(new_obstacle)
             self.last_obstacle_time = current_time
 
-        if self.boy.x < 1 and self.boy.y == 700:
+        if self.boy.x == 0 and self.boy.y == 690:
             self.boy.x = 1020
             self.boy.y = 80
             self.stage_change_call(1)

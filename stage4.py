@@ -122,7 +122,7 @@ class Stage4:
             self.stage_change_call(3)
             return
 
-        if self.boy.x >= 1024 and self.boy.y == 720:
+        if self.boy.x >= 1024 and self.boy.y == 710:
             self.stage_change_call(5)
             self.boy.x = 5
             self.boy.y = 730

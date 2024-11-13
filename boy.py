@@ -14,7 +14,7 @@ RUN_SPEED_PPS = RUN_SPEED_MPS * PIXEL_PER_METER
 JUMP_SPEED_MPS = 0.36
 JUMP_SPEED_PPS = JUMP_SPEED_MPS * PIXEL_PER_METER
 
-GRAVITY_ACCEL = 0.03
+GRAVITY_ACCEL = 0.032
 GRAVITY_PPS = GRAVITY_ACCEL * PIXEL_PER_METER
 
 TIME_PER_ACTION = 0.5
@@ -103,6 +103,8 @@ class Boy:
        self.right = True
        self.is_jumping = False
        self.gravity = -GRAVITY_PPS
+       self.gravity_increment = GRAVITY_PPS  # 중력 증가량
+       self.max_gravity = GRAVITY_PPS * 12  # 최대 중력값 (12단계)
        self.jump_speed = 0
        self.key_states = {'left': False, 'right': False}
        self.apply_gravity = True
@@ -110,6 +112,7 @@ class Boy:
        self.savepointY = 0
        self.previous_stage = None
        self.is_invincible = False
+
        self.time_since_last_frame = 0
        self.current_stage = None
        self.event_queue = []
@@ -136,7 +139,7 @@ class Boy:
        if self.apply_gravity:
            if self.is_jumping:
                self.y += self.jump_speed
-               self.jump_speed += self.gravity
+               self.jump_speed += self.gravity  # 현재 중력값 적용
 
                if self.y > 768:  # 화면 위쪽 경계
                    self.y = 768
@@ -146,25 +149,29 @@ class Boy:
                if self.jump_speed < 0:
                    self.is_jumping = False
                    self.falling = True
+                   self.gravity = -GRAVITY_PPS  # 낙하 시작할 때 중력 초기화
 
            # 낙하 중일 때
            if self.falling:
                self.y += self.gravity
-               self.gravity = max(self.gravity - 1, -10)  # 중력 최대값을 -10으로 제한
+               # 중력을 GRAVITY_PPS 단위로 증가
+               if abs(self.gravity) < self.max_gravity:
+                   self.gravity -= self.gravity_increment
 
                # 착지 체크
                if self.check_grass_collision(grass.get_positions()):
                    self.falling = False
-                   self.gravity = -GRAVITY_PPS
+                   self.gravity = -GRAVITY_PPS  # 착지 시 중력 초기화
 
-           print(f" x={self.x:.2f}, y={self.y:.2f}")
+           print(f" x={self.x:.2f}, y={self.y:.2f}" )
 
    def update(self, grass):
        self.state_machine.update(grass)
 
        if self.apply_gravity and not self.is_jumping and not self.check_grass_collision(grass.get_positions()):
            self.falling = True
-           self.gravity = max(self.gravity - 1, -10)
+           if abs(self.gravity) < self.max_gravity:
+               self.gravity -= self.gravity_increment
 
        # 화면 경계 체크
        if self.x < 0:

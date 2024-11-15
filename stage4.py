@@ -2,6 +2,7 @@ from pico2d import *
 from grass import Grass
 from ground import Ground
 from obstacle import Obstacle
+import collision_utils
 import time
 from font import Font
 
@@ -75,11 +76,14 @@ class Stage4:
        ]
 
        self.time = time.time()
-       self.boy.update_stage_info(4)
+       self.boy.update_stage_info(2)
+
        self.obstacle_created = [False] * len(self.obstacle_definitions)
+       collision_utils.add_collision_pair('boy:obstacle', self.boy, self.obstacle)
 
        self.boy.savepointX = 20
        self.boy.savepointY = 50
+       collision_utils.handle_collisions()
 
    def handle_event(self, event):
        self.boy.handle_event(event)
@@ -122,25 +126,13 @@ class Stage4:
            self.boy.x = 5
            self.boy.y = 730
 
-       for obstacle in self.obstacle.obstacles:
-           if self.obstacle.check_collision(self.boy):
-               self.boy.x = self.boy.savepointX
-               self.boy.y = self.boy.savepointY
-
-               self.obstacle_created = [False] * len(self.obstacle_definitions)
-               self.obstacle.obstacles = self.initial_obstacles.copy()
-               break
-
        self.check_and_create_obstacles()
 
+       collision_utils.handle_collisions()
+
        if self.boy.y < -10:
-           self.boy.x = 30
-           self.boy.y = 70
-           self.boy.savepointX = 30
-           self.boy.savepointY = 70
-           self.boy.falling = False
-           self.boy.is_jumping = False
-           self.boy.jump_speed = 0
+           self.boy.x = self.boy.savepointX
+           self.boy.y = self.boy.savepointY
            self.obstacle_created = [False] * len(self.obstacle_definitions)
            self.obstacle.obstacles = self.initial_obstacles.copy()
 

@@ -39,5 +39,6 @@ def handle_collisions():
                    a.handle_collision(group, b)
                    b.handle_collision(group, a)
 
+
 def clear_collision_pairs():
    collision_pairs.clear()

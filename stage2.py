@@ -1,4 +1,6 @@
 from pico2d import *
+
+import collision_utils
 from grass import Grass
 from ground import Ground
 from obstacle import Obstacle
@@ -53,10 +55,14 @@ class Stage2:
             (925, 330, 0, 0, 0),
         ]
 
+        collision_utils.clear_collision_pairs()
+
         self.obstacle = Obstacle(obstacle_data)
         self.stage_change_call = stage_change_call
         self.boy.update_stage_info(2)
         self.font = Font(30)
+
+        collision_utils.add_collision_pair('boy:obstacle', self.boy, self.obstacle)
 
     def handle_event(self, event):
         self.boy.handle_event(event)
@@ -89,7 +95,7 @@ class Stage2:
 
         self.boy.savepointX = 67
         self.boy.savepointY = 700
-        self.obstacle.check_collision(self.boy)
+        collision_utils.handle_collisions()
 
     def draw(self):
         self.ground.draw(512, 384)

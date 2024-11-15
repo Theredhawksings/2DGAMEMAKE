@@ -1,58 +1,43 @@
+# collision_utils.py
 
-death_count = 0
+# 충돌 처리를 위한 전역 변수
+collision_pairs = {}
 
-def check_collision(boy, obstacle_x, obstacle_y, angle_index):
-    global death_count
-    boy_left, boy_bottom, boy_right, boy_top = boy.get_bb()
+def add_collision_pair(group, a, b):
+    if group not in collision_pairs:
+        collision_pairs[group] = [[], []]
+    if a:
+        collision_pairs[group][0].append(a)
+    if b:
+        collision_pairs[group][1].append(b)
 
-    if angle_index == 0 or angle_index == 2:  # 위쪽 또는 아래쪽
-        obstacle_left = obstacle_x + 15
-        obstacle_right = obstacle_x + 17
-        obstacle_bottom = obstacle_y
-        obstacle_top = obstacle_y + 20
-
+def collide(a, b):
+    if isinstance(b.get_bb(), list):
+        la, ba, ra, ta = a.get_bb()
+        for bb in b.get_bb():
+            lb, bb_b, rb, tb = bb
+            if not (la > rb or ra < lb or ta < bb_b or ba > tb):
+                return True
+        return False
+    # 단일 충돌 박스인 경우
     else:
-        obstacle_left = obstacle_x
-        obstacle_right = obstacle_x + 25
-        obstacle_bottom = obstacle_y + 10
-        obstacle_top = obstacle_y + 20
+        la, ba, ra, ta = a.get_bb()
+        lb, bb, rb, tb = b.get_bb()
 
-    if boy_right < obstacle_left: return False
-    if boy_left > obstacle_right: return False
-    if boy_top < obstacle_bottom: return False
-    if boy_bottom > obstacle_top: return False
+        if la > rb: return False
+        if ra < lb: return False
+        if ta < bb: return False
+        if ba > tb: return False
 
-    collision_direction = ""
+        return True
 
-    if boy_right >= obstacle_left and boy_left < obstacle_left:
-        collision_direction = "왼쪽"
-    elif boy_left <= obstacle_right and boy_right > obstacle_right:
-        collision_direction = "오른쪽"
-    elif boy_top >= obstacle_bottom and boy_bottom < obstacle_bottom:
-        collision_direction = "아래쪽"
-    elif boy_bottom <= obstacle_top and boy_top > obstacle_top:
-        collision_direction = "위쪽"
+def handle_collisions():
+    for group, pairs in collision_pairs.items():
+        for a in pairs[0]:
+            for b in pairs[1]:
+                if collide(a, b):
+                    a.handle_collision(group, b)
+                    b.handle_collision(group, a)
 
-    death_count += 1
-
-    print(
-        f"충돌 감지: 소년({boy_left}, {boy_bottom}, {boy_right}, {boy_top}), "
-        f"장애물({obstacle_left}, {obstacle_bottom}, {obstacle_right}, {obstacle_top}), "
-        f"방향: {angle_index}, 충돌 방향: {collision_direction}"
-    )
-
-    return True
-
-def handle_collision(boy):
-    boy.x = boy.savepointX
-    boy.y = boy.savepointY
-    boy.is_jumping = False
-    boy.jump_speed = 0
-    boy.frame = 0
-    boy.falling = False
-    print(f'충돌 발생! 세이브포인트로 이동: x={boy.x}, y={boy.y}')
-
-def get_death_count():
-    global death_count
-    return death_count
-''''''
+def clear_collision_pairs():
+    collision_pairs.clear()

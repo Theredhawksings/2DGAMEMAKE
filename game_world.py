@@ -1,5 +1,5 @@
+# game_world.py
 import os
-
 import pygame
 from pico2d import *
 from sdl2 import SDL_QUIT, SDL_KEYDOWN, SDLK_ESCAPE
@@ -11,7 +11,6 @@ import stage4
 import stage5
 from boy import Boy
 
-
 class GameWorld:
     def __init__(self):
         self.current_stage = None
@@ -19,6 +18,12 @@ class GameWorld:
         self.last_stage = 1
         self.boy = Boy()
         self.current_music = None
+        self.state = 'LOGO'
+        self.logo_time = 0.0
+        self.logo_image = load_image(os.path.join('screen', '3570144207.png'))
+        pygame.mixer.init()
+        pygame.mixer.music.load(os.path.join('bgm', 'Eagle_sing.mp3'))
+        pygame.mixer.music.play(-1)
 
     def load_music(self, stage_number):
         if stage_number in [1, 2, 3]:
@@ -38,8 +43,6 @@ class GameWorld:
             self.current_music = music_path
 
     def change_stage(self, stage_number):
-        self.load_music(stage_number)  # 음악 로드
-
         if stage_number == 1:
             self.current_stage = stage1.Stage1(self.change_stage, self.boy)
         elif stage_number == 2:
@@ -59,12 +62,25 @@ class GameWorld:
             if event.type == SDL_QUIT or (event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE):
                 self.running = False
             else:
-                self.current_stage.handle_event(event)
+                if self.state == 'PLAY':
+                    self.current_stage.handle_event(event)
 
     def update(self):
-        self.current_stage.update()
+        if self.state == 'LOGO':
+            self.logo_time += 0.01
+            if self.logo_time >= 2.0:
+                self.state = 'PLAY'
+                self.load_music(self.last_stage)
+                self.change_stage(1)
+                self.boy.x = 15
+                self.boy.y = 100
+        elif self.state == 'PLAY':
+            self.current_stage.update()
 
     def draw(self):
         clear_canvas()
-        self.current_stage.draw()
+        if self.state == 'LOGO':
+            self.logo_image.draw(512, 384)
+        elif self.state == 'PLAY':
+            self.current_stage.draw()
         update_canvas()

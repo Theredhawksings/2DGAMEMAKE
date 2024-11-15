@@ -18,8 +18,8 @@ def main():
 
 
     #game_world.state = 'PLAY'
-    #game_world.change_stage(1)
-    #game_world.load_music(1)
+    #game_world.change_stage(4)
+    #game_world.load_music(4)
     #game_world.boy.x = 15
     #game_world.boy.y = 100
 

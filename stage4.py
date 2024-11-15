@@ -58,7 +58,7 @@ class Stage4:
        self.obstacle_definitions = [
            {'trigger': {'x_min': 110, 'x_max': 130, 'y_min': None, 'y_max': None},
             'obstacle': {'x': 160, 'y': -15, 'image_direction': 0, 'move_direction': 4, 'move_speed': 15}},
-           {'trigger': {'x_min': 350, 'x_max': 380, 'y_min': 200, 'y_max': None},
+           {'trigger': {'x_min': 330, 'x_max': 350, 'y_min': 190, 'y_max': None},
             'obstacle': {'x': -30, 'y': 220, 'image_direction': 3, 'move_direction': 1, 'move_speed': 20}},
            {'trigger': {'x_min': 490, 'x_max': 510, 'y_min': None, 'y_max': None},
             'obstacle': {'x': 530, 'y': 0, 'image_direction': 0, 'move_direction': 4, 'move_speed': 30}},

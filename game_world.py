@@ -84,3 +84,4 @@ class GameWorld:
         elif self.state == 'PLAY':
             self.current_stage.draw()
         update_canvas()
+

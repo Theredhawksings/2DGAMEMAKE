@@ -118,7 +118,6 @@ class Boy:
         self.current_stage = None
         self.event_queue = []
         self.falling = False
-        self.stage = None
 
         self.state_machine = StateMachine(self)
         self.state_machine.set_transitions({
@@ -143,7 +142,7 @@ class Boy:
                 self.y += self.jump_speed
                 self.jump_speed += self.gravity
 
-                if self.y > 768:  # 화면 위쪽 경계
+                if self.y > 768: 
                     self.y = 768
                     self.jump_speed = 0
 
@@ -201,10 +200,11 @@ class Boy:
                     self.gravity = -GRAVITY_PPS
             elif event.key == ord('h'):
                 self.is_invincible = not self.is_invincible
-
             elif event.key == ord('e'):
                 bullet = Bullet(self.x, self.y-5, self.right)
                 self.stage.bullets.append(bullet)
+
+
 
         elif event.type == SDL_KEYUP:
             if event.key == SDLK_LEFT:

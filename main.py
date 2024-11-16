@@ -18,16 +18,16 @@ def main():
 
 
     game_world.state = 'PLAY'
-    game_world.change_stage(4)
-    game_world.load_music(4)
+    game_world.change_stage(3)
+    game_world.load_music(3)
     game_world.boy.x = 20
     game_world.boy.y = 100
 
     while game_world.running:
         game_world.handle_events()
         game_world.update()
-        game_world.draw()s
-
+        game_world.draw()
+        delay(0.01)
     close_canvas()
 
 

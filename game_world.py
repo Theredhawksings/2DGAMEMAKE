@@ -29,10 +29,8 @@ class GameWorld:
    def load_music(self, stage_number):
        if stage_number in [1, 2, 3]:
            music_path = os.path.join('bgm', 'Monster.mp3')
-           #music_path = os.path.join('bgm', '1,000,000 Monsters Attack.mp3')
        elif stage_number in [4, 5]:
            music_path = os.path.join('bgm', 'sleepwood.mp3')
-           #music_path = os.path.join('bgm', '1,000,000 Monsters Attack.mp3')
        else:
            return
 
@@ -42,6 +40,7 @@ class GameWorld:
            pygame.mixer.music.load(music_path)
            pygame.mixer.music.play(-1)
            self.current_music = music_path
+
 
    def change_stage(self, stage_number):
        if stage_number == 1:
@@ -56,6 +55,7 @@ class GameWorld:
            self.current_stage = stage5.Stage5(self.change_stage, self.boy)
 
        self.last_stage = stage_number
+       self.load_music(stage_number)
 
    def handle_events(self):
        events = get_events()
@@ -77,6 +77,9 @@ class GameWorld:
            self.logo_time += 0.01
            if self.logo_time >= 2.0:
                self.state = 'INTRO'
+               pygame.mixer.music.stop()
+               pygame.mixer.music.load(os.path.join('bgm', "102. Lucas' Theme.mp3"))
+               pygame.mixer.music.play(-1)
        elif self.state == 'PLAY':
            self.current_stage.update()
 

@@ -255,3 +255,4 @@ class Boy:
         self.previous_stage = self.current_stage
         self.current_stage = stage_number
 
+

@@ -164,7 +164,6 @@ class Boy:
             print(f" x={self.x:.2f}, y={self.y:.2f}, gravity={self.gravity:.2f}")
 
     def reset_jump_state(self):
-        """점프/낙하 상태 초기화"""
         self.falling = False
         self.is_jumping = False
         self.jump_speed = 0
@@ -225,7 +224,7 @@ class Boy:
         for grass_x, grass_y, width in grass_positions:
             if (grass_x - width < self.x < grass_x + width and
                     self.y <= grass_y + 60 and self.y > grass_y + 30):
-                self.y = grass_y + 40
+                self.y = grass_y + 45
                 self.is_jumping = False
                 self.jump_speed = 0
                 self.gravity = -GRAVITY_PPS
@@ -255,3 +254,4 @@ class Boy:
     def update_stage_info(self, stage_number):
         self.previous_stage = self.current_stage
         self.current_stage = stage_number
+

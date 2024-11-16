@@ -75,10 +75,10 @@ class Stage5:
             self.boy.x = 1000
             self.boy.y = 720
 
-        if self.boy.x > 1024 :
+        if self.boy.x > 1024:
             self.stage_change_call(6)
-            self.boy.x = 1000
-            self.boy.y = 720
+            self.boy.x = 1
+            self.boy.y = 45
 
         collision_utils.handle_collisions()
 

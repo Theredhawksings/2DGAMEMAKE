@@ -18,10 +18,10 @@ def main():
 
 
     game_world.state = 'PLAY'
-    game_world.change_stage(5)
-    game_world.load_music(5)
-    game_world.boy.x = 1000
-    game_world.boy.y = 200
+    game_world.change_stage(6)
+    game_world.load_music(6)
+    game_world.boy.x = 1
+    game_world.boy.y = 115
 
     while game_world.running:
         game_world.handle_events()

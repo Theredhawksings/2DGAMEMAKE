@@ -70,7 +70,7 @@ class Stage5:
         for cyclic_obstacle in self.cyclic_obstacles:
             cyclic_obstacle.update()
 
-        if self.boy.x < 1 and self.boy.y == 730:
+        if self.boy.x < 1 and self.boy.y == 725:
             self.stage_change_call(4)
             self.boy.x = 1000
             self.boy.y = 720

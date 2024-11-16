@@ -1,5 +1,7 @@
 from pico2d import *
 import os
+
+from bullet import Bullet
 from state_machine import StateMachine, RIGHT_DOWN, LEFT_DOWN, RIGHT_UP, LEFT_UP, SPACE
 from state_machine import right_down, left_down, right_up, left_up, space_down
 import time
@@ -116,6 +118,7 @@ class Boy:
         self.current_stage = None
         self.event_queue = []
         self.falling = False
+        self.stage = None
 
         self.state_machine = StateMachine(self)
         self.state_machine.set_transitions({
@@ -182,11 +185,6 @@ class Boy:
             if abs(self.gravity) < self.max_gravity:
                 self.gravity -= self.gravity_increment
 
-        # 화면 경계 체크
-        if self.x < 0:
-            self.x = 0
-        elif self.x > 1024:
-            self.x = 1024
 
     def handle_event(self, event):
         if event.type == SDL_KEYDOWN:
@@ -204,6 +202,10 @@ class Boy:
             elif event.key == ord('h'):
                 self.is_invincible = not self.is_invincible
 
+            elif event.key == ord('e'):
+                bullet = Bullet(self.x, self.y-5, self.right)
+                self.stage.bullets.append(bullet)
+
         elif event.type == SDL_KEYUP:
             if event.key == SDLK_LEFT:
                 self.key_states['left'] = False
@@ -213,10 +215,7 @@ class Boy:
                 self.key_states['right'] = False
                 self.frame = 0
                 self.add_event(('INPUT', RIGHT_UP))
-                
-        elif event.type == SDL_MOUSEBUTTONDOWN and event.button == SDL_BUTTON_LEFT:
-            bullet = Bullet(self.x, self.y, self.right)
-            current_stage.bullets.append(bullet)  # 현재 스테이지에 총알 추가
+
 
     def check_grass_collision(self, grass_positions):
         collided = False

@@ -9,6 +9,8 @@ import stage2
 import stage3
 import stage4
 import stage5
+import stage6
+
 from boy import Boy
 
 class GameWorld:
@@ -29,7 +31,7 @@ class GameWorld:
    def load_music(self, stage_number):
        if stage_number in [1, 2, 3]:
            music_path = os.path.join('bgm', 'Monster.mp3')
-       elif stage_number in [4, 5]:
+       elif stage_number in [4, 5, 6]:
            music_path = os.path.join('bgm', 'sleepwood.mp3')
        else:
            return
@@ -41,18 +43,23 @@ class GameWorld:
            pygame.mixer.music.play(-1)
            self.current_music = music_path
 
-
    def change_stage(self, stage_number):
-       if stage_number == 1:
-           self.current_stage = stage1.Stage1(self.change_stage, self.boy)
-       elif stage_number == 2:
-           self.current_stage = stage2.Stage2(self.change_stage, self.boy)
-       elif stage_number == 3:
-           self.current_stage = stage3.Stage3(self.change_stage, self.boy)
-       elif stage_number == 4:
-           self.current_stage = stage4.Stage4(self.change_stage, self.boy)
-       elif stage_number == 5:
-           self.current_stage = stage5.Stage5(self.change_stage, self.boy)
+       stage_classes = [
+           None,
+           stage1.Stage1,
+           stage2.Stage2,
+           stage3.Stage3,
+           stage4.Stage4,
+           stage5.Stage5,
+           stage6.Stage6,
+           #stage7.Stage7
+       ]
+
+       if 1 <= stage_number <= 7:
+           stage_class = stage_classes[stage_number]
+           self.current_stage = stage_class(self.change_stage, self.boy)
+
+
 
        self.last_stage = stage_number
        self.load_music(stage_number)

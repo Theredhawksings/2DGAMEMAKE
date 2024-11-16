@@ -10,6 +10,8 @@ import time
 class Stage3:
    def __init__(self, stage_change_call, boy):
        self.boy = boy
+       self.boy.stage = self
+
        self.ground = Ground(current_stage=3)
        self.stage_change_call = stage_change_call
 
@@ -31,6 +33,8 @@ class Stage3:
        collision_utils.clear_collision_pairs()
        collision_utils.add_collision_pair('boy:obstacle', self.boy, self.obstacle)
 
+       self.bullets = []
+
    def handle_event(self, event):
        self.boy.handle_event(event)
 
@@ -38,25 +42,23 @@ class Stage3:
        self.boy.update(self.grass)
        self.obstacle.update()
 
-       if self.background_y < 400:
+       if self.background_y < 400 and self.boy.apply_gravity == False:
            self.boy.y -= 2
 
        if self.background_y <= 384:
            self.background_y = 384
 
-       if self.boy.y < 40:
-           self.boy.y = 40
+       if self.boy.y < 50:
+           self.boy.y = 50
            self.boy.apply_gravity = True
-           self.boy.gravity = -1
            self.boy.falling = False
            self.boy.is_jumping = False
-           self.jump_speed = 0
 
        if self.boy.x < 1:
            self.boy.x = 1
            self.boy.y = 40
 
-       elif self.boy.y == 50 and self.boy.x > 1024:
+       elif self.boy.y == 45 and self.boy.x > 1024:
            self.boy.x = 1024
 
        current_time = time.time()
@@ -86,6 +88,8 @@ class Stage3:
            self.boy.y = 45
            self.stage_change_call(4)
 
+       for bullet in self.bullets:
+            bullet.update()
 
    def draw(self):
        self.ground.fallingdraw(512, 384, self.background_y)
@@ -96,3 +100,6 @@ class Stage3:
 
        self.boy.draw()
        self.obstacle.draw()
+
+       for bullet in self.bullets:
+           bullet.draw()

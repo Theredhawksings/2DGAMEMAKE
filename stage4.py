@@ -9,9 +9,10 @@ from font import Font
 class Stage4:
    def __init__(self, stage_change_call, boy):
        self.boy = boy
+       self.boy.stage = self
+
        self.ground = Ground(current_stage=4)
        self.stage_change_call = stage_change_call
-       self.boy.apply_gravity = True
        self.font = Font(30)
 
        grass_positions = [
@@ -81,7 +82,11 @@ class Stage4:
 
        self.boy.savepointX = 20
        self.boy.savepointY = 50
+
        collision_utils.handle_collisions()
+
+       self.bullets = []
+
 
    def handle_event(self, event):
        self.boy.handle_event(event)
@@ -95,6 +100,7 @@ class Stage4:
            x_condition = (self.boy.x >= trigger['x_min'] and self.boy.x < trigger['x_max'])
 
            y_condition = True
+
            if trigger['y_min'] is not None:
                y_condition = self.boy.y >= trigger['y_min']
            if trigger['y_max'] is not None:
@@ -113,9 +119,6 @@ class Stage4:
            self.boy.current_stage = 3
            self.boy.x = 1020
            self.boy.y = 50
-           self.boy.falling = False
-           self.boy.is_jumping = False
-           self.boy.apply_gravity = True
            self.stage_change_call(3)
            return
 
@@ -128,21 +131,24 @@ class Stage4:
 
        if collision_utils.handle_collisions():
            self.obstacle_created = [False] * len(self.obstacle_definitions)
-           self.obstacle_created = [False] * len(self.obstacle_definitions)
            self.obstacle.obstacles = self.initial_obstacles.copy()
-
-
 
        if self.boy.y < -10:
            self.boy.x = self.boy.savepointX
            self.boy.y = self.boy.savepointY
            self.obstacle_created = [False] * len(self.obstacle_definitions)
 
-
+       for bullet in self.bullets:
+           bullet.update()
 
    def draw(self):
        self.ground.draw(512, 384)
-       self.font.draw(100, 300, "날아오는 장애물들을 피하세요", (255, 255, 255))
+
        self.grass.draw()
        self.boy.draw()
        self.obstacle.draw()
+
+       self.font.draw(100, 300, "날아오는 장애물들을 피하세요", (255, 255, 255))
+
+       for bullet in self.bullets:
+           bullet.draw()

@@ -5,6 +5,7 @@ from grass import Grass
 from ground import Ground
 from obstacle import Obstacle
 from font import Font
+from bullet import Bullet
 import time
 import random
 
@@ -12,6 +13,7 @@ import random
 class Stage2:
     def __init__(self, stage_change_call, boy):
         self.boy = boy
+        self.boy.stage = self
         grass_positions = [(400, 650, 512), (800, 100, 512), (400, 330, 512), (800, 500, 512)]
         self.grass = Grass(grass_positions)
         self.ground = Ground(current_stage=2)
@@ -64,6 +66,8 @@ class Stage2:
 
         collision_utils.add_collision_pair('boy:obstacle', self.boy, self.obstacle)
 
+        self.bullets = []
+
     def handle_event(self, event):
         self.boy.handle_event(event)
 
@@ -97,9 +101,17 @@ class Stage2:
         self.boy.savepointY = 700
         collision_utils.handle_collisions()
 
+        for bullet in self.bullets:
+            bullet.update()
+
     def draw(self):
         self.ground.draw(512, 384)
         self.grass.draw()
         self.boy.draw()
         self.obstacle.draw()
+
         self.font.draw(30, 750, f"죽은 횟수: {Obstacle.get_death_count()}", (0, 0, 0))
+
+        for bullet in self.bullets:
+            bullet.draw()
+

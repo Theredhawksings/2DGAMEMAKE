@@ -4,12 +4,14 @@ from grass import Grass
 from ground import Ground
 from obstacle import Obstacle
 from font import Font
+from bullet import Bullet
 import collision_utils
 
 
 class Stage1:
     def __init__(self, stage_change_call, boy):
         self.boy = boy
+        self.boy.stage = self
         grass_positions = [(512, 30, 512)]
         self.grass = Grass(grass_positions)
         self.ground = Ground(current_stage=1)
@@ -32,6 +34,8 @@ class Stage1:
 
         collision_utils.add_collision_pair('boy:obstacle', self.boy, self.obstacle)
 
+        self.bullets = []
+
     def handle_event(self, event):
         self.boy.handle_event(event)
 
@@ -51,6 +55,9 @@ class Stage1:
 
         collision_utils.handle_collisions()
 
+        for bullet in self.bullets:
+            bullet.update()
+
     def draw(self):
         self.ground.draw(512, 384)
         self.grass.draw()
@@ -60,3 +67,7 @@ class Stage1:
         self.font.draw(200, 490, "조작법", (0, 0, 0))
         self.font.draw(200, 450, "조작: ← → 이동, Space 점프", (0, 0, 0))
         self.font.draw(200, 410, "장애물에 닿이면 시작했던 곳으로 돌아가니 잘 하시길 바랍니다", (0, 0, 0))
+
+        for bullet in self.bullets:
+            bullet.draw()
+

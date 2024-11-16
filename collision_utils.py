@@ -38,6 +38,7 @@ def handle_collisions():
                if collide(a, b):
                    a.handle_collision(group, b)
                    b.handle_collision(group, a)
+                   return True
 
 
 def clear_collision_pairs():

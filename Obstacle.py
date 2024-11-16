@@ -75,10 +75,6 @@ class Obstacle:
     def handle_collision(self, group, other):
         if group == 'boy:obstacle':
             Obstacle.death_count += 1
-            current_stage = other.current_stage
-            if hasattr(current_stage, 'obstacle_created') and hasattr(current_stage, 'initial_obstacles'):
-                current_stage.obstacle_created = [False] * len(current_stage.obstacle_definitions)
-
 
     @staticmethod
     def get_death_count():

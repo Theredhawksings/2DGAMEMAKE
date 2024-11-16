@@ -74,7 +74,7 @@ class Stage4:
        ]
 
        self.time = time.time()
-       self.boy.update_stage_info(2)
+       self.boy.update_stage_info(4)
 
        self.obstacle_created = [False] * len(self.obstacle_definitions)
        collision_utils.add_collision_pair('boy:obstacle', self.boy, self.obstacle)
@@ -108,7 +108,7 @@ class Stage4:
        self.boy.update(self.grass)
        self.obstacle.update()
 
-       if self.boy.x < 2 and self.boy.y == 50:
+       if self.boy.x < 2 and self.boy.y == 45:
            self.boy.previous_stage = 4
            self.boy.current_stage = 3
            self.boy.x = 1020
@@ -126,13 +126,19 @@ class Stage4:
 
        self.check_and_create_obstacles()
 
-       collision_utils.handle_collisions()
+       if collision_utils.handle_collisions():
+           self.obstacle_created = [False] * len(self.obstacle_definitions)
+           self.obstacle_created = [False] * len(self.obstacle_definitions)
+           self.obstacle.obstacles = self.initial_obstacles.copy()
+
+
 
        if self.boy.y < -10:
            self.boy.x = self.boy.savepointX
            self.boy.y = self.boy.savepointY
            self.obstacle_created = [False] * len(self.obstacle_definitions)
-           self.obstacle.obstacles = self.initial_obstacles.copy()
+
+
 
    def draw(self):
        self.ground.draw(512, 384)

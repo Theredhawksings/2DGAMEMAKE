@@ -1,11 +1,12 @@
+# stage5.py
 from pico2d import *
 from grass import Grass
 from ground import Ground
 from obstacle import Obstacle
 from cyclicobstacle import CyclicObstacle
+import collision_utils
 import random
 import time
-
 
 class Stage5:
     def __init__(self, stage_change_call, boy):
@@ -28,7 +29,6 @@ class Stage5:
         )
 
         self.obstacle = Obstacle([])
-
         self.cyclic_obstacles = []
         for x in range(240, 960, 120):
             for y in range(95, 577, 120):
@@ -48,6 +48,11 @@ class Stage5:
         self.time = time.time()
         self.boy.update_stage_info(5)
 
+        collision_utils.clear_collision_pairs()
+        collision_utils.add_collision_pair('boy:obstacle', self.boy, self.obstacle)
+        for cyclic_obstacle in self.cyclic_obstacles:
+            collision_utils.add_collision_pair('boy:cyclic_obstacle', self.boy, cyclic_obstacle)
+
     def handle_event(self, event):
         self.boy.handle_event(event)
 
@@ -62,18 +67,7 @@ class Stage5:
             self.boy.x = 1000
             self.boy.y = 720
 
-        '''
-        if self.boy.x > 1024 and self.boy.y >= 720:
-            self.stage_change_call(6)
-            self.boy.x = 20
-            self.boy.y = 50
-        '''
-
-        for cyclic_obstacle in self.cyclic_obstacles:
-            if self.obstacle.check_collision(self.boy) or cyclic_obstacle.check_collision(self.boy):
-                self.boy.x = self.boy.savepointX
-                self.boy.y = self.boy.savepointY
-                break
+        collision_utils.handle_collisions()
 
         if self.boy.y < -10:
             self.boy.x = self.boy.savepointX

@@ -144,20 +144,16 @@ class Boy:
                     self.y = 768
                     self.jump_speed = 0
 
-                # 낙하 전환
                 if self.jump_speed < 0:
                     self.is_jumping = False
                     self.falling = True
                     self.gravity = -GRAVITY_PPS  # 낙하 시작할 때 중력 초기화
 
-            # 낙하 중일 때
             if self.falling:
                 self.y += self.gravity
-                # 중력을 GRAVITY_PPS 단위로 증가
                 if abs(self.gravity) < self.max_gravity:
                     self.gravity -= self.gravity_increment
 
-                # 착지 체크
                 if self.check_grass_collision(grass.get_positions()):
                     self.reset_jump_state()
 
@@ -217,6 +213,10 @@ class Boy:
                 self.key_states['right'] = False
                 self.frame = 0
                 self.add_event(('INPUT', RIGHT_UP))
+                
+        elif event.type == SDL_MOUSEBUTTONDOWN and event.button == SDL_BUTTON_LEFT:
+            bullet = Bullet(self.x, self.y, self.right)
+            current_stage.bullets.append(bullet)  # 현재 스테이지에 총알 추가
 
     def check_grass_collision(self, grass_positions):
         collided = False

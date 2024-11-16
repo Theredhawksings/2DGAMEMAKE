@@ -26,8 +26,7 @@ def main():
     while game_world.running:
         game_world.handle_events()
         game_world.update()
-        game_world.draw()
-        delay(0.01)
+        game_world.draw()s
 
     close_canvas()
 

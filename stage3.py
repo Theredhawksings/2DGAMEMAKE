@@ -44,8 +44,8 @@ class Stage3:
        if self.background_y <= 384:
            self.background_y = 384
 
-       if self.boy.y < 50:
-           self.boy.y = 50
+       if self.boy.y < 40:
+           self.boy.y = 40
            self.boy.apply_gravity = True
            self.boy.gravity = -1
            self.boy.falling = False
@@ -54,7 +54,7 @@ class Stage3:
 
        if self.boy.x < 1:
            self.boy.x = 1
-           self.boy.y = 50
+           self.boy.y = 40
 
        elif self.boy.y == 50 and self.boy.x > 1024:
            self.boy.x = 1024
@@ -81,9 +81,9 @@ class Stage3:
            self.boy.apply_gravity = True
            self.stage_change_call(2)
 
-       if self.boy.x >= 1024 and self.boy.y == 50:
+       if self.boy.x >= 1024 and self.boy.y == 40:
            self.boy.x = 30
-           self.boy.y = 50
+           self.boy.y = 45
            self.stage_change_call(4)
 
 

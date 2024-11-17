@@ -28,3 +28,12 @@ class Grass:
 
    def get_positions(self):
        return self.positions
+
+   def get_bb(self):
+       bounding_boxes = []
+       for x, y, width in self.positions:
+           bounding_boxes.append((x - width, y + 30, x + width, y + 60))
+       return bounding_boxes
+
+   def handle_collision(self, group, other):
+       pass

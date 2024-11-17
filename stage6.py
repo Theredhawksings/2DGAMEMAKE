@@ -46,15 +46,35 @@ class Stage6:
             (920, 380, 150),
         ]
 
+        #5빼면 됨
         obstacle_data = [
-            (240, 60, 0, 0, 0),
+            (280, 60, 0, 0, 0),
+            (400, 60, 0, 0, 0),
+            (660, 90, 0, 0, 0),
+            (860, 100, 0, 0, 0),
+            (1020, 130, 1, 0, 0),
+            (916, 280, 2, 0, 0),
+            (941, 280, 2, 0, 0),
+            (750, 250, 0, 0, 0),
+            (571, 285, 0, 0, 0),
+            (500, 440, 0, 0, 0),
+            (571, 365, 0, 0, 0),
+            (571, 440, 0, 0, 0),
+            (510, 515, 0, 0, 0),
         ]
+
         self.obstacle = Obstacle(obstacle_data)
         self.initial_obstacles = self.obstacle.obstacles.copy()
 
         self.obstacle_definitions = [
-            {'trigger': {'x_min': 110, 'x_max': 130, 'y_min': 45, 'y_max': None},
+            {'trigger': {'x_min': 115, 'x_max': 130, 'y_min': 45, 'y_max': None},
              'obstacle': {'x': 160, 'y': -15, 'image_direction': 0, 'move_direction': 4, 'move_speed': 15}},
+            {'trigger': {'x_min': 530, 'x_max': 540, 'y_min': 90, 'y_max': None},
+             'obstacle': {'x': -10, 'y': 85, 'image_direction': 3, 'move_direction': 1, 'move_speed': 15}},
+            {'trigger': {'x_min': 550, 'x_max': 560, 'y_min': 90, 'y_max': None},
+             'obstacle': {'x': 1030, 'y': 85, 'image_direction': 1, 'move_direction': 2, 'move_speed': 15}},
+            {'trigger': {'x_min': 705, 'x_max': 710, 'y_min': 255, 'y_max': None},
+             'obstacle': {'x': 710, 'y': 780, 'image_direction': 2, 'move_direction': 3, 'move_speed': 30}},
         ]
 
         self.obstacle_created = [False] * len(self.obstacle_definitions)

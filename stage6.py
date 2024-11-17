@@ -45,15 +45,25 @@ class Stage6:
             (720, 510, 60),
             (920, 380, 150),
         ]
+
+        obstacle_data = [
+            (240, 60, 0, 0, 0),
+        ]
+        self.obstacle = Obstacle(obstacle_data)
+        self.initial_obstacles = self.obstacle.obstacles.copy()
+
+        self.obstacle_definitions = [
+            {'trigger': {'x_min': 110, 'x_max': 130, 'y_min': 45, 'y_max': None},
+             'obstacle': {'x': 160, 'y': -15, 'image_direction': 0, 'move_direction': 4, 'move_speed': 15}},
+        ]
+
+        self.obstacle_created = [False] * len(self.obstacle_definitions)
+
         self.grass = Grass(grass_positions, current_stage=4)
-
         self.ground = Ground(current_stage=6)
-
         self.stage_change_call = stage_change_call
-
         self.boy.savepointX = 1
         self.boy.savepointY = 45
-
         self.bullets = []
 
         self.boy.update_stage_info(6)
@@ -63,16 +73,39 @@ class Stage6:
         for bullet in self.bullets:
             bullet.update()
 
+        collision_utils.add_collision_pair('boy:obstacle', self.boy, self.obstacle)
+
     def handle_event(self, event):
         self.boy.handle_event(event)
 
+    def check_and_create_obstacles(self):
+        for i, definition in enumerate(self.obstacle_definitions):
+            if self.obstacle_created[i]:
+                continue
+
+            trigger = definition['trigger']
+
+            x_condition = (self.boy.x >= trigger['x_min']) and \
+                          (trigger['x_max'] is None or self.boy.x < trigger['x_max'])
+
+            y_condition = True
+            if trigger['y_min'] is not None:
+                y_condition = self.boy.y >= trigger['y_min']
+            if trigger['y_max'] is not None:
+                y_condition = y_condition and self.boy.y < trigger['y_max']
+
+            if x_condition and y_condition:
+                self.obstacle.obstacles.append(definition['obstacle'].copy())
+                self.obstacle_created[i] = True
+
     def update(self):
         self.boy.update(self.grass)
+        self.obstacle.update()
 
         if self.boy.x < 1:
             self.boy.x = 1
 
-            if self.boy.y==45:
+            if self.boy.y == 45:
                 self.stage_change_call(5)
                 self.boy.x = 1020
                 self.boy.y = 105
@@ -80,8 +113,13 @@ class Stage6:
         if self.boy.y < -1:
             self.boy.x = self.boy.savepointX
             self.boy.y = self.boy.savepointY
+            self.obstacle_created = [False] * len(self.obstacle_definitions)
 
-        collision_utils.handle_collisions()
+        self.check_and_create_obstacles()
+
+        if collision_utils.handle_collisions():
+            self.obstacle_created = [False] * len(self.obstacle_definitions)
+            self.obstacle.obstacles = self.initial_obstacles.copy()
 
         for bullet in self.bullets:
             bullet.update()
@@ -90,6 +128,8 @@ class Stage6:
         self.ground.draw(512, 384)
         self.grass.draw()
         self.boy.draw()
+        self.obstacle.draw()
+
 
         for bullet in self.bullets:
             bullet.draw()

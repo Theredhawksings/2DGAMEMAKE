@@ -1,4 +1,4 @@
-from pico2d import load_image
+from pico2d import load_image, draw_rectangle
 import os
 
 class Grass:
@@ -19,12 +19,15 @@ class Grass:
 
    def draw(self):
        for x, y, width in self.positions:
+           # 풀 이미지를 그리기
            if self.current_stage == 4 or self.current_stage == 5:
                Grass.image3.clip_draw(0, 0, width * 2, 60, x, y, width * 2, 60)
            elif self.current_stage == 3:
                Grass.image2.clip_draw(0, 0, width * 2, 60, x, y, width * 2, 60)
            else:
                Grass.image1.clip_draw(0, 0, width * 2, 60, x, y, width * 2, 60)
+
+           draw_rectangle(x - width, y + 30, x + width, y + 60)  # 빨간 범위
 
    def get_positions(self):
        return self.positions
@@ -34,6 +37,3 @@ class Grass:
        for x, y, width in self.positions:
            bounding_boxes.append((x - width, y + 30, x + width, y + 60))
        return bounding_boxes
-
-   def handle_collision(self, group, other):
-       pass

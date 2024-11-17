@@ -114,4 +114,3 @@ class Stage2:
 
         for bullet in self.bullets:
             bullet.draw()
-

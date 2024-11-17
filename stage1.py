@@ -33,8 +33,7 @@ class Stage1:
         self.font = Font(30)
 
         collision_utils.add_collision_pair('boy:obstacle', self.boy, self.obstacle)
-        collision_utils.add_collision_pair('boy:obstacle', self.boy, self.obstacle)
-        
+
         self.bullets = []
 
     def handle_event(self, event):
@@ -71,4 +70,3 @@ class Stage1:
 
         for bullet in self.bullets:
             bullet.draw()
-

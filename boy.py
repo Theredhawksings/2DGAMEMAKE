@@ -142,7 +142,7 @@ class Boy:
                 self.y += self.jump_speed
                 self.jump_speed += self.gravity
 
-                if self.y > 768: 
+                if self.y > 768:
                     self.y = 768
                     self.jump_speed = 0
 
@@ -253,5 +253,3 @@ class Boy:
     def update_stage_info(self, stage_number):
         self.previous_stage = self.current_stage
         self.current_stage = stage_number
-
-

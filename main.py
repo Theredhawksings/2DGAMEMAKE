@@ -17,11 +17,11 @@ def main():
     game_world = GameWorld()
 
 
-    #game_world.state = 'PLAY'
-    #game_world.change_stage(4)
-    #game_world.load_music(4)
-    #game_world.boy.x = 1
-    #game_world.boy.y = 115
+    game_world.state = 'PLAY'
+    game_world.change_stage(1)
+    game_world.load_music(1)
+    game_world.boy.x = 1
+    game_world.boy.y = 115
 
     while game_world.running:
         game_world.handle_events()

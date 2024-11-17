@@ -32,14 +32,15 @@ def collide(a, b):
         return True
 
 def handle_collisions():
+   any_collision = False
    for group, pairs in collision_pairs.items():
        for a in pairs[0]:
            for b in pairs[1]:
                if collide(a, b):
                    a.handle_collision(group, b)
                    b.handle_collision(group, a)
-                   return True
-
+                   any_collision = True
+   return any_collision
 
 def clear_collision_pairs():
    collision_pairs.clear()

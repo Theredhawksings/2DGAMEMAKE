@@ -165,6 +165,10 @@ class Stage6:
             self.obstacle_created = [False] * len(self.obstacle_definitions)
             self.obstacle.obstacles = self.initial_obstacles.copy()
 
+        if self.boy.x > 1024 and self.boy.y==425:
+            self.stage_change_call(7)
+
+
         self.check_and_create_obstacles()
 
         if collision_utils.handle_collisions():

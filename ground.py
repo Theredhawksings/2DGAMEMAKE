@@ -2,29 +2,37 @@ from pico2d import load_image
 import os
 
 class Ground:
-    image1 = None
-    image2 = None
-    image3 = None
+    images = {}
+
+    @classmethod
+    def load_images(cls):
+        image_files = {
+            1: 'ground1.png',
+            2: 'ground2.png',
+            3: 'ground3.png',
+            4: 'ground4.png'
+        }
+
+        for key, filename in image_files.items():
+            if key not in cls.images:
+                cls.images[key] = load_image(os.path.join('Ground', filename))
 
     def __init__(self, current_stage=1):
-        if Ground.image1 is None:
-            Ground.image1 = load_image(os.path.join('Ground', 'ground1.png'))
-        if Ground.image2 is None:
-            Ground.image2 = load_image(os.path.join('Ground', 'ground2.png'))
-        if Ground.image3 is None:
-            Ground.image3 = load_image(os.path.join('Ground', 'ground3.png'))
-
+        Ground.load_images()
         self.current_stage = current_stage
 
     def update_stage(self, stage):
         self.current_stage = stage
 
-    def draw(self,x,y):
+    def draw(self, x, y):
         if self.current_stage >= 4:
-           Ground.image3.draw(x,y)
+            if self.current_stage < 7:
+                Ground.images[3].draw(x, y)
+            else:
+                Ground.images[4].draw(x, y)
         else:
-            Ground.image1.draw(x,y)
+            Ground.images[1].draw(x, y)
 
-    def fallingdraw(self,x,y,background_y):
+    def falling_draw(self, x, y, background_y):
         if self.current_stage == 3:
-            Ground.image2.clip_draw(0, background_y, 1024, 768, x, y, 1024, 768)
+            Ground.images[2].clip_draw(0, background_y, 1024, 768, x, y, 1024, 768)

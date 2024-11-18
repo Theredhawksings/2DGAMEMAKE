@@ -2,31 +2,38 @@ from pico2d import load_image, draw_rectangle
 import os
 
 class Grass:
-    image1 = None
-    image2 = None
-    image3 = None
+    images = {}
+
+    @classmethod
+    def load_images(cls):
+        image_files = {
+            1: 'Grass.png',
+            2: 'Grass2.png',
+            3: 'Grass3-3.png',
+            4: 'Grass4.png'
+        }
+
+        for key, filename in image_files.items():
+            if key not in cls.images:
+                cls.images[key] = load_image(os.path.join('Grass', filename))
 
     def __init__(self, positions, current_stage=1):
-        if Grass.image1 is None:
-            Grass.image1 = load_image(os.path.join('Grass', 'Grass.png'))
-        if Grass.image2 is None:
-            Grass.image2 = load_image(os.path.join('Grass', 'Grass2.png'))
-        if Grass.image3 is None:
-            Grass.image3 = load_image(os.path.join('Grass', 'Grass3-3.png'))
-
+        Grass.load_images()
         self.current_stage = current_stage
         self.positions = positions
 
     def draw(self):
-        # 풀 이미지 그리기
         for x, y, width in self.positions:
-            if self.current_stage == 4 or self.current_stage == 5:
-                Grass.image3.clip_draw(0, 0, width * 2, 60, x, y, width * 2, 60)
+            if self.current_stage == 7:
+                Grass.images[4].clip_draw(0, 0, width * 2, 60, x, y, width * 2, 60)
+            elif 4 <= self.current_stage <= 6:
+                Grass.images[3].clip_draw(0, 0, width * 2, 60, x, y, width * 2, 60)
             elif self.current_stage == 3:
-                Grass.image2.clip_draw(0, 0, width * 2, 60, x, y, width * 2, 60)
+                Grass.images[2].clip_draw(0, 0, width * 2, 60, x, y, width * 2, 60)
             else:
-                Grass.image1.clip_draw(0, 0, width * 2, 60, x, y, width * 2, 60)
+                Grass.images[1].clip_draw(0, 0, width * 2, 60, x, y, width * 2, 60)
 
+        # 충돌 박스 그리기
         for bb in self.get_bb():
             draw_rectangle(*bb)
 

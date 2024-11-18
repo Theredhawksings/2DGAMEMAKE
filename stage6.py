@@ -56,7 +56,6 @@ class Stage6:
             (916, 280, 2, 0, 0),
             (941, 280, 2, 0, 0),
             (750, 250, 0, 0, 0),
-            (571, 285, 0, 0, 0),
             (500, 440, 0, 0, 0),
             (571, 365, 0, 0, 0),
             (571, 440, 0, 0, 0),
@@ -65,6 +64,12 @@ class Stage6:
             (630, 515, 0, 0, 0),
             (726, 550, 0, 0, 0),
             (436, 530, 0, 0, 0),
+            (396, 285, 0, 0, 0),
+            (286, 345, 0, 0, 0),
+            (81, 395, 0, 0, 0),
+            (311, 455, 1, 0, 0),
+            (71, 520, 3, 0, 0),
+            (275, 595, 1, 0, 0),
         ]
 
         self.obstacle = Obstacle(obstacle_data)
@@ -81,6 +86,10 @@ class Stage6:
              'obstacle': {'x': 710, 'y': 780, 'image_direction': 2, 'move_direction': 3, 'move_speed': 30}},
             {'trigger': {'x_min': 555, 'x_max': 580, 'y_min': 515, 'y_max': None},
              'obstacle': {'x': 571, 'y': -15, 'image_direction': 0, 'move_direction': 4, 'move_speed': 10}},
+            {'trigger': {'x_min': 140, 'x_max': 154, 'y_min': 535, 'y_max': None},
+             'obstacle': {'x': 1030, 'y': 535, 'image_direction': 1, 'move_direction': 2, 'move_speed': 15}},
+            {'trigger': {'x_min': 80, 'x_max': 120, 'y_min': 665, 'y_max': None},
+             'obstacle': {'x': 100, 'y': 780, 'image_direction': 2, 'move_direction': 3, 'move_speed': 1}},
         ]
 
         self.obstacle_created = [False] * len(self.obstacle_definitions)

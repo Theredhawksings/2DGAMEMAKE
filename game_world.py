@@ -22,7 +22,7 @@ class GameWorld:
         self.current_music = None
         self.state = 'LOGO'
         self.logo_time = 0.0
-        self.logo_image = load_image(os.path.join('screen', '3570144207.png'))
+        self.logo_image = load_image(os.path.join('screen', '3570144307.png'))
         self.intro_image = load_image(os.path.join('screen', 'Intro.png'))
         pygame.mixer.init()
         pygame.mixer.music.load(os.path.join('bgm', 'Eagle_sing.mp3'))

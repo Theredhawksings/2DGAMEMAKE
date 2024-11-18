@@ -138,7 +138,12 @@ class Stage6:
         self.obstacle.update()
 
         if self.boy.x < 1:
-            self.boy.x = 1
+            if self.boy.y == 715:
+                self.stage_change_call(5)
+                self.boy.x = 1020
+                self.boy.y = 715
+            else:
+                self.boy.x = 1
 
             if self.boy.y == 45:
                 self.stage_change_call(5)

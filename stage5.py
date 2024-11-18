@@ -36,18 +36,21 @@ class Stage5:
 
         for x in range(240, 960, 120):
             for y in range(95, 577, 120):
-                self.cyclic_obstacles.append(
-                    CyclicObstacle(x, y, 0, 4, 0,
-                                   random.uniform(1.0, 2.0),
-                                   random.uniform(4.0, 5.0))
-                )
+                if random.random() < 0.5:  # 50% 확률로 장애물 생성
+                    self.cyclic_obstacles.append(
+                        CyclicObstacle(x, y, 0, 4, 0,
+                                       random.uniform(1.0, 2.0),
+                                       random.uniform(4.0, 5.0))
+                    )
+
         for x in range(180, 840, 120):
             for y in range(155, 697, 120):
-                self.cyclic_obstacles.append(
-                    CyclicObstacle(x, y, 0, 4, 0,
-                                   random.uniform(1.0, 2.0),
-                                   random.uniform(4.0, 5.0))
-                )
+                if random.random() < 0.5:  # 50% 확률로 장애물 생성
+                    self.cyclic_obstacles.append(
+                        CyclicObstacle(x, y, 0, 4, 0,
+                                       random.uniform(1.0, 2.0),
+                                       random.uniform(4.0, 5.0))
+                    )
 
         self.time = time.time()
         self.boy.update_stage_info(5)
@@ -65,8 +68,19 @@ class Stage5:
         self.boy.handle_event(event)
 
     def update(self):
+
         self.boy.update(self.grass)
         self.obstacle.update()
+
+        if self.boy.game_world.state == 'PAUSE':
+            for obstacle in self.cyclic_obstacles:
+                obstacle.set_pause(True)
+            return
+
+        if self.boy.game_world.state == 'PLAY':
+            for obstacle in self.cyclic_obstacles:
+                obstacle.set_pause(False)
+
         for cyclic_obstacle in self.cyclic_obstacles:
             cyclic_obstacle.update()
 

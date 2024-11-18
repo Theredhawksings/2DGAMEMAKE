@@ -143,12 +143,10 @@ class Stage4:
 
    def draw(self):
        self.ground.draw(512, 384)
-
        self.grass.draw()
        self.boy.draw()
        self.obstacle.draw()
        self.font.draw(100, 300, "날아오는 장애물들을 피하세요", (255, 255, 255))
-       #self.font.draw(400, 300, " ก้้้้้้้้้้้้้้้้้้้้้้้้้้้้้้้้้้้้ค็็็็็็็็็็็็็็็็็", (255, 255, 255))
 
        for bullet in self.bullets:
            bullet.draw()

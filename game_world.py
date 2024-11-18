@@ -10,7 +10,8 @@ import stage4
 import stage5
 import stage6
 
-from boy import Boy
+from boy import Boy, IdleState
+
 
 class GameWorld:
     def __init__(self):
@@ -71,12 +72,17 @@ class GameWorld:
                     if self.state == 'PLAY':
                         self.state = 'PAUSE'
                         pygame.mixer.music.pause()
+                        # 키 상태 초기화
+                        self.boy.key_states['left'] = False
+                        self.boy.key_states['right'] = False
+                        self.boy.event_queue.clear()
+                        self.boy.state_machine.start(IdleState)
                     elif self.state == 'PAUSE':
                         self.state = 'PLAY'
                         pygame.mixer.music.unpause()
                     else:
                         self.running = False
-                    continue  # ESC 키 처리 후 다음 이벤트로
+                    continue
 
                 elif self.state == 'INTRO' and event.key == SDLK_SPACE:
                     self.state = 'PLAY'
@@ -84,9 +90,8 @@ class GameWorld:
                     self.change_stage(1)
                     self.boy.x = 15
                     self.boy.y = 100
-                    continue  # SPACE 키 처리 후 다음 이벤트로
+                    continue
 
-            # ESC와 SPACE가 아닌 다른 모든 이벤트는 PLAY 상태일 때 처리
             if self.state == 'PLAY':
                 self.current_stage.handle_event(event)
 

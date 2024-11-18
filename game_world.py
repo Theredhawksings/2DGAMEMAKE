@@ -9,6 +9,7 @@ import stage3
 import stage4
 import stage5
 import stage6
+import stage7
 
 from boy import Boy, IdleState
 
@@ -53,6 +54,7 @@ class GameWorld:
             stage4.Stage4,
             stage5.Stage5,
             stage6.Stage6,
+            stage7.Stage7,
         ]
 
         if 1 <= stage_number <= 7:

@@ -45,7 +45,7 @@ class Stage1:
 
         if self.boy.x <= 1:
             self.boy.x = 1
-            self.boy.y = 70
+            self.boy.y = 75
             self.boy.falling = False
             self.boy.gravity = -1
         elif self.boy.x >= 1024:

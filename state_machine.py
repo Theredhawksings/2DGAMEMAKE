@@ -40,3 +40,4 @@ class StateMachine:
 
     def set_transitions(self, transitions):
         self.transitions = transitions
+

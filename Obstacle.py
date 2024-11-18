@@ -29,7 +29,7 @@ class Obstacle:
         bbs = []
         for obstacle in self.obstacles:
             if obstacle['image_direction'] == 0 or obstacle['image_direction'] == 2:
-                bb = (obstacle['x'] - 8,
+                bb = (obstacle['x'] - 9,
                       obstacle['y'] - 13,
                       obstacle['x'] + 8,
                       obstacle['y'] + 8)

@@ -41,7 +41,7 @@ class GameWorld:
             if self.current_music is not None:
                 pygame.mixer.music.stop()
             pygame.mixer.music.load(music_path)
-            pygame.mixer.music.play(-1)
+            #pygame.mixer.music.play(-1)
             self.current_music = music_path
 
     def change_stage(self, stage_number):
@@ -72,7 +72,6 @@ class GameWorld:
                     if self.state == 'PLAY':
                         self.state = 'PAUSE'
                         pygame.mixer.music.pause()
-                        # 키 상태 초기화
                         self.boy.key_states['left'] = False
                         self.boy.key_states['right'] = False
                         self.boy.event_queue.clear()

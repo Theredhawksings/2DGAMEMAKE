@@ -1,4 +1,3 @@
-# stage5.py
 from pico2d import *
 from grass import Grass
 from ground import Ground
@@ -12,6 +11,7 @@ class Stage6:
     def __init__(self, stage_change_call, boy):
         self.boy = boy
         self.boy.stage = self
+        self.last_obstacle_time = time.time()
 
         grass_positions = [
             (0, 0, 128),
@@ -46,7 +46,7 @@ class Stage6:
             (920, 380, 150),
         ]
 
-        #5빼면 됨
+        #10빼면 됨
         obstacle_data = [
             (280, 60, 0, 0, 0),
             (400, 60, 0, 0, 0),
@@ -70,6 +70,7 @@ class Stage6:
             (311, 455, 1, 0, 0),
             (71, 520, 3, 0, 0),
             (275, 595, 1, 0, 0),
+            (886, 585, 1, 0, 0),
         ]
 
         self.obstacle = Obstacle(obstacle_data)
@@ -90,6 +91,14 @@ class Stage6:
              'obstacle': {'x': 1030, 'y': 535, 'image_direction': 1, 'move_direction': 2, 'move_speed': 15}},
             {'trigger': {'x_min': 80, 'x_max': 120, 'y_min': 665, 'y_max': None},
              'obstacle': {'x': 100, 'y': 780, 'image_direction': 2, 'move_direction': 3, 'move_speed': 1}},
+            {'trigger': {'x_min': 240, 'x_max': 254, 'y_min': 725, 'y_max': None},
+             'obstacle': {'x': 1030, 'y': 725, 'image_direction': 1, 'move_direction': 2, 'move_speed': 15}},
+            {'trigger': {'x_min': 306, 'x_max': 310, 'y_min': 725, 'y_max': None},
+             'obstacle': {'x': -10, 'y': 725, 'image_direction': 3, 'move_direction': 1, 'move_speed': 15}},
+            {'trigger': {'x_min': 340, 'x_max': 350, 'y_min': 725, 'y_max': None},
+             'obstacle': {'x': -10, 'y': 725, 'image_direction': 3, 'move_direction': 1, 'move_speed': 15}},
+            {'trigger': {'x_min': 390, 'x_max': 395, 'y_min': 725, 'y_max': None},
+             'obstacle': {'x': 1030, 'y': 725, 'image_direction': 1, 'move_direction': 2, 'move_speed': 15}},
         ]
 
         self.obstacle_created = [False] * len(self.obstacle_definitions)
@@ -154,6 +163,7 @@ class Stage6:
             self.boy.x = self.boy.savepointX
             self.boy.y = self.boy.savepointY
             self.obstacle_created = [False] * len(self.obstacle_definitions)
+            self.obstacle.obstacles = self.initial_obstacles.copy()
 
         self.check_and_create_obstacles()
 
@@ -163,6 +173,20 @@ class Stage6:
 
         for bullet in self.bullets:
             bullet.update()
+
+
+        current_time = time.time()
+
+        if self.boy.x > 820 and self.boy.y > 720:
+            new_obstacle = {
+                'x': 1030,
+                'y': 725,
+                'image_direction': 1,
+                'move_direction': 2,
+                'move_speed': 5
+            }
+            self.obstacle.obstacles.append(new_obstacle)
+            self.last_obstacle_time = current_time
 
     def draw(self):
         self.ground.draw(512, 384)

@@ -66,7 +66,20 @@ class Stage2:
 
         collision_utils.add_collision_pair('boy:obstacle', self.boy, self.obstacle)
 
+        self.fonts = [
+            {"font": Font(30), "x": 30, "y": 750, "text": f"죽은 횟수: {Obstacle.get_death_count()}",
+             "color": (0, 0, 0)},
+        ]
+        self.fonts[0]["text"] = f"죽은 횟수: {Obstacle.get_death_count()}"
         self.bullets = []
+
+        self.world = []
+        self.world.append(self.ground)
+        self.world.append(self.grass)
+        self.world.append(self.boy)
+        self.world.append(self.obstacle)
+        self.world.append(self.bullets)
+        self.world.extend(self.fonts)
 
     def handle_event(self, event):
         self.boy.handle_event(event)
@@ -105,12 +118,18 @@ class Stage2:
             bullet.update()
 
     def draw(self):
-        self.ground.draw(512, 384)
-        self.grass.draw()
-        self.boy.draw()
-        self.obstacle.draw()
-
-        self.font.draw(30, 750, f"죽은 횟수: {Obstacle.get_death_count()}", (0, 0, 0))
-
-        for bullet in self.bullets:
-            bullet.draw()
+        for obj in self.world:
+            if isinstance(obj, list):
+                for sub_obj in obj:
+                    sub_obj.draw()
+            elif isinstance(obj, Ground):
+                obj.draw(512, 384)
+            elif isinstance(obj, dict) and "font" in obj:  # 폰트 객체일 경우 처리
+                font = obj["font"]
+                x = obj["x"]
+                y = obj["y"]
+                text = obj["text"]
+                color = obj["color"]
+                font.draw(x, y, text, color)
+            else:
+                obj.draw()

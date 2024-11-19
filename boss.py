@@ -26,10 +26,10 @@ class Boss:
         self.active = True
 
     def get_bb(self):
-        return (self.x - 100,
-                self.y - 125,
-                self.x + 100,
-                self.y + 125)
+        return (self.x - 80,
+                self.y - 105,
+                self.x + 80,
+                self.y + 105)
 
     def draw(self):
         self.image.clip_composite_draw(

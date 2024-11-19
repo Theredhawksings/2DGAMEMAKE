@@ -30,6 +30,8 @@ class Stage7:
         self.boss.boy = boy
         self.boy.update_stage_info(7)
 
+        self.boss_blood_image = load_image(os.path.join('image', 'boss blood.png'))
+
         collision_utils.clear_collision_pairs()
         collision_utils.add_collision_pair('bullet:boss', self.bullets, [self.boss])
 
@@ -70,6 +72,7 @@ class Stage7:
 
         if self.boss_activated:
             self.boss.draw()
+            self.boss_blood_image.clip_draw(0, 0, 1024, 15, 512, 753, 1024, 15)
 
         for bullet in self.bullets:
             bullet.draw()

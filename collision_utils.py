@@ -1,16 +1,24 @@
 collision_pairs = {}
 
 def add_collision_pair(group, a, b):
-   if group not in collision_pairs:
-       collision_pairs[group] = [[], []]
-   if a:
-       collision_pairs[group][0].append(a)
-   if b:
-       collision_pairs[group][1].append(b)
+    if group not in collision_pairs:
+        collision_pairs[group] = [[], []]
+
+    if isinstance(a, list):
+        collision_pairs[group][0].extend(a)
+    elif a:
+        collision_pairs[group][0].append(a)
+
+    if isinstance(b, list):
+        collision_pairs[group][1].extend(b)
+    elif b:
+        collision_pairs[group][1].append(b)
+
+    print(f"Collision pair added: {group}, {collision_pairs[group]}")
 
 
 def collide(a, b):
-    if a.is_invincible:
+    if hasattr(a, 'is_invincible') and a.is_invincible:
         return False
 
     if isinstance(b.get_bb(), list):
@@ -18,6 +26,7 @@ def collide(a, b):
         for bb in b.get_bb():
             lb, bb_b, rb, tb = bb
             if not (la > rb or ra < lb or ta < bb_b or ba > tb):
+                print(f"Collision detected between {a} and {b}")
                 return True
         return False
     else:
@@ -29,18 +38,22 @@ def collide(a, b):
         if ta < bb: return False
         if ba > tb: return False
 
+        print(f"Collision detected between {a} and {b}")
+
         return True
 
 def handle_collisions():
-   any_collision = False
-   for group, pairs in collision_pairs.items():
-       for a in pairs[0]:
-           for b in pairs[1]:
-               if collide(a, b):
-                   a.handle_collision(group, b)
-                   b.handle_collision(group, a)
-                   any_collision = True
-   return any_collision
+    any_collision = False
+    for group, pairs in collision_pairs.items():
+        for a in pairs[0]:
+            for b in pairs[1]:
+                if collide(a, b):
+                    print(f"Handling collision for group {group} between {a} and {b}")
+                    a.handle_collision(group, b)
+                    b.handle_collision(group, a)
+                    any_collision = True
+    return any_collision
+
 
 def clear_collision_pairs():
    collision_pairs.clear()

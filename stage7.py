@@ -1,5 +1,5 @@
+# stage7.py
 from pico2d import *
-
 from boss import Boss
 from grass import Grass
 from ground import Ground
@@ -26,9 +26,12 @@ class Stage7:
         self.ground = Ground(current_stage=7)
         self.stage_change_call = stage_change_call
         self.bullets = []
-        self.boss = Boss()  # Create boss instance
+        self.boss = Boss()
+        self.boss.boy = boy
         self.boy.update_stage_info(7)
+
         collision_utils.clear_collision_pairs()
+        collision_utils.add_collision_pair('bullet:boss', self.bullets, [self.boss])
 
     def handle_event(self, event):
         self.boy.handle_event(event)
@@ -52,6 +55,13 @@ class Stage7:
 
         for bullet in self.bullets:
             bullet.update()
+
+        collision_utils.handle_collisions()
+
+        bullets_to_remove = [bullet for bullet in self.bullets if bullet.should_remove]
+        for bullet in bullets_to_remove:
+            if bullet in self.bullets:
+                self.bullets.remove(bullet)
 
     def draw(self):
         self.ground.draw(512, 384)

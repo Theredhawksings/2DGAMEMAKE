@@ -55,6 +55,11 @@ class Boss:
             self.y = self.y_max
             self.vy = -abs(self.vy)
 
+        bullets_to_remove = [bullet for bullet in self.boy.stage.bullets if bullet.should_remove]
+
+        for bullet in bullets_to_remove:
+            if bullet in self.boy.stage.bullets:
+                self.boy.stage.bullets.remove(bullet)
 
     def handle_collision(self, group, other):
         if group == 'bullet:boss':

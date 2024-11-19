@@ -11,7 +11,7 @@ class Boss:
    def __init__(self):
        self.image = load_image(os.path.join('image', 'boss.png'))
        self.x = 900
-       self.y = 840
+       self.y = 940
        self.active = False
        self.vy = BOSS_SPEED_PPS
        self.y_min = 100
@@ -19,7 +19,7 @@ class Boss:
        self.width = 250
        self.height = 300
        self.boy = None
-       self.health = 5
+       self.health = 200
        self.dead = False
        self.death_speed = 100
 

@@ -30,3 +30,7 @@ class Bullet:
 
     def get_bb(self):
         return self.x - 8, self.y - 8, self.x + 8, self.y + 8
+
+    def handle_collision(self, group, other):
+        if group == 'bullet:boss':
+            self.should_remove = True

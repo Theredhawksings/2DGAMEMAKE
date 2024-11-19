@@ -1,4 +1,3 @@
-# bullet.py
 from pico2d import *
 import os
 
@@ -16,6 +15,9 @@ class Bullet:
         self.image = load_image(os.path.join('bullet', 'bullet.png'))
         self.speed = BULLET_SPEED_PPS * (1 if direction_right else -1)
         self.should_remove = False
+
+        self.gun_sound = load_wav(os.path.join('bgm', 'gun effects.mp3'))
+        self.gun_sound.play()
 
     def update(self):
         self.x += self.speed

@@ -91,7 +91,7 @@ class GameWorld:
         if self.current_stage and isinstance(self.current_stage, Stage7):
             current_time = time.time()
             if current_time - self.stage_change_time >= 10:  # 10초 후에 재생
-                music_path = os.path.join('bgm', 'madara.mp3')
+                music_path = os.path.join('bgm', 'Boss 1 - Hell(o) Kitty.mp3')
                 self.music_manager.load_music(music_path)
 
     def handle_events(self):

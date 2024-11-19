@@ -19,7 +19,7 @@ class Stage6:
             (600, 50, 120),
             (850, 60, 90),
             (980, 90, 32),
-            (920, 175, 32),
+            (920, 155, 32),
             (770, 210, 92),
             (570, 250, 60),
 
@@ -71,6 +71,7 @@ class Stage6:
             (71, 520, 3, 0, 0),
             (275, 595, 1, 0, 0),
             (886, 585, 1, 0, 0),
+            (446, 600, 0, 0, 0),
         ]
 
         self.obstacle = Obstacle(obstacle_data)
@@ -167,6 +168,8 @@ class Stage6:
 
         if self.boy.x > 1024 and self.boy.y==425:
             self.stage_change_call(7)
+            self.boy.x = 10
+            self.boy.y = 1020
 
 
         self.check_and_create_obstacles()

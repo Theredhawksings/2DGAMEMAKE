@@ -222,7 +222,7 @@ class Boy:
 
         for grass_x, grass_y, width in grass_positions:
             if (grass_x - width < self.x < grass_x + width and
-                    self.y <= grass_y + 60 and self.y > grass_y + 30):
+                    self.y <= grass_y + 50 and self.y > grass_y + 30):
                 self.y = grass_y + 45
                 self.is_jumping = False
                 self.jump_speed = 0

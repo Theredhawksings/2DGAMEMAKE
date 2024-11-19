@@ -194,7 +194,7 @@ class Stage3:
             self.background_y -= 3
 
     def draw(self):
-        self.ground.fallingdraw(512, 384, self.background_y)
+        self.ground.falling_draw(512, 384, self.background_y)
 
         if self.background_y < 400:
             self.grass.draw()

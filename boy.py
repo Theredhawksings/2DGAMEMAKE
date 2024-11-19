@@ -1,6 +1,7 @@
 from pico2d import *
 import os
 
+import collision_utils
 from bullet import Bullet
 from state_machine import StateMachine, RIGHT_DOWN, LEFT_DOWN, RIGHT_UP, LEFT_UP, SPACE
 from state_machine import right_down, left_down, right_up, left_up, space_down
@@ -159,7 +160,7 @@ class Boy:
                 if self.check_grass_collision(grass.get_positions()):
                     self.reset_jump_state()
 
-            print(f" x={self.x:.2f}, y={self.y:.2f}, gravity={self.gravity:.2f}")
+            #print(f" x={self.x:.2f}, y={self.y:.2f}, gravity={self.gravity:.2f}")
 
     def reset_jump_state(self):
         self.falling = False
@@ -201,8 +202,13 @@ class Boy:
             elif event.key == ord('h'):
                 self.is_invincible = not self.is_invincible
             elif event.key == ord('e'):
-                bullet = Bullet(self.x, self.y-5, self.right)
+                bullet = Bullet(self.x, self.y - 5, self.right)
                 self.stage.bullets.append(bullet)
+                print(f"Bullet added at position: ({bullet.x}, {bullet.y})")
+
+
+                collision_utils.clear_collision_pairs()
+                collision_utils.add_collision_pair('bullet:boss', self.stage.bullets, [self.stage.boss])
 
 
 

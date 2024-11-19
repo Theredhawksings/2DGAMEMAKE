@@ -1,4 +1,3 @@
-# stage7.py
 from pico2d import *
 from boss import Boss
 from grass import Grass
@@ -70,9 +69,14 @@ class Stage7:
         self.grass.draw()
         self.boy.draw()
 
+        if self.boss.dead:
+            self.grass = Grass([(512, 0, 512)], current_stage=7)
+
         if self.boss_activated:
             self.boss.draw()
-            self.boss_blood_image.clip_draw(0, 0, 1024, 15, 512, 753, 1024, 15)
+            health_ratio = max(self.boss.health / 200, 0)
+            width = int(1024 * health_ratio)
+            self.boss_blood_image.clip_draw(0, 0, width, 15, 1024 - width / 2, 753, width, 15)
 
         for bullet in self.bullets:
             bullet.draw()

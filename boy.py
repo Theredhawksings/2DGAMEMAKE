@@ -205,8 +205,6 @@ class Boy:
                 bullet = Bullet(self.x, self.y - 5, self.right)
                 self.stage.bullets.append(bullet)
                 print(f"Bullet added at position: ({bullet.x}, {bullet.y})")
-
-
                 collision_utils.clear_collision_pairs()
                 collision_utils.add_collision_pair('bullet:boss', self.stage.bullets, [self.stage.boss])
 

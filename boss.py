@@ -14,10 +14,10 @@ class Boss:
        self.y = 940
        self.active = False
        self.vy = BOSS_SPEED_PPS
-       self.y_min = 100
+       self.y_min = 130
        self.y_max = 760
        self.width = 250
-       self.height = 300
+       self.height = 350
        self.boy = None
        self.health = 200
        self.dead = False
@@ -27,7 +27,7 @@ class Boss:
        self.active = True
 
    def get_bb(self):
-       return (self.x - 80, self.y - 105, self.x + 80, self.y + 105)
+       return (self.x - 80, self.y - 130, self.x + 80, self.y + 130)
 
    def draw(self):
        self.image.clip_composite_draw(0, 0, 500, 600, 0, '', self.x, self.y, self.width, self.height)

@@ -1,3 +1,5 @@
+from random import randint
+
 from pico2d import load_image, draw_rectangle
 import math, os
 import boss
@@ -121,8 +123,10 @@ class BossObstacle:
 
         obstacles_to_remove = []
         for obstacle in self.obstacles:
-            velocity = OBSTACLE_SPEED_PPS * obstacle['move_speed']
-            obstacle['y'] -= velocity
+            dy = OBSTACLE_SPEED_PPS * obstacle['move_speed']
+            obstacle['y'] -= dy
+            dx = OBSTACLE_SPEED_PPS * randint(-1,1)
+            obstacle['x'] += dx
 
             if obstacle['y'] < -15:
                 obstacles_to_remove.append(obstacle)
@@ -151,10 +155,10 @@ class BossBomb:
     def get_bb(self):
         bbs = []
         for bombs in self.bomb:
-            bb = (bombs['x'] - 13,
-                  bombs['y'] - 15,
-                  bombs['x'] + 13,
-                  bombs['y'] + 15)
+            bb = (bombs['x'] - 37,
+                  bombs['y'] - 23,
+                  bombs['x'] + 37,
+                  bombs['y'] + 23)
             bbs.append(bb)
         return bbs
 
@@ -165,7 +169,7 @@ class BossBomb:
                                            '',
                                            bombs['x'],
                                            bombs['y'],
-                                           100, 75)
+                                           75, 46)
             draw_rectangle(*bb)
 
     def update(self):

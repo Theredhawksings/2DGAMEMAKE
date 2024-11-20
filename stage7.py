@@ -3,7 +3,7 @@ from boss import Boss
 from grass import Grass
 from ground import Ground
 import collision_utils
-from obstacle import BossObstacle, OBSTACLE_SPEED_PPS
+from obstacle import *
 import time
 from random import randint
 
@@ -15,12 +15,15 @@ class Stage7:
         self.boss_activated = False
 
         self.boss_obstacle = BossObstacle([])
+        self.boss_bomb = BossBomb([])
+
         self.last_obstacle_time = time.time()
+        self.last_bomb_time  = time.time()
 
         #collision_utils.add_collision_pair('boy:boss_obstacle', [self.boy], [self.boss_obstacle])
+        #collision_utils.add_collision_pair('boy:boss_bomb', [self.boy], [self.boss_bomb])
 
         grass_positions = [
-            (20, 0, 180),
             (20, 150, 180),
             (20, 300, 180),
             (20, 450, 180),
@@ -32,12 +35,17 @@ class Stage7:
         self.ground = Ground(current_stage=7)
         self.stage_change_call = stage_change_call
         self.bullets = []
+
         self.boss = Boss()
         self.boss.boy = boy
-        self.boy.update_stage_info(7)
-        self.boss_obstacle.boss = self.boss
 
+        self.boy.update_stage_info(7)
+
+        self.boss_obstacle.boss = self.boss
+        self.boss_bomb.boss = self.boss
         self.boss_blood_image = load_image(os.path.join('image', 'boss blood.png'))
+
+        self.bomb_fired = False
 
         collision_utils.clear_collision_pairs()
         collision_utils.add_collision_pair('bullet:boss', self.bullets, [self.boss])
@@ -74,7 +82,7 @@ class Stage7:
 
         if self.boss_activated and not self.boss.dead:
             current_time = time.time()
-            if current_time - self.last_obstacle_time >= 3.0:
+            if current_time - self.last_obstacle_time >= 2.0:
                 self.boss_obstacle.obstacles.append({
                     'x': randint(50, 180),
                     'y': 780,
@@ -82,7 +90,20 @@ class Stage7:
                 })
                 self.last_obstacle_time = current_time
 
+            if self.bomb_fired and abs(self.boss.y - self.boy.y) <= 30:
+                self.boss_bomb.bomb.append({
+                    'x': self.boss.x,
+                    'y': self.boss.y,
+                    'move_speed': 1.0
+                })
+                self.last_bomb_time = current_time
+                self.bomb_fired = False
+
+            if current_time - self.last_bomb_time >= 5.0 and not self.bomb_fired:
+                self.bomb_fired = True
+
         self.boss_obstacle.update()
+        self.boss_bomb.update()
 
     def draw(self):
         if not self.boss_activated:
@@ -111,3 +132,4 @@ class Stage7:
             bullet.draw()
 
         self.boss_obstacle.draw()
+        self.boss_bomb.draw()

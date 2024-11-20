@@ -93,6 +93,7 @@ class BossObstacle:
                 'move_speed': OBSTACLE_SPEED_PPS * move_speed
             })
 
+
     def get_bb(self):
         bbs = []
         for obstacle in self.obstacles:
@@ -147,6 +148,26 @@ class BossBomb:
                 'move_speed': move_speed
             })
 
+    def get_bb(self):
+        bbs = []
+        for bombs in self.bomb:
+            bb = (bombs['x'] - 13,
+                  bombs['y'] - 15,
+                  bombs['x'] + 13,
+                  bombs['y'] + 15)
+            bbs.append(bb)
+        return bbs
+
+    def draw(self):
+        for bombs, bb in zip(self.bomb, self.get_bb()):
+            self.image.clip_composite_draw(0, 0, 200, 150,
+                                           0,
+                                           '',
+                                           bombs['x'],
+                                           bombs['y'],
+                                           100, 75)
+            draw_rectangle(*bb)
+
     def update(self):
         if self.boss.dead:
             self.bomb.clear()
@@ -155,8 +176,8 @@ class BossBomb:
         bomb_to_remove = []
 
         for bombs in self.bomb:
-            velocity = OBSTACLE_SPEED_PPS * bombs['move_speed']*15
-            bombs['y'] -= velocity
+            dx = OBSTACLE_SPEED_PPS * 15
+            bombs['x'] -= dx
 
             if bombs['x'] < -15:
                 bomb_to_remove.append(bombs)

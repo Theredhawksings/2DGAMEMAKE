@@ -19,7 +19,7 @@ class Boss:
        self.width = 250
        self.height = 300
        self.boy = None
-       self.health = 200
+       self.health = 5
        self.dead = False
        self.death_speed = 100
 

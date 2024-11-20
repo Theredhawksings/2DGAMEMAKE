@@ -88,8 +88,14 @@ class Stage7:
         if not self.boss_activated:
             self.ground.draw(512, 384)
         else:
-            self.ground.update_stage(8)
-            self.ground.draw(512, 384)
+            if not self.boss.dead:
+                self.ground.update_stage(8)
+                self.ground.draw(512, 384)
+                self.grass.update_stage(8)
+            else:
+                self.ground.update_stage(7)
+                self.ground.draw(512, 384)
+                self.grass = Grass([(512, 0, 512)], current_stage=7)
 
         self.grass.draw()
         self.boy.draw()
@@ -98,11 +104,8 @@ class Stage7:
             self.boss.draw()
             health_ratio = max(self.boss.health / 200, 0)
             width = int(1024 * health_ratio)
-            x = 1024 - (1024 - width)  
+            x = 1024 - (1024 - width)
             self.boss_blood_image.clip_draw(0, 0, width, 15, x / 2, 753, width, 15)
-
-        if self.boss.dead:
-            self.grass = Grass([(512, 0, 512)], current_stage=7)
 
         for bullet in self.bullets:
             bullet.draw()

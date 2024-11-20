@@ -1,6 +1,6 @@
 from pico2d import load_image, draw_rectangle
 import math, os
-
+import boss
 PIXEL_PER_METER = (10.0 / 0.3)
 OBSTACLE_SPEED_KMPH = 0.108
 OBSTACLE_SPEED_MPM = OBSTACLE_SPEED_KMPH * 1000.0 / 60.0
@@ -79,3 +79,56 @@ class Obstacle:
     @staticmethod
     def get_death_count():
         return Obstacle.death_count
+
+class BossObstacle:
+    def __init__(self, obstacle_data):
+        self.image = load_image(os.path.join('obstacle', 'boss_obstacle.png'))
+        self.obstacles = []
+        self.boss = None
+
+        for x, y, move_speed in obstacle_data:
+            self.obstacles.append({
+                'x': x,
+                'y': y,
+                'move_speed': OBSTACLE_SPEED_PPS * move_speed
+            })
+
+    def get_bb(self):
+        bbs = []
+        for obstacle in self.obstacles:
+            bb = (obstacle['x'] - 13,
+                  obstacle['y'] - 15,
+                  obstacle['x'] + 13,
+                  obstacle['y'] + 15)
+            bbs.append(bb)
+        return bbs
+
+    def draw(self):
+        for obstacle, bb in zip(self.obstacles, self.get_bb()):
+            self.image.clip_composite_draw(0, 0, 300, 360,
+                                           0,
+                                           '',
+                                           obstacle['x'],
+                                           obstacle['y'],
+                                           30, 36)
+            draw_rectangle(*bb)
+
+    def update(self):
+        if self.boss.dead:
+            self.obstacles.clear()
+            return
+
+        obstacles_to_remove = []
+        for obstacle in self.obstacles:
+            obstacle['y'] -= obstacle['move_speed']
+
+            if obstacle['y'] < -15:
+                obstacles_to_remove.append(obstacle)
+
+        for obstacle in obstacles_to_remove:
+            if obstacle in self.obstacles:
+                self.obstacles.remove(obstacle)
+
+    def handle_collision(self, group, other):
+        if group == 'boy:boss_obstacle':
+            Obstacle.death_count += 1

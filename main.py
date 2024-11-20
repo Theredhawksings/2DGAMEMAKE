@@ -20,7 +20,7 @@ def main():
     game_world.change_stage(7)
     game_world.load_music(7)
     game_world.boy.x = 1
-    game_world.boy.y = 115
+    game_world.boy.y = 700
 
     while game_world.running:
         game_world.handle_events()

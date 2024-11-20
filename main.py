@@ -16,7 +16,6 @@ def main():
     open_canvas(1024, 768)
     game_world = GameWorld()
 
-
     game_world.state = 'PLAY'
     game_world.change_stage(7)
     game_world.load_music(7)

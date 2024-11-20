@@ -10,7 +10,8 @@ class Grass:
             1: 'Grass.png',
             2: 'Grass2.png',
             3: 'Grass3-3.png',
-            4: 'Grass4.png'
+            4: 'Grass4.png',
+            5: 'Grass5.png'
         }
 
         for key, filename in image_files.items():
@@ -24,7 +25,9 @@ class Grass:
 
     def draw(self):
         for x, y, width in self.positions:
-            if self.current_stage == 7:
+            if self.current_stage in [8]:
+                Grass.images[5].clip_draw(0, 0, width * 2, 60, x, y, width * 2, 60)
+            elif self.current_stage in [7, 8]:
                 Grass.images[4].clip_draw(0, 0, width * 2, 60, x, y, width * 2, 60)
             elif 4 <= self.current_stage <= 6:
                 Grass.images[3].clip_draw(0, 0, width * 2, 60, x, y, width * 2, 60)
@@ -33,15 +36,18 @@ class Grass:
             else:
                 Grass.images[1].clip_draw(0, 0, width * 2, 60, x, y, width * 2, 60)
 
-        # 충돌 박스 그리기
         for bb in self.get_bb():
             draw_rectangle(*bb)
 
     def get_positions(self):
         return self.positions
 
+    def update_stage(self, stage):
+        self.current_stage = stage
+
     def get_bb(self):
         bounding_boxes = []
         for x, y, width in self.positions:
             bounding_boxes.append((x - width, y - 30, x + width, y + 60))
         return bounding_boxes
+

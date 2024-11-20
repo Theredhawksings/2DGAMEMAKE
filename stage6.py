@@ -168,7 +168,7 @@ class Stage6:
 
         if self.boy.x > 1024 and self.boy.y==425:
             self.stage_change_call(7)
-            self.boy.x = 10
+            self.boy.x = 30
             self.boy.y = 1020
 
 

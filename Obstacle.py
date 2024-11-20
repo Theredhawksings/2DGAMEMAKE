@@ -120,7 +120,8 @@ class BossObstacle:
 
         obstacles_to_remove = []
         for obstacle in self.obstacles:
-            obstacle['y'] -= obstacle['move_speed']
+            velocity = OBSTACLE_SPEED_PPS * obstacle['move_speed']
+            obstacle['y'] -= velocity
 
             if obstacle['y'] < -15:
                 obstacles_to_remove.append(obstacle)
@@ -132,3 +133,38 @@ class BossObstacle:
     def handle_collision(self, group, other):
         if group == 'boy:boss_obstacle':
             Obstacle.death_count += 1
+
+class BossBomb:
+    def __init__(self, obstacle_data):
+        self.image = load_image(os.path.join('obstacle', 'boss_bomb.png'))
+        self.bomb = []
+        self.boss = None
+
+        for x, y, move_speed in obstacle_data:
+            self.bomb.append({
+                'x': x,
+                'y': y,
+                'move_speed': move_speed
+            })
+
+    def update(self):
+        if self.boss.dead:
+            self.bomb.clear()
+            return
+
+        bomb_to_remove = []
+
+        for bombs in self.bomb:
+            velocity = OBSTACLE_SPEED_PPS * bombs['move_speed']*15
+            bombs['y'] -= velocity
+
+            if bombs['x'] < -15:
+                bomb_to_remove.append(bombs)
+
+        for bomb in bomb_to_remove:
+            if bomb in self.bomb:
+                self.bomb.remove(bomb)
+
+        def handle_collision(self, group, other):
+            if group == 'boy:boss_obstacle':
+                Obstacle.death_count += 1

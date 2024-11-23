@@ -13,17 +13,16 @@ class Stage7:
         self.boy.stage = self
         self.start_time = time.time()
         self.boss_activated = False
+        self.boss_activated_time = 0
+        self.laser_pattern_started = False
 
         self.boss_obstacle = BossObstacle([])
         self.boss_bomb = BossBomb([])
         self.boss_laser = BossLaser([])
 
         self.last_obstacle_time = time.time()
-        self.last_bomb_time  = time.time()
+        self.last_bomb_time = time.time()
         self.last_laser_time = time.time()
-
-        #collision_utils.add_collision_pair('boy:boss_obstacle', [self.boy], [self.boss_obstacle])
-        #collision_utils.add_collision_pair('boy:boss_bomb', [self.boy], [self.boss_bomb])
 
         grass_positions = [
             (20, 150, 180),
@@ -33,20 +32,17 @@ class Stage7:
         ]
 
         self.grass = Grass(grass_positions, current_stage=7)
-
         self.ground = Ground(current_stage=7)
         self.stage_change_call = stage_change_call
         self.bullets = []
 
         self.boss = Boss()
         self.boss.boy = boy
-
         self.boy.update_stage_info(7)
 
         self.boss_obstacle.boss = self.boss
         self.boss_bomb.boss = self.boss
         self.boss_laser.boss = self.boss
-
         self.boss_blood_image = load_image(os.path.join('image', 'boss blood.png'))
 
         self.bomb_fired = False
@@ -69,6 +65,7 @@ class Stage7:
 
         if not self.boss_activated and time.time() - self.start_time >= 10:
             self.boss_activated = True
+            self.boss_activated_time = time.time()
             self.boss.activate()
 
         if self.boss_activated:
@@ -86,6 +83,8 @@ class Stage7:
 
         if self.boss_activated and not self.boss.dead:
             current_time = time.time()
+
+            # 장애물 패턴
             if current_time - self.last_obstacle_time >= 2.0:
                 self.boss_obstacle.obstacles.append({
                     'x': randint(50, 180),
@@ -94,6 +93,7 @@ class Stage7:
                 })
                 self.last_obstacle_time = current_time
 
+            # 폭탄 패턴
             if self.bomb_fired and abs(self.boss.y - self.boy.y) <= 30:
                 self.boss_bomb.bomb.append({
                     'x': self.boss.x,
@@ -106,7 +106,12 @@ class Stage7:
             if current_time - self.last_bomb_time >= 5.0 and not self.bomb_fired:
                 self.bomb_fired = True
 
-            if current_time - self.last_laser_time >= 4.0:
+            # 레이저 패턴 (보스 활성화 10초 후부터 10초마다)
+            if not self.laser_pattern_started and current_time - self.boss_activated_time >= 10.0:
+                self.laser_pattern_started = True
+                self.last_laser_time = current_time
+
+            if self.laser_pattern_started and current_time - self.last_laser_time >= 10.0:
                 self.boss_laser.lasers.append({
                     'x': self.boss.x - 145,
                     'y': self.boss.y,

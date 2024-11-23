@@ -16,9 +16,11 @@ class Stage7:
 
         self.boss_obstacle = BossObstacle([])
         self.boss_bomb = BossBomb([])
+        self.boss_laser = BossLaser([])
 
         self.last_obstacle_time = time.time()
         self.last_bomb_time  = time.time()
+        self.last_laser_time = time.time()
 
         #collision_utils.add_collision_pair('boy:boss_obstacle', [self.boy], [self.boss_obstacle])
         #collision_utils.add_collision_pair('boy:boss_bomb', [self.boy], [self.boss_bomb])
@@ -43,6 +45,8 @@ class Stage7:
 
         self.boss_obstacle.boss = self.boss
         self.boss_bomb.boss = self.boss
+        self.boss_laser.boss = self.boss
+
         self.boss_blood_image = load_image(os.path.join('image', 'boss blood.png'))
 
         self.bomb_fired = False
@@ -102,8 +106,18 @@ class Stage7:
             if current_time - self.last_bomb_time >= 5.0 and not self.bomb_fired:
                 self.bomb_fired = True
 
+            if current_time - self.last_laser_time >= 4.0:
+                self.boss_laser.lasers.append({
+                    'x': self.boss.x - 145,
+                    'y': self.boss.y,
+                    'charging': True,
+                    'charge_start': time.time()
+                })
+                self.last_laser_time = current_time
+
         self.boss_obstacle.update()
         self.boss_bomb.update()
+        self.boss_laser.update()
 
     def draw(self):
         if not self.boss_activated:
@@ -133,3 +147,4 @@ class Stage7:
 
         self.boss_obstacle.draw()
         self.boss_bomb.draw()
+        self.boss_laser.draw()

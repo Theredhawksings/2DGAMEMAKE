@@ -3,6 +3,8 @@ from random import randint
 from pico2d import load_image, draw_rectangle
 import math, os
 import boss
+import time
+
 PIXEL_PER_METER = (10.0 / 0.3)
 OBSTACLE_SPEED_KMPH = 0.108
 OBSTACLE_SPEED_MPM = OBSTACLE_SPEED_KMPH * 1000.0 / 60.0
@@ -193,3 +195,65 @@ class BossBomb:
         def handle_collision(self, group, other):
             if group == 'boy:boss_obstacle':
                 Obstacle.death_count += 1
+
+
+class BossLaser:
+    def __init__(self, laser_data):
+        self.image = load_image(os.path.join('obstacle', 'boss_laser.png'))
+        self.lasers = []
+        self.boss = None
+
+    def get_bb(self):
+        bbs = []
+        for laser in self.lasers:
+            if not laser['charging']:
+                bb = (0,  # 화면 왼쪽 끝
+                      laser['y'] - 50,
+                      1024,  # 화면 오른쪽 끝
+                      laser['y'] + 50)
+                bbs.append(bb)
+        return bbs
+
+    def draw(self):
+        for laser in self.lasers:
+            if laser['charging']:
+                self.image.clip_composite_draw(0, 0, 1024, 90,
+                                               0,
+                                               '',
+                                               512,
+                                               laser['y'],
+                                               1024, 15)
+            else:
+                self.image.clip_composite_draw(0, 0, 1024, 90,
+                                               0,
+                                               '',
+                                               512,
+                                               laser['y'],  # 원래 y 위치 사용
+                                               1024, 90)
+                bbs = self.get_bb()
+                for bb in bbs:
+                    draw_rectangle(*bb)
+
+    def update(self):
+        if self.boss.dead:
+            self.lasers.clear()
+            return
+
+        current_time = time.time()
+        lasers_to_remove = []
+
+        for laser in self.lasers:
+            if laser['charging']:
+                if current_time - laser['charge_start'] >= 1.0:
+                    laser['charging'] = False
+
+            if current_time - laser['charge_start'] >= 2.0:
+                lasers_to_remove.append(laser)
+
+        for laser in lasers_to_remove:
+            if laser in self.lasers:
+                self.lasers.remove(laser)
+
+    def handle_collision(self, group, other):
+        if group == 'boy:boss_laser':
+            Obstacle.death_count += 1

@@ -207,21 +207,22 @@ class BossLaser:
         bbs = []
         for laser in self.lasers:
             if not laser['charging']:
-                bb = (0,  # 화면 왼쪽 끝
-                      laser['y'] - 50,
-                      1024,  # 화면 오른쪽 끝
-                      laser['y'] + 50)
+                bb = (0,
+                      laser['y'] - 40,
+                      1024,
+                      laser['y'] + 40)
                 bbs.append(bb)
         return bbs
 
     def draw(self):
         for laser in self.lasers:
             if laser['charging']:
+                visual_y = laser['y'] + math.sin(time.time() * 10) * 20
                 self.image.clip_composite_draw(0, 0, 1024, 90,
                                                0,
                                                '',
                                                512,
-                                               laser['y'],
+                                               visual_y,
                                                1024, 15)
             else:
                 self.image.clip_composite_draw(0, 0, 1024, 90,

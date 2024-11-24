@@ -17,8 +17,8 @@ def main():
     game_world = GameWorld()
 
     game_world.state = 'PLAY'
-    game_world.change_stage(7)
-    game_world.load_music(7)
+    game_world.change_stage(8)
+    game_world.load_music(8)
     game_world.boy.x = 1
     game_world.boy.y = 700
 

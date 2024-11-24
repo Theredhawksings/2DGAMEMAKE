@@ -205,11 +205,19 @@ class BossBomb:
 
     def handle_collision(self, group, other):
         if group == 'boy:boss_bomb':
-            print("피격")
-            '''
-            Obstacle.death_count += 1
-            self.boss.health = min(200, self.boss.health + 20)
-            '''
+            bombs_to_remove = []
+
+            for bomb in self.bomb:
+                if (bomb['x'] - 37 < other.x < bomb['x'] + 37 and
+                        bomb['y'] - 23 < other.y < bomb['y'] + 23):
+                    bombs_to_remove.append(bomb)
+
+            for bomb in bombs_to_remove:
+                if bomb in self.bomb:
+                    self.bomb.remove(bomb)
+                    if self.boss:
+                        self.boss.health = min(200, self.boss.health + 20)
+
 
 class BossLaser:
     def __init__(self, laser_data):
@@ -220,7 +228,7 @@ class BossLaser:
     def get_bb(self):
         bbs = []
         for laser in self.lasers:
-            if not laser['charging']:
+            if not laser['charging'] and not laser.get('hit', False):
                 bb = (0,
                       laser['y'] - 40,
                       1024,
@@ -238,12 +246,25 @@ class BossLaser:
                                                512,
                                                visual_y,
                                                1024, 15)
+            elif laser.get('hit', False):
+                progress = (time.time() - laser['hit_time']) / 0.2
+                if progress < 1.0:
+                    if int(progress * 10) % 2 == 0:
+                        opacity = int(255 * (1 - progress))
+                        self.image.opacify(opacity / 255)
+                        self.image.clip_composite_draw(0, 0, 1024, 90,
+                                                   0,
+                                                   '',
+                                                   512,
+                                                   laser['y'],
+                                                   1024, 90)
+                        self.image.opacify(1)
             else:
                 self.image.clip_composite_draw(0, 0, 1024, 90,
                                                0,
                                                '',
                                                512,
-                                               laser['y'],  # 원래 y 위치 사용
+                                               laser['y'],
                                                1024, 90)
                 bbs = self.get_bb()
                 for bb in bbs:
@@ -262,7 +283,10 @@ class BossLaser:
                 if current_time - laser['charge_start'] >= 1.0:
                     laser['charging'] = False
 
-            if current_time - laser['charge_start'] >= 2.0:
+            if laser.get('hit', False):
+                if current_time - laser['hit_time'] >= 0.2:
+                    lasers_to_remove.append(laser)
+            elif current_time - laser['charge_start'] >= 2.0:
                 lasers_to_remove.append(laser)
 
         for laser in lasers_to_remove:
@@ -271,8 +295,11 @@ class BossLaser:
 
     def handle_collision(self, group, other):
         if group == 'boy:boss_laser':
-            print("피격")
-            '''
-            Obstacle.death_count += 1
-            self.boss.health = min(200, self.boss.health + 20)
-            '''
+            for laser in self.lasers:
+                if not laser['charging'] and not laser.get('hit', False):
+                    if laser['y'] - 40 < other.y < laser['y'] + 40:
+                        laser['hit'] = True
+                        laser['hit_time'] = time.time()
+                        if self.boss:
+                            self.boss.health = min(200, self.boss.health + 20)
+                            print("레이저 충돌! 보스 체력 회복")

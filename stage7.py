@@ -25,10 +25,10 @@ class Stage7:
         self.last_laser_time = time.time()
 
         grass_positions = [
-            (20, 150, 180),
-            (20, 300, 180),
-            (20, 450, 180),
-            (20, 600, 180),
+            (60, 150, 180),
+            (60, 300, 180),
+            (60, 450, 180),
+            (60, 600, 180),
         ]
 
         self.grass = Grass(grass_positions, current_stage=7)
@@ -48,7 +48,13 @@ class Stage7:
         self.bomb_fired = False
 
         collision_utils.clear_collision_pairs()
-        collision_utils.add_collision_pair('bullet:boss', self.bullets, [self.boss])
+
+        collision_utils.add_collision_pair('boy:boss_obstacle', boy, self.boss_obstacle)
+        collision_utils.add_collision_pair('boy:boss_bomb', boy, self.boss_bomb)
+        collision_utils.add_collision_pair('boy:boss_laser', boy, self.boss_laser)
+
+        collision_utils.add_collision_pair('bullet:boss', self.bullets, self.boss)
+
 
     def handle_event(self, event):
         self.boy.handle_event(event)
@@ -71,21 +77,19 @@ class Stage7:
         if self.boss_activated:
             self.boss.update()
 
-        for bullet in self.bullets:
+        for bullet in self.bullets[:]:
             bullet.update()
-
-        collision_utils.handle_collisions()
-
-        bullets_to_remove = [bullet for bullet in self.bullets if bullet.should_remove]
-        for bullet in bullets_to_remove:
-            if bullet in self.bullets:
+            if bullet.should_remove:
                 self.bullets.remove(bullet)
+
+        if 'bullet:boss' in collision_utils.collision_pairs:
+            collision_utils.collision_pairs['bullet:boss'][0] = self.bullets
 
         if self.boss_activated and not self.boss.dead:
             current_time = time.time()
 
             # 장애물 패턴
-            if current_time - self.last_obstacle_time >= 2.0:
+            if current_time - self.last_obstacle_time >= 1.5:
                 self.boss_obstacle.obstacles.append({
                     'x': randint(50, 180),
                     'y': 780,
@@ -94,11 +98,11 @@ class Stage7:
                 self.last_obstacle_time = current_time
 
             # 폭탄 패턴
-            if self.bomb_fired and abs(self.boss.y - self.boy.y) <= 30:
+            if self.bomb_fired and abs(self.boss.y - self.boy.y) <= 20:
                 self.boss_bomb.bomb.append({
                     'x': self.boss.x,
                     'y': self.boss.y,
-                    'move_speed': 1.0
+                    'move_speed': 3.0
                 })
                 self.last_bomb_time = current_time
                 self.bomb_fired = False
@@ -106,23 +110,28 @@ class Stage7:
             if current_time - self.last_bomb_time >= 5.0 and not self.bomb_fired:
                 self.bomb_fired = True
 
-            # 레이저 패턴 (보스 활성화 10초 후부터 10초마다)
-            if not self.laser_pattern_started and current_time - self.boss_activated_time >= 10.0:
+            # 레이저 패턴
+            if not self.laser_pattern_started and current_time - self.boss_activated_time >= 5.0:
                 self.laser_pattern_started = True
                 self.last_laser_time = current_time
 
-            if self.laser_pattern_started and current_time - self.last_laser_time >= 10.0:
-                self.boss_laser.lasers.append({
-                    'x': self.boss.x - 145,
-                    'y': self.boss.y,
-                    'charging': True,
-                    'charge_start': time.time()
-                })
-                self.last_laser_time = current_time
+            if self.laser_pattern_started and current_time - self.last_laser_time >= 5.0:
+                y_difference = abs(self.boss.y - self.boy.y)
+                if y_difference <= 5:
+                    self.boss_laser.lasers.append({
+                        'x': self.boss.x - 145,
+                        'y': self.boss.y,
+                        'charging': True,
+                        'charge_start': time.time()
+                    })
+                    self.last_laser_time = current_time
+
 
         self.boss_obstacle.update()
         self.boss_bomb.update()
         self.boss_laser.update()
+
+        collision_utils.handle_collisions()
 
     def draw(self):
         if not self.boss_activated:

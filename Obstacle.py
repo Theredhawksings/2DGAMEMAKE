@@ -101,9 +101,9 @@ class BossObstacle:
         bbs = []
         for obstacle in self.obstacles:
             bb = (obstacle['x'] - 15,
-                  obstacle['y'] - 17,
+                  obstacle['y'] - 20,
                   obstacle['x'] + 15,
-                  obstacle['y'] + 17)
+                  obstacle['y'] + 20)
             bbs.append(bb)
         return bbs
 
@@ -141,8 +141,8 @@ class BossObstacle:
             obstacles_to_remove = []
 
             for obstacle in self.obstacles:
-                if (obstacle['x'] - 13 < other.x < obstacle['x'] + 13 and
-                        obstacle['y'] - 15 < other.y < obstacle['y'] + 15):
+                if (obstacle['x'] - 15 < other.x < obstacle['x'] + 15 and
+                        obstacle['y'] - 20 < other.y < obstacle['y'] + 20):
                     obstacles_to_remove.append(obstacle)
 
             for obstacle in obstacles_to_remove:

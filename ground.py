@@ -11,7 +11,8 @@ class Ground:
             2: 'ground2.png',
             3: 'ground3.png',
             4: 'ground4.png',
-            5: 'ground5.png'
+            5: 'ground5.png',
+            6: 'ground6.png'
         }
 
         for key, filename in image_files.items():
@@ -26,7 +27,7 @@ class Ground:
         self.current_stage = stage
 
     def draw(self, x, y):
-        if self.current_stage in [1, 2, 3]:
+        if self.current_stage in [1, 2]:
             Ground.images[1].draw(x, y)
         elif self.current_stage in [4, 5, 6]:
             Ground.images[3].draw(x, y)
@@ -38,3 +39,5 @@ class Ground:
     def falling_draw(self, x, y, background_y):
         if self.current_stage == 3:
             Ground.images[2].clip_draw(0, background_y, 1024, 768, x, y, 1024, 768)
+        if self.current_stage == 9:
+            Ground.images[6].clip_draw(0, background_y, 1024, 768, x, y, 1024, 768)

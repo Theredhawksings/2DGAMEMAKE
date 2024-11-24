@@ -6,6 +6,7 @@ import collision_utils
 from obstacle import *
 import time
 from random import randint
+from font import Font
 
 class Stage7:
     def __init__(self, stage_change_call, boy):
@@ -15,6 +16,7 @@ class Stage7:
         self.boss_activated = False
         self.boss_activated_time = 0
         self.laser_pattern_started = False
+        self.font = Font(30)
 
         self.boss_obstacle = BossObstacle([])
         self.boss_bomb = BossBomb([])
@@ -140,6 +142,7 @@ class Stage7:
     def draw(self):
         if not self.boss_activated:
             self.ground.draw(512, 384)
+            self.font.draw(200, 380, "곧 보스가 나옵니다. 보스 공격을 맞으면 보스는 체력을 회복합니다", (255, 255, 255))
         else:
             if not self.boss.dead:
                 self.ground.update_stage(8)
@@ -159,10 +162,10 @@ class Stage7:
             width = int(1024 * health_ratio)
             x = 1024 - (1024 - width)
             self.boss_blood_image.clip_draw(0, 0, width, 15, x / 2, 753, width, 15)
+            self.boss_obstacle.draw()
+            self.boss_bomb.draw()
+            self.boss_laser.draw()
+
 
         for bullet in self.bullets:
             bullet.draw()
-
-        self.boss_obstacle.draw()
-        self.boss_bomb.draw()
-        self.boss_laser.draw()

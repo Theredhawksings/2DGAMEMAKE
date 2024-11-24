@@ -1,6 +1,6 @@
 from random import randint
 
-from pico2d import load_image, draw_rectangle
+from pico2d import *
 import math, os
 import boss
 import time
@@ -151,7 +151,6 @@ class BossObstacle:
                     if self.boss:
                         self.boss.health = min(200, self.boss.health + 20)
 
-
 class BossBomb:
     def __init__(self, obstacle_data):
         self.image = load_image(os.path.join('obstacle', 'boss_bomb.png'))
@@ -218,12 +217,14 @@ class BossBomb:
                     if self.boss:
                         self.boss.health = min(200, self.boss.health + 20)
 
-
 class BossLaser:
     def __init__(self, laser_data):
         self.image = load_image(os.path.join('obstacle', 'boss_laser.png'))
         self.lasers = []
         self.boss = None
+        self.laser_sound = load_wav(os.path.join('bgm', '[Undertale] Gaster Blaster Sound Effect.mp3'))
+
+
 
     def get_bb(self):
         bbs = []
@@ -279,6 +280,10 @@ class BossLaser:
         lasers_to_remove = []
 
         for laser in self.lasers:
+            if laser.get('charging', False) and not laser.get('sound_played', False):
+                self.laser_sound.play()
+                laser['sound_played'] = True
+
             if laser['charging']:
                 if current_time - laser['charge_start'] >= 1.0:
                     laser['charging'] = False
@@ -302,4 +307,3 @@ class BossLaser:
                         laser['hit_time'] = time.time()
                         if self.boss:
                             self.boss.health = min(200, self.boss.health + 20)
-                            print("레이저 충돌! 보스 체력 회복")

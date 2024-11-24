@@ -161,7 +161,7 @@ class Boy:
                 if self.check_grass_collision(grass.get_positions()):
                     self.reset_jump_state()
 
-            #print(f" x={self.x:.2f}, y={self.y:.2f}, gravity={self.gravity:.2f}")
+            print(f" x={self.x:.2f}, y={self.y:.2f}, gravity={self.gravity:.2f}")
 
     def reset_jump_state(self):
         self.falling = False

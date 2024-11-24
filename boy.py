@@ -119,6 +119,7 @@ class Boy:
         self.current_stage = None
         self.event_queue = []
         self.falling = False
+        self.stage = None
 
         self.state_machine = StateMachine(self)
         self.state_machine.set_transitions({
@@ -160,7 +161,7 @@ class Boy:
                 if self.check_grass_collision(grass.get_positions()):
                     self.reset_jump_state()
 
-            print(f" x={self.x:.2f}, y={self.y:.2f}, gravity={self.gravity:.2f}")
+            #print(f" x={self.x:.2f}, y={self.y:.2f}, gravity={self.gravity:.2f}")
 
     def reset_jump_state(self):
         self.falling = False
@@ -176,6 +177,7 @@ class Boy:
             self.jump_speed = 0
             self.gravity = -GRAVITY_PPS
             self.falling = False
+
 
     def update(self, grass):
         self.state_machine.update(grass)
@@ -205,8 +207,6 @@ class Boy:
                 bullet = Bullet(self.x, self.y - 5, self.right)
                 self.stage.bullets.append(bullet)
                 print(f"Bullet added at position: ({bullet.x}, {bullet.y})")
-                collision_utils.clear_collision_pairs()
-                collision_utils.add_collision_pair('bullet:boss', self.stage.bullets, [self.stage.boss])
 
 
 

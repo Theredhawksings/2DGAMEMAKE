@@ -12,7 +12,7 @@ class Stage1:
     def __init__(self, stage_change_call, boy):
         self.boy = boy
         self.boy.stage = self
-        self.grass = Grass([(512, 30, 512)])
+        self.grass = Grass([(512, 30, 514)])
         self.ground = Ground(current_stage=1)
 
         self.obstacle = Obstacle([

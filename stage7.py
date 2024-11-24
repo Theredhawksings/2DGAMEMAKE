@@ -62,12 +62,18 @@ class Stage7:
     def update(self):
         self.boy.update(self.grass)
 
+        if self.boy.x < 2:
+            self.boy.x = 2
+            if self.boy.y == 45:
+                self.boy.y = 45
+
         if self.boy.y < -1:
             self.boy.x = 10
             self.boy.y = 760
 
-        if self.boy.x < 1:
-            self.boy.x = 1
+
+
+
 
         if not self.boss_activated and time.time() - self.start_time >= 10:
             self.boss_activated = True
@@ -144,7 +150,7 @@ class Stage7:
             else:
                 self.ground.update_stage(7)
                 self.ground.draw(512, 384)
-                self.grass = Grass([(512, 0, 512)], current_stage=7)
+                self.grass = Grass([(512, 0, 520), ], current_stage=7)
 
         self.grass.draw()
         self.boy.draw()

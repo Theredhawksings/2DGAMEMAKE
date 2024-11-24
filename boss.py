@@ -58,7 +58,7 @@ class Boss:
                self.boy.stage.bullets.remove(bullet)
 
    def handle_collision(self, group, other):
-       if group == 'bullet:boss' and not getattr(other, 'is_collided', False):
+       if group == 'bullet:boss' :
            self.health -= 5
            print(self.health)
            other.should_remove = True

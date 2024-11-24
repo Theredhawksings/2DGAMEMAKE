@@ -39,8 +39,8 @@ class Boss:
 
        if self.dead:
            self.y -= self.death_speed * 0.16
-           if self.y < -130:
-               self.y = -130
+           if self.y < -180:
+               self.y = -180
            return
 
        self.y += self.vy * 0.016

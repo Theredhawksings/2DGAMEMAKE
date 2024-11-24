@@ -100,10 +100,10 @@ class BossObstacle:
     def get_bb(self):
         bbs = []
         for obstacle in self.obstacles:
-            bb = (obstacle['x'] - 13,  # 약간 더 크게
-                  obstacle['y'] - 15,
-                  obstacle['x'] + 13,
-                  obstacle['y'] + 15)
+            bb = (obstacle['x'] - 15,
+                  obstacle['y'] - 17,
+                  obstacle['x'] + 15,
+                  obstacle['y'] + 17)
             bbs.append(bb)
         return bbs
 

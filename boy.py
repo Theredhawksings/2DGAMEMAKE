@@ -252,7 +252,7 @@ class Boy:
     def get_bb(self):
         if self.is_invincible:
             return 0, 0, 0, 0
-        return self.x-12, self.y-25, self.x + 12, self.y + 15
+        return self.x-12, self.y-23, self.x + 12, self.y + 15
 
     def update_stage_info(self, stage_number):
         self.previous_stage = self.current_stage

@@ -173,7 +173,7 @@ class Stage3:
             self.obstacle.obstacles.append(new_obstacle)
             self.last_obstacle_time = current_time
 
-        if current_time % 0.1 <= 0.01:
+        if current_time % 0.1 <= 0.01 and self.boy.apply_gravity == False:
             self.boy.y -= 1
 
         if collision_utils.collide(self.boy, self.obstacle):

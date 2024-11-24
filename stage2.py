@@ -88,6 +88,8 @@ class Stage2:
         self.boy.update(self.grass)
         self.obstacle.update()
 
+        self.fonts[0]["text"] = f"죽은 횟수: {Obstacle.get_death_count()}"
+
         current_time = time.time()
 
         if current_time - self.last_obstacle_time >= 0.1 and self.boy.y < 300 and self.boy.x >= 315:
@@ -124,7 +126,7 @@ class Stage2:
                     sub_obj.draw()
             elif isinstance(obj, Ground):
                 obj.draw(512, 384)
-            elif isinstance(obj, dict) and "font" in obj:  # 폰트 객체일 경우 처리
+            elif isinstance(obj, dict) and "font" in obj:
                 font = obj["font"]
                 x = obj["x"]
                 y = obj["y"]

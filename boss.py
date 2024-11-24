@@ -59,7 +59,7 @@ class Boss:
 
    def handle_collision(self, group, other):
        if group == 'bullet:boss' :
-           self.health -= 5
+           self.health -= 2
            print(self.health)
            other.should_remove = True
            other.is_collided = True

@@ -19,9 +19,10 @@ class Boss:
        self.width = 250
        self.height = 350
        self.boy = None
-       self.health = 200
+       self.health = 2
        self.dead = False
        self.death_speed = 100
+       self.damage_sound = load_wav(os.path.join('bgm', 'damage7.mp3'))
 
    def activate(self):
        self.active = True
@@ -60,7 +61,7 @@ class Boss:
    def handle_collision(self, group, other):
        if group == 'bullet:boss' :
            self.health -= 2
-           print(self.health)
+           self.damage_sound.play()
            other.should_remove = True
            other.is_collided = True
            if self.health <= 0:

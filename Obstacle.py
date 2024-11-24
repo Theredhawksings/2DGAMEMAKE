@@ -140,6 +140,7 @@ class BossObstacle:
     def handle_collision(self, group, other):
         if group == 'boy:boss_obstacle':
             Obstacle.death_count += 1
+            self.boss.health = min(200, self.boss.health + 20)
 
 class BossBomb:
     def __init__(self, obstacle_data):
@@ -195,7 +196,7 @@ class BossBomb:
         def handle_collision(self, group, other):
             if group == 'boy:boss_obstacle':
                 Obstacle.death_count += 1
-
+                self.boss.health = min(200, self.boss.health + 20)
 
 class BossLaser:
     def __init__(self, laser_data):
@@ -258,3 +259,4 @@ class BossLaser:
     def handle_collision(self, group, other):
         if group == 'boy:boss_laser':
             Obstacle.death_count += 1
+            self.boss.health = min(200, self.boss.health + 20)

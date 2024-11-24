@@ -21,14 +21,17 @@ def collide(a, b):
     if hasattr(a, 'is_invincible') and a.is_invincible:
         return False
 
-    if isinstance(b.get_bb(), list):
+    if hasattr(b, 'get_bb') and isinstance(b.get_bb(), list):
         la, ba, ra, ta = a.get_bb()
         for bb in b.get_bb():
             lb, bb_b, rb, tb = bb
             if not (la > rb or ra < lb or ta < bb_b or ba > tb):
                 print(f"Collision detected between {a} and {b}")
+                print(f"Boy BB: {a.get_bb()}")
+                print(f"Obstacle BB: {bb}")
                 return True
         return False
+
     else:
         la, ba, ra, ta = a.get_bb()
         lb, bb, rb, tb = b.get_bb()
@@ -37,8 +40,6 @@ def collide(a, b):
         if ra < lb: return False
         if ta < bb: return False
         if ba > tb: return False
-
-        print(f"Collision detected between {a} and {b}")
 
         return True
 

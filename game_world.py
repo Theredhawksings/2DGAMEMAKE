@@ -84,6 +84,8 @@ class GameWorld:
             music_path = os.path.join('bgm', 'Monster.mp3')
         elif stage_number in [4, 5, 6]:
             music_path = os.path.join('bgm', 'sleepwood.mp3')
+        elif stage_number in [8]:
+            music_path = os.path.join('bgm', 'Different_Heaven_Even_Better_Feat_Sian.mp3')
         else:
             return
 

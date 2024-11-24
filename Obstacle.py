@@ -97,11 +97,10 @@ class BossObstacle:
                 'move_speed': OBSTACLE_SPEED_PPS * move_speed
             })
 
-
     def get_bb(self):
         bbs = []
         for obstacle in self.obstacles:
-            bb = (obstacle['x'] - 13,
+            bb = (obstacle['x'] - 13,  # 약간 더 크게
                   obstacle['y'] - 15,
                   obstacle['x'] + 13,
                   obstacle['y'] + 15)
@@ -139,8 +138,19 @@ class BossObstacle:
 
     def handle_collision(self, group, other):
         if group == 'boy:boss_obstacle':
-            Obstacle.death_count += 1
-            self.boss.health = min(200, self.boss.health + 20)
+            obstacles_to_remove = []
+
+            for obstacle in self.obstacles:
+                if (obstacle['x'] - 13 < other.x < obstacle['x'] + 13 and
+                        obstacle['y'] - 15 < other.y < obstacle['y'] + 15):
+                    obstacles_to_remove.append(obstacle)
+
+            for obstacle in obstacles_to_remove:
+                if obstacle in self.obstacles:
+                    self.obstacles.remove(obstacle)
+                    if self.boss:
+                        self.boss.health = min(200, self.boss.health + 20)
+
 
 class BossBomb:
     def __init__(self, obstacle_data):
@@ -193,10 +203,13 @@ class BossBomb:
             if bomb in self.bomb:
                 self.bomb.remove(bomb)
 
-        def handle_collision(self, group, other):
-            if group == 'boy:boss_obstacle':
-                Obstacle.death_count += 1
-                self.boss.health = min(200, self.boss.health + 20)
+    def handle_collision(self, group, other):
+        if group == 'boy:boss_bomb':
+            print("피격")
+            '''
+            Obstacle.death_count += 1
+            self.boss.health = min(200, self.boss.health + 20)
+            '''
 
 class BossLaser:
     def __init__(self, laser_data):
@@ -258,5 +271,8 @@ class BossLaser:
 
     def handle_collision(self, group, other):
         if group == 'boy:boss_laser':
+            print("피격")
+            '''
             Obstacle.death_count += 1
             self.boss.health = min(200, self.boss.health + 20)
+            '''

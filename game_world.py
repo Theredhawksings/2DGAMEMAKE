@@ -12,6 +12,7 @@ from stage4 import Stage4
 from stage5 import Stage5
 from stage6 import Stage6
 from stage7 import Stage7
+from stage8 import Stage8
 
 class MusicManager:
     def __init__(self):
@@ -63,9 +64,10 @@ class GameWorld:
             Stage5,
             Stage6,
             Stage7,
+            Stage8,
         ]
 
-        if 1 <= stage_number <= 7:
+        if 1 <= stage_number <= 8:
             stage_class = stage_classes[stage_number]
             self.current_stage = stage_class(self.change_stage, self.boy)
             self.stage_change_time = time.time()
@@ -73,7 +75,7 @@ class GameWorld:
         self.last_stage = stage_number
 
         if stage_number == 7:
-            self.music_manager.stop_music()  # 10초 후에 재생하기 위해 일단 중지
+            self.music_manager.stop_music()
         else:
             self.load_music(stage_number)
 

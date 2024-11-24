@@ -66,6 +66,8 @@ class Stage7:
             self.boy.x = 2
             if self.boy.y == 45:
                 self.boy.y = 45
+        elif self.boy.x >= 1024:
+            self.stage_change_call(8)
 
         if self.boy.y < -1:
             self.boy.x = 10

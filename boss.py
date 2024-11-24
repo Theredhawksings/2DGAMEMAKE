@@ -19,7 +19,7 @@ class Boss:
        self.width = 250
        self.height = 350
        self.boy = None
-       self.health = 200
+       self.health = 2
        self.dead = False
        self.death_speed = 100
        self.damage_sound = load_wav(os.path.join('bgm', 'damage7.mp3'))

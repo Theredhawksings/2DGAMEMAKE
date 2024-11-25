@@ -142,7 +142,9 @@ class Stage7:
     def draw(self):
         if not self.boss_activated:
             self.ground.draw(512, 384)
-            self.font.draw(200, 380, "곧 보스가 나옵니다. 보스 공격을 맞으면 보스는 체력을 회복합니다", (255, 255, 255))
+            self.font.draw(320, 540, "여기까지 온다고 고생하셨습니다.", (255, 255, 255))
+            self.font.draw(320, 460, "곧 보스가 나옵니다.", (255, 255, 255))
+            self.font.draw(320, 380, "보스 공격을 맞으면 보스는 체력을 회복합니다", (255, 255, 255))
         else:
             if not self.boss.dead:
                 self.ground.update_stage(8)

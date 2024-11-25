@@ -2,7 +2,7 @@ from pico2d import *
 import os
 
 PIXEL_PER_METER = (10.0 / 0.3)
-BULLET_SPEED_KMPH = 1.5
+BULLET_SPEED_KMPH = 2
 BULLET_SPEED_MPM = BULLET_SPEED_KMPH * 1000.0 / 60.0
 BULLET_SPEED_MPS = BULLET_SPEED_MPM / 60.0
 BULLET_SPEED_PPS = BULLET_SPEED_MPS * PIXEL_PER_METER
@@ -21,7 +21,7 @@ class Bullet:
 
     def update(self):
         self.x += self.speed
-        if self.x < 0 or self.x > 1024:
+        if self.x < -500 or self.x > 1524:
             self.should_remove = True
 
     def draw(self):

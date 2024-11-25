@@ -231,9 +231,9 @@ class BossLaser:
         for laser in self.lasers:
             if not laser['charging'] and not laser.get('hit', False):
                 bb = (0,
-                      laser['y'] - 40,
+                      laser['y'] - 45,
                       1024,
-                      laser['y'] + 40)
+                      laser['y'] + 45)
                 bbs.append(bb)
         return bbs
 
@@ -302,7 +302,7 @@ class BossLaser:
         if group == 'boy:boss_laser':
             for laser in self.lasers:
                 if not laser['charging'] and not laser.get('hit', False):
-                    if laser['y'] - 40 < other.y < laser['y'] + 40:
+                    if laser['y'] - 45 < other.y < laser['y'] + 45:
                         laser['hit'] = True
                         laser['hit_time'] = time.time()
                         if self.boss:

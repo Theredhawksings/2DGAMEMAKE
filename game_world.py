@@ -74,8 +74,8 @@ class MusicController:
                 music_path = os.path.join('bgm', 'Hello Kitty and Friends - Intro Theme (closed captions).mp3')
                 self.music_manager.load_music(music_path)
             elif current_time - self.stage_change_time >= 22:
-                music_path = os.path.join('bgm', 'Boss 1 - Hell(o) Kitty.mp3')
-                #music_path = os.path.join('bgm', '키라 테디베어.mp3')
+                #music_path = os.path.join('bgm', 'Boss 1 - Hell(o) Kitty.mp3')
+                music_path = os.path.join('bgm', '키라 테디베어.mp3')
                 self.music_manager.load_music(music_path)
 
 

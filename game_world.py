@@ -14,6 +14,7 @@ from stage6 import Stage6
 from stage7 import Stage7
 from stage8 import Stage8
 
+
 class MusicManager:
     def __init__(self):
         self.current_music = None
@@ -38,6 +39,45 @@ class MusicManager:
         pygame.mixer.music.unpause()
 
 
+class MusicController:
+    def __init__(self, game_world):
+        self.game_world = game_world
+        self.music_manager = game_world.music_manager
+        self.stage_change_time = None
+        self.current_stage = None
+
+    def handle_stage_music(self, stage_number):
+        self.stage_change_time = time.time()
+        self.current_stage = stage_number
+
+        if stage_number == 7:
+            self.music_manager.stop_music()
+        else:
+            self.load_stage_music(stage_number)
+
+    def load_stage_music(self, stage_number):
+        if stage_number in [1, 2, 3]:
+            music_path = os.path.join('bgm', 'Monster.mp3')
+        elif stage_number in [4, 5, 6]:
+            music_path = os.path.join('bgm', 'sleepwood.mp3')
+        elif stage_number == 8:
+            music_path = os.path.join('bgm', 'Different_Heaven_Even_Better_Feat_Sian.mp3')
+        else:
+            return
+
+        self.music_manager.load_music(music_path)
+
+    def update(self):
+        if self.current_stage == 7:
+            current_time = time.time()
+            if 2.0 <= current_time - self.stage_change_time < 22:
+                music_path = os.path.join('bgm', 'Hello Kitty and Friends - Intro Theme (closed captions).mp3')
+                self.music_manager.load_music(music_path)
+            elif current_time - self.stage_change_time >= 22:
+                music_path = os.path.join('bgm', '키라 테디베어.mp3')
+                self.music_manager.load_music(music_path)
+
+
 class GameWorld:
     def __init__(self):
         self.current_stage = None
@@ -49,55 +89,20 @@ class GameWorld:
         self.logo_time = 0.0
         self.logo_image = load_image(os.path.join('screen', '3570144307.png'))
         self.intro_image = load_image(os.path.join('screen', 'Intro.png'))
-        self.stage_change_time = None
         self.music_manager = MusicManager()
+        self.music_controller = MusicController(self)
 
         self.music_manager.load_music(os.path.join('bgm', 'Eagle_sing.mp3'))
 
     def change_stage(self, stage_number):
-        stage_classes = [
-            None,
-            Stage1,
-            Stage2,
-            Stage3,
-            Stage4,
-            Stage5,
-            Stage6,
-            Stage7,
-            Stage8,
-        ]
+        stage_classes = [None, Stage1, Stage2, Stage3, Stage4, Stage5, Stage6, Stage7, Stage8]
 
         if 1 <= stage_number <= 8:
             stage_class = stage_classes[stage_number]
             self.current_stage = stage_class(self.change_stage, self.boy)
-            self.stage_change_time = time.time()
+            self.music_controller.handle_stage_music(stage_number)
 
         self.last_stage = stage_number
-
-        if stage_number == 7:
-            music_path = os.path.join('bgm', 'Hello Kitty and Friends - Intro Theme (closed captions).mp3')
-            self.music_manager.load_music(music_path)
-        else:
-            self.load_music(stage_number)
-
-    def load_music(self, stage_number):
-        if stage_number in [1, 2, 3]:
-            music_path = os.path.join('bgm', 'Monster.mp3')
-        elif stage_number in [4, 5, 6]:
-            music_path = os.path.join('bgm', 'sleepwood.mp3')
-        elif stage_number in [8]:
-            music_path = os.path.join('bgm', 'Different_Heaven_Even_Better_Feat_Sian.mp3')
-        else:
-            return
-
-        self.music_manager.load_music(music_path)
-
-    def load_stage7_music_after_delay(self):
-        if self.current_stage and isinstance(self.current_stage, Stage7):
-            current_time = time.time()
-            if current_time - self.stage_change_time >= 20:
-                music_path = os.path.join('bgm', 'Boss 1 - Hell(o) Kitty.mp3')
-                self.music_manager.load_music(music_path)
 
     def handle_events(self):
         events = get_events()
@@ -122,7 +127,7 @@ class GameWorld:
 
                 elif self.state == 'INTRO' and event.key == SDLK_SPACE:
                     self.state = 'PLAY'
-                    self.load_music(self.last_stage)
+                    self.music_controller.load_stage_music(self.last_stage)
                     self.change_stage(1)
                     self.boy.x = 15
                     self.boy.y = 100
@@ -140,7 +145,7 @@ class GameWorld:
                 self.music_manager.load_music(os.path.join('bgm', "102. Lucas' Theme.mp3"))
         elif self.state == 'PLAY':
             self.current_stage.update()
-            self.load_stage7_music_after_delay()
+            self.music_controller.update()
 
     def draw(self):
         clear_canvas()

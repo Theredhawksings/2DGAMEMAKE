@@ -75,7 +75,8 @@ class GameWorld:
         self.last_stage = stage_number
 
         if stage_number == 7:
-            self.music_manager.stop_music()
+            music_path = os.path.join('bgm', 'Hello Kitty and Friends - Intro Theme (closed captions).mp3')
+            self.music_manager.load_music(music_path)
         else:
             self.load_music(stage_number)
 
@@ -94,7 +95,7 @@ class GameWorld:
     def load_stage7_music_after_delay(self):
         if self.current_stage and isinstance(self.current_stage, Stage7):
             current_time = time.time()
-            if current_time - self.stage_change_time >= 10:  # 10초 후에 재생
+            if current_time - self.stage_change_time >= 20:
                 music_path = os.path.join('bgm', 'Boss 1 - Hell(o) Kitty.mp3')
                 self.music_manager.load_music(music_path)
 

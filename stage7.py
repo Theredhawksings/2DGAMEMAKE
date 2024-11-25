@@ -75,7 +75,7 @@ class Stage7:
             self.boy.x = 10
             self.boy.y = 760
 
-        if not self.boss_activated and time.time() - self.start_time >= 10:
+        if not self.boss_activated and time.time() - self.start_time >= 20:
             self.boss_activated = True
             self.boss_activated_time = time.time()
             self.boss.activate()

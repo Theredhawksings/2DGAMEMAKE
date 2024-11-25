@@ -6,6 +6,7 @@ from cyclicobstacle import CyclicObstacle
 import collision_utils
 import random
 import time
+from font import Font
 
 class Stage6:
     def __init__(self, stage_change_call, boy):
@@ -101,6 +102,7 @@ class Stage6:
             {'trigger': {'x_min': 390, 'x_max': 395, 'y_min': 725, 'y_max': None},
              'obstacle': {'x': 1030, 'y': 725, 'image_direction': 1, 'move_direction': 2, 'move_speed': 15}},
         ]
+        self.font = Font(30)
 
         self.obstacle_created = [False] * len(self.obstacle_definitions)
 
@@ -166,11 +168,15 @@ class Stage6:
             self.obstacle_created = [False] * len(self.obstacle_definitions)
             self.obstacle.obstacles = self.initial_obstacles.copy()
 
-        if self.boy.x > 1024 and self.boy.y==425:
-            self.stage_change_call(7)
-            self.boy.x = 30
-            self.boy.y = 1020
+        if self.boy.x > 1024:
+            if self.boy.y == 595:
+                self.boy.x= self.boy.savepointX
+                self.boy.y = self.boy.savepointY
 
+            elif self.boy.y==425:
+                self.stage_change_call(7)
+                self.boy.x = 30
+                self.boy.y = 1020
 
         self.check_and_create_obstacles()
 
@@ -201,6 +207,7 @@ class Stage6:
         self.boy.draw()
         self.obstacle.draw()
 
+        self.font.draw(50, 190, "끝으로 이어진 땅으로 가서 탈출구를 찾으세요", (255, 255, 255))
 
         for bullet in self.bullets:
             bullet.draw()

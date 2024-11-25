@@ -7,6 +7,7 @@ from cyclicobstacle import CyclicObstacle
 import collision_utils
 import random
 import time
+from font import Font
 
 class Stage5:
     def __init__(self, stage_change_call, boy):
@@ -33,6 +34,8 @@ class Stage5:
         self.cyclic_obstacles = []
 
         self.bullets = []
+
+        self.font = Font(30)
 
         for x in range(240, 960, 120):
             for y in range(95, 577, 120):
@@ -108,6 +111,8 @@ class Stage5:
         self.grass.draw()
         self.boy.draw()
         self.obstacle.draw()
+
+        self.font.draw(322, 720, "천망회회 소이불실", (255, 255, 255))
 
         for cyclic_obstacle in self.cyclic_obstacles:
             cyclic_obstacle.draw()

@@ -31,7 +31,7 @@ class Stage1:
         # Font 객체를 리스트로 관리
         self.fonts = [
             {"font": Font(30), "x": 200, "y": 490, "text": "조작법", "color": (0, 0, 0)},
-            {"font": Font(30), "x": 200, "y": 450, "text": "조작: ← → 이동, Space 점프", "color": (0, 0, 0)},
+            {"font": Font(30), "x": 200, "y": 450, "text": "조작: ← → 이동, Space 점프, e 총알 발사", "color": (0, 0, 0)},
             {"font": Font(30), "x": 200, "y": 410, "text": "장애물에 닿으면 시작했던 곳으로 돌아가니 잘 하시길 바랍니다", "color": (0, 0, 0)},
         ]
 

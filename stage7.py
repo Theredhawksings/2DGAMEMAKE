@@ -117,11 +117,11 @@ class Stage7:
                 self.bomb_fired = True
 
             # 레이저 패턴
-            if not self.laser_pattern_started and current_time - self.boss_activated_time >= 5.0:
+            if not self.laser_pattern_started and current_time - self.boss_activated_time >= 15.0:
                 self.laser_pattern_started = True
                 self.last_laser_time = current_time
 
-            if self.laser_pattern_started and current_time - self.last_laser_time >= 5.0:
+            if self.laser_pattern_started and current_time - self.last_laser_time >= 15.0:
                 y_difference = abs(self.boss.y - self.boy.y)
                 if y_difference <= 5:
                     self.boss_laser.lasers.append({

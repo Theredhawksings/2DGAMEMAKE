@@ -95,7 +95,7 @@ class Stage7:
             current_time = time.time()
 
             # 장애물 패턴
-            if current_time - self.last_obstacle_time >= 1.5:
+            if current_time - self.last_obstacle_time >= 1.3:
                 self.boss_obstacle.obstacles.append({
                     'x': randint(50, 180),
                     'y': 780,

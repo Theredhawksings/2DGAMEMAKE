@@ -14,7 +14,7 @@ class Boss:
        self.y = 940
        self.active = False
        self.vy = BOSS_SPEED_PPS
-       self.y_min = 130
+       self.y_min = 150
        self.y_max = 760
        self.width = 280
        self.height = 350

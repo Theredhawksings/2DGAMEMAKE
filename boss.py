@@ -10,7 +10,7 @@ BOSS_SPEED_PPS = BOSS_SPEED_MPS * PIXEL_PER_METER
 class Boss:
    def __init__(self):
        self.image = load_image(os.path.join('image', 'boss.png'))
-       self.x = 900
+       self.x = 870
        self.y = 940
        self.active = False
        self.vy = BOSS_SPEED_PPS

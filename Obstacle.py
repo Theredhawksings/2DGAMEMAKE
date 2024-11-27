@@ -289,7 +289,7 @@ class BossLaser:
                     laser['charging'] = False
 
             if laser.get('hit', False):
-                if current_time - laser['hit_time'] >= 0.2:
+                if current_time - laser['hit_time'] >= 0.5:
                     lasers_to_remove.append(laser)
             elif current_time - laser['charge_start'] >= 2.0:
                 lasers_to_remove.append(laser)

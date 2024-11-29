@@ -171,8 +171,21 @@ class Boy:
 
     def handle_collision(self, group, other):
         if group == 'boy:obstacle' and not self.is_invincible:
-            self.x = self.savepointX
-            self.y = self.savepointY
+
+            if hasattr(self.stage, 'savepoints') and self.stage.savepoints:
+                for savepoint in self.stage.savepoints:
+                    if savepoint.is_activated:
+                        self.x = savepoint.x
+                        self.y = savepoint.y
+                        break
+                else:
+                    self.x = self.savepointX
+                    self.y = self.savepointY
+            else:
+                self.x = self.savepointX
+                self.y = self.savepointY
+
+            # 물리 상태 초기화
             self.is_jumping = False
             self.jump_speed = 0
             self.gravity = -GRAVITY_PPS

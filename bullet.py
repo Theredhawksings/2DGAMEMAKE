@@ -21,8 +21,9 @@ class Bullet:
         self.gun_sound = load_wav(os.path.join('bgm', 'gun effects.mp3'))
         self.gun_sound.play()
 
-        for savepoint in stage.savepoints:
-            collision_utils.add_collision_pair('bullet:savepoint', self, savepoint)
+        if hasattr(stage, 'savepoints'):
+            for savepoint in stage.savepoints:
+                collision_utils.add_collision_pair('bullet:savepoint', self, savepoint)
 
     def update(self):
         self.x += self.speed
@@ -38,5 +39,11 @@ class Bullet:
         return self.x - 8, self.y - 8, self.x + 8, self.y + 8
 
     def handle_collision(self, group, other):
-        if group == 'bullet:boss' or group == 'bullet:savepoint':
+        if group == 'bullet:boss':
+            self.should_remove = True
+            collision_utils.remove_collision_pair(group, self)
+        elif group == 'bullet:savepoint':
+            if self in self.stage.bullets:
+                self.stage.bullets.remove(self)
+                collision_utils.remove_collision_pair(group, self)
             self.should_remove = True

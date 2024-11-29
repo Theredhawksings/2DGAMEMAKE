@@ -204,7 +204,7 @@ class Boy:
             elif event.key == ord('h'):
                 self.is_invincible = not self.is_invincible
             elif event.key == ord('e'):
-                bullet = Bullet(self.x, self.y - 5, self.right)
+                bullet = Bullet(self.x, self.y - 5, self.right, self.stage)
                 self.stage.bullets.append(bullet)
                 print(f"Bullet added at position: ({bullet.x}, {bullet.y})")
 

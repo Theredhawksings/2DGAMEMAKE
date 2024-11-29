@@ -6,6 +6,8 @@ from ground import Ground
 from obstacle import Obstacle
 from font import Font
 from bullet import Bullet
+from savepoint import SavePoint
+
 import time
 import random
 
@@ -74,12 +76,23 @@ class Stage2:
         self.bullets = []
 
         self.world = []
+
+
+        savepoint_positions = [
+            (794, 605)
+        ]
+        self.savepoints = [SavePoint(x, y) for x, y in savepoint_positions]
+
+
         self.world.append(self.ground)
         self.world.append(self.grass)
+        self.world.extend(self.savepoints)
         self.world.append(self.boy)
         self.world.append(self.obstacle)
         self.world.append(self.bullets)
         self.world.extend(self.fonts)
+
+        collision_utils.add_collision_pair('bullet:savepoint', self.bullets, self.savepoints)
 
     def handle_event(self, event):
         self.boy.handle_event(event)
@@ -112,12 +125,11 @@ class Stage2:
         elif self.boy.x <= 280 and self.boy.y < 0:
             self.stage_change_call(3)
 
-        self.boy.savepointX = 67
-        self.boy.savepointY = 700
         collision_utils.handle_collisions()
 
         for bullet in self.bullets:
             bullet.update()
+
 
     def draw(self):
         for obj in self.world:

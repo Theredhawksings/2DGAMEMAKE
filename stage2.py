@@ -77,12 +77,10 @@ class Stage2:
 
         self.world = []
 
-
         savepoint_positions = [
             (794, 605)
         ]
-        self.savepoints = [SavePoint(x, y) for x, y in savepoint_positions]
-
+        self.savepoints = [SavePoint(x, y, 2) for x, y in savepoint_positions]
 
         self.world.append(self.ground)
         self.world.append(self.grass)
@@ -93,6 +91,9 @@ class Stage2:
         self.world.extend(self.fonts)
 
         collision_utils.add_collision_pair('bullet:savepoint', self.bullets, self.savepoints)
+
+        self.boy.savepointX = 5
+        self.boy.savepointY = 760
 
     def handle_event(self, event):
         self.boy.handle_event(event)

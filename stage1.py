@@ -28,7 +28,7 @@ class Stage1:
         self.boy.savepointY = 80
         self.boy.update_stage_info(1)
 
-        # Font 객체를 리스트로 관리
+
         self.fonts = [
             {"font": Font(30), "x": 200, "y": 490, "text": "조작법", "color": (0, 0, 0)},
             {"font": Font(30), "x": 200, "y": 450, "text": "조작: ← → 이동, Space 점프, e 총알 발사", "color": (0, 0, 0)},

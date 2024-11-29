@@ -19,8 +19,10 @@ class Bullet:
         self.should_remove = False
 
         self.gun_sound = load_wav(os.path.join('bgm', 'gun effects.mp3'))
+        self.gun_sound.set_volume(16)
         self.gun_sound.play()
 
+        # 충돌 관련 설정
         if hasattr(stage, 'savepoints'):
             for savepoint in stage.savepoints:
                 collision_utils.add_collision_pair('bullet:savepoint', self, savepoint)

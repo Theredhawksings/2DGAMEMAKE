@@ -13,6 +13,9 @@ class Stage7:
         self.boy = boy
         self.boy.stage = self
         self.start_time = time.time()
+        self.volume = 32
+
+
         self.boss_activated = False
         self.boss_activated_time = 0
         self.laser_pattern_started = False

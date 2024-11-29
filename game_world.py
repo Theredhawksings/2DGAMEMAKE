@@ -1,6 +1,5 @@
 import os
 import time
-import pygame
 from pico2d import *
 from sdl2 import SDL_QUIT, SDL_KEYDOWN, SDLK_ESCAPE, SDLK_SPACE
 
@@ -18,25 +17,35 @@ from stage8 import Stage8
 class MusicManager:
     def __init__(self):
         self.current_music = None
-        pygame.mixer.init()
+        self.bgm = None
+        self.volume = 32  # 기본 볼륨 (0 ~ 128)
 
     def load_music(self, music_path):
         if self.current_music != music_path:
-            if self.current_music is not None:
-                pygame.mixer.music.stop()
-            pygame.mixer.music.load(music_path)
-            pygame.mixer.music.play(-1)
+            if self.bgm is not None:
+                self.stop_music()
+            self.bgm = load_music(music_path)
+            self.bgm.set_volume(self.volume)
+            self.bgm.repeat_play()
             self.current_music = music_path
 
     def stop_music(self):
-        pygame.mixer.music.stop()
-        self.current_music = None
+        if self.bgm is not None:
+            self.bgm.stop()
+            self.current_music = None
 
     def pause_music(self):
-        pygame.mixer.music.pause()
+        if self.bgm is not None:
+            self.bgm.pause()
 
     def unpause_music(self):
-        pygame.mixer.music.unpause()
+        if self.bgm is not None:
+            self.bgm.resume()
+
+    def set_volume(self, volume):
+        self.volume = max(0, min(volume, 128))  # 볼륨 범위 제한 (0 ~ 128)
+        if self.bgm is not None:
+            self.bgm.set_volume(self.volume)
 
 
 class MusicController:
@@ -73,10 +82,11 @@ class MusicController:
             if 2.0 <= current_time - self.stage_change_time < 22:
                 music_path = os.path.join('bgm', 'Hello Kitty and Friends - Intro Theme (closed captions).mp3')
                 self.music_manager.load_music(music_path)
+                self.music_manager.set_volume(80)
             elif current_time - self.stage_change_time >= 22:
-                #music_path = os.path.join('bgm', 'Boss 1 - Hell(o) Kitty.mp3')
-                music_path = os.path.join('bgm', '키라 테디베어.mp3')
+                music_path = os.path.join('bgm', 'Boss 1 - Hell(o) Kitty.mp3')
                 self.music_manager.load_music(music_path)
+                self.music_manager.set_volume(12)
 
 
 class GameWorld:

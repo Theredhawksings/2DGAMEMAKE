@@ -55,6 +55,14 @@ def handle_collisions():
                     any_collision = True
     return any_collision
 
+def remove_collision_pair(group, a):
+    if group in collision_pairs:
+        if a in collision_pairs[group][0]:
+            collision_pairs[group][0].remove(a)
+        if a in collision_pairs[group][1]:
+            collision_pairs[group][1].remove(a)
+        if not collision_pairs[group][0] and not collision_pairs[group][1]:
+            del collision_pairs[group]
 
 def clear_collision_pairs():
    collision_pairs.clear()

@@ -1,7 +1,6 @@
 from pico2d import load_image
 import os
 
-
 class SavePoint:
     images = []
 
@@ -15,15 +14,13 @@ class SavePoint:
 
     def draw(self):
         if self.is_activated:
-            SavePoint.images[0].clip_draw(0, 0, 60, 60, self.x, self.y, 60, 60)
+            SavePoint.images[0].clip_draw(0, 0, 60, 60, self.x, self.y, 30, 30)
         else:
-            SavePoint.images[1].clip_draw(0, 0, 60, 60, self.x, self.y, 60, 60)
+            SavePoint.images[1].clip_draw(0, 0, 60, 60, self.x, self.y, 30, 30)
 
     def get_bb(self):
-        return self.x - 30, self.y - 30, self.x + 30, self.y + 30
+        return self.x - 15, self.y - 15, self.x + 15, self.y + 15
 
-    def activate(self):
-        self.is_activated = True
-
-    def deactivate(self):
-        self.is_activated = False
+    def handle_collision(self, group, other):
+        if group == 'bullet:savepoint':
+            self.is_activated = True

@@ -3,9 +3,12 @@ from grass import Grass
 from ground import Ground
 from obstacle import Obstacle
 from cyclicobstacle import CyclicObstacle
+from savepoint import SavePoint
+
 import collision_utils
 import random
 import time
+
 from font import Font
 
 class Stage6:
@@ -79,11 +82,11 @@ class Stage6:
         self.initial_obstacles = self.obstacle.obstacles.copy()
 
         self.obstacle_definitions = [
-            {'trigger': {'x_min': 115, 'x_max': 130, 'y_min': 45, 'y_max': None},
+            {'trigger': {'x_min': 115, 'x_max': 130, 'y_min': 45, 'y_max': 150},
              'obstacle': {'x': 160, 'y': -15, 'image_direction': 0, 'move_direction': 4, 'move_speed': 15}},
-            {'trigger': {'x_min': 530, 'x_max': 540, 'y_min': 90, 'y_max': None},
+            {'trigger': {'x_min': 530, 'x_max': 540, 'y_min': 90, 'y_max': 150},
              'obstacle': {'x': -10, 'y': 85, 'image_direction': 3, 'move_direction': 1, 'move_speed': 15}},
-            {'trigger': {'x_min': 550, 'x_max': 560, 'y_min': 90, 'y_max': None},
+            {'trigger': {'x_min': 550, 'x_max': 560, 'y_min': 90, 'y_max': 150},
              'obstacle': {'x': 1030, 'y': 85, 'image_direction': 1, 'move_direction': 2, 'move_speed': 15}},
             {'trigger': {'x_min': 705, 'x_max': 710, 'y_min': 255, 'y_max': None},
              'obstacle': {'x': 710, 'y': 780, 'image_direction': 2, 'move_direction': 3, 'move_speed': 30}},
@@ -121,6 +124,14 @@ class Stage6:
             bullet.update()
 
         collision_utils.add_collision_pair('boy:obstacle', self.boy, self.obstacle)
+
+        savepoint_positions = [
+            (794, 335)
+        ]
+        self.savepoints = [SavePoint(x, y, 6) for x, y in savepoint_positions]
+
+        collision_utils.add_collision_pair('bullet:savepoint', self.bullets, self.savepoints)
+
 
     def handle_event(self, event):
         self.boy.handle_event(event)
@@ -206,6 +217,9 @@ class Stage6:
         self.grass.draw()
         self.boy.draw()
         self.obstacle.draw()
+
+        for savepoint in self.savepoints:
+            savepoint.draw()
 
         self.font.draw(50, 190, "끝으로 이어진 땅으로 가서 탈출구를 찾으세요", (255, 255, 255))
 

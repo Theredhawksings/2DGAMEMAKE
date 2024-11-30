@@ -112,7 +112,7 @@ class Stage5:
         self.boy.draw()
         self.obstacle.draw()
 
-        self.font.draw(322, 720, "천망회회 소이불실", (255, 255, 255))
+        self.font.draw(320, 720, "잘 보고 탈출하세요", (255, 255, 255))
 
         for cyclic_obstacle in self.cyclic_obstacles:
             cyclic_obstacle.draw()

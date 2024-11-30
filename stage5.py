@@ -43,7 +43,7 @@ class Stage5:
                     self.cyclic_obstacles.append(
                         CyclicObstacle(x, y, 0, 4, 0,
                                        random.uniform(1.0, 2.0),
-                                       random.uniform(4.0, 5.0))
+                                       random.uniform(1.0, 2.0))
                     )
 
         for x in range(180, 840, 120):

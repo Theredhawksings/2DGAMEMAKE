@@ -223,7 +223,7 @@ class BossLaser:
         self.lasers = []
         self.boss = None
         self.laser_sound = load_wav(os.path.join('bgm', '[Undertale] Gaster Blaster Sound Effect.mp3'))
-
+        self.laser_sound.set_volume(10)
 
 
     def get_bb(self):

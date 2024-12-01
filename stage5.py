@@ -63,10 +63,7 @@ class Stage5:
 
         for cyclic_obstacle in self.cyclic_obstacles:
             collision_utils.add_collision_pair('boy:cyclic_obstacle', self.boy, cyclic_obstacle)
-
-        for bullet in self.bullets:
-            bullet.update()
-
+            
     def handle_event(self, event):
         self.boy.handle_event(event)
 

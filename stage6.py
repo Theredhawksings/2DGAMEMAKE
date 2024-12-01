@@ -129,6 +129,7 @@ class Stage6:
 
        collision_utils.add_collision_pair('bullet:savepoint', self.bullets, self.savepoints)
 
+       Obstacle.death_count=0
 
    def handle_event(self, event):
        self.boy.handle_event(event)

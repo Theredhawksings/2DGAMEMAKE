@@ -42,7 +42,7 @@ class Stage5:
                 if random.random() < 0.5:  # 50% 확률로 장애물 생성
                     self.cyclic_obstacles.append(
                         CyclicObstacle(x, y, 0, 4, 0,
-                                       random.uniform(1.0, 2.0),
+                                       random.uniform(0.5, 2.0),
                                        random.uniform(1.0, 2.0))
                     )
 

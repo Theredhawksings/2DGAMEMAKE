@@ -63,7 +63,7 @@ class Stage5:
 
         for cyclic_obstacle in self.cyclic_obstacles:
             collision_utils.add_collision_pair('boy:cyclic_obstacle', self.boy, cyclic_obstacle)
-            
+
     def handle_event(self, event):
         self.boy.handle_event(event)
 
@@ -97,6 +97,7 @@ class Stage5:
         collision_utils.handle_collisions()
 
         if self.boy.y < -1:
+            Obstacle.death_count += 1
             self.boy.x = self.boy.savepointX
             self.boy.y = self.boy.savepointY
 

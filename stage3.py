@@ -81,10 +81,13 @@ class Stage3:
             self.boy.apply_gravity = True
             self.stage_change_call(2)
 
-        if self.boy.x >= 1024 and self.boy.y == 50:
-            self.boy.x = 30
-            self.boy.y = 45
-            self.stage_change_call(4)
+        if self.boy.x >= 1024:
+            if self.boy.y == 50:
+                self.boy.x = 30
+                self.boy.y = 45
+                self.stage_change_call(4)
+            else:
+                self.boy.x = 1024
 
         for bullet in self.bullets:
             bullet.update()

@@ -171,6 +171,7 @@ class Stage6:
                self.boy.y = 105
 
        if self.boy.y < -1:
+           Obstacle.death_count += 1
            self.boy.x = self.boy.savepointX
            self.boy.y = self.boy.savepointY
            self.obstacle_created = [False] * len(self.obstacle_definitions)

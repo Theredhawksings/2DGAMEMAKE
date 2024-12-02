@@ -171,19 +171,17 @@ class Boy:
 
     def handle_collision(self, group, other):
         if group == 'boy:obstacle' and not self.is_invincible:
-            # 세이브포인트 체크 및 위치 이동
             if hasattr(self.stage, 'savepoints') and self.stage.savepoints:
-                for savepoint in self.stage.savepoints:
-                    if savepoint.is_activated:
-                        self.x = savepoint.x
-                        self.y = savepoint.y
-                        break
+                activated_savepoints = [
+                    savepoint for savepoint in self.stage.savepoints if savepoint.is_activated
+                ]
+                if activated_savepoints:
+                    last_savepoint = activated_savepoints[-1]
+                    self.x, self.y = last_savepoint.x, last_savepoint.y
                 else:
-                    self.x = self.savepointX
-                    self.y = self.savepointY
+                    self.x, self.y = self.savepointX, self.savepointY
             else:
-                self.x = self.savepointX
-                self.y = self.savepointY
+                self.x, self.y = self.savepointX, self.savepointY
 
             if hasattr(self.stage, 'obstacle_created') and hasattr(self.stage, 'initial_obstacles'):
                 self.stage.obstacle_created = [False] * len(self.stage.obstacle_definitions)
@@ -262,7 +260,7 @@ class Boy:
 
     def draw(self):
         self.state_machine.cur_state.draw(self)
-        draw_rectangle(*self.get_bb())
+        #draw_rectangle(*self.get_bb())
 
     def get_bb(self):
         if self.is_invincible:

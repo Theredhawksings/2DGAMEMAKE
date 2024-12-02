@@ -37,7 +37,7 @@ class SavePoint:
             SavePoint.images[0].clip_draw(0, 0, 60, 60, self.x, self.y, 30, 30)
         else:
             SavePoint.images[1].clip_draw(0, 0, 60, 60, self.x, self.y, 30, 30)
-        draw_rectangle(*self.get_bb())
+        #draw_rectangle(*self.get_bb())
 
     def get_bb(self):
         return self.x - 15, self.y - 15, self.x + 15, self.y + 15

@@ -35,7 +35,7 @@ class Bullet:
 
     def draw(self):
         self.image.clip_draw(0, 0, 5, 5, self.x, self.y, 10, 10)
-        draw_rectangle(*self.get_bb())
+        #draw_rectangle(*self.get_bb())
 
     def get_bb(self):
         return self.x - 8, self.y - 8, self.x + 8, self.y + 8

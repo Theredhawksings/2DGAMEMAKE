@@ -83,6 +83,7 @@ class Stage2:
            (364, 455)
        ]
        self.savepoints = [SavePoint(x, y, 2) for x, y in savepoint_positions]
+       collision_utils.add_collision_pair('bullet:savepoint', self.bullets, self.savepoints)
 
        self.world = [
            self.ground,
@@ -94,7 +95,7 @@ class Stage2:
            *self.fonts
        ]
 
-       collision_utils.add_collision_pair('bullet:savepoint', self.bullets, self.savepoints)
+
 
        self.boy.savepointX = 5
        self.boy.savepointY = 760

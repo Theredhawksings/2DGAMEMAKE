@@ -34,6 +34,7 @@ class Stage1:
             {"font": Font(30), "x": 200, "y": 450, "text": "조작: ← → 이동, Space 점프, e 총알 발사", "color": (0, 0, 0)},
             {"font": Font(30), "x": 200, "y": 410, "text": "장애물에 닿으면 시작했던 곳으로 돌아가니 잘 하시길 바랍니다", "color": (0, 0, 0)},
             {"font": Font(30), "x": 230, "y": 370, "text": "<- 세이브 포인트에다가 총알을 발사해서 위치를 저장하세요", "color": (0, 0, 0)},
+            {"font": Font(30), "x": 230, "y": 330, "text": "ESC 누르면 일시정지 됩니다", "color": (0, 0, 0)},
         ]
 
         savepoint_positions = [

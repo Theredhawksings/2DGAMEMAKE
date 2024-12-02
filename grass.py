@@ -36,8 +36,8 @@ class Grass:
             else:
                 Grass.images[1].clip_draw(0, 0, width * 2, 60, x, y, width * 2, 60)
 
-        for bb in self.get_bb():
-            draw_rectangle(*bb)
+        #for bb in self.get_bb():
+            #draw_rectangle(*bb)
 
     def get_positions(self):
         return self.positions

@@ -65,7 +65,7 @@ class CyclicObstacle:
 
     def draw_collision_box(self):
         left, bottom, right, top = self.get_bb()
-        draw_rectangle(left, bottom, right, top)
+        #draw_rectangle(left, bottom, right, top)
 
     def get_bb(self):
         if not self.is_active:

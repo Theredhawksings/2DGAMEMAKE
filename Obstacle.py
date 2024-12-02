@@ -54,7 +54,7 @@ class Obstacle:
                                            obstacle['x'],
                                            obstacle['y'],
                                            25, 30)
-            draw_rectangle(*bb)
+            #draw_rectangle(*bb)
 
     def update(self):
         obstacles_to_remove = []
@@ -115,7 +115,7 @@ class BossObstacle:
                                            obstacle['x'],
                                            obstacle['y'],
                                            30, 36)
-            draw_rectangle(*bb)
+            #draw_rectangle(*bb)
 
     def update(self):
         if self.boss.dead:
@@ -182,7 +182,7 @@ class BossBomb:
                                            bombs['x'],
                                            bombs['y'],
                                            75, 46)
-            draw_rectangle(*bb)
+            #draw_rectangle(*bb)
 
     def update(self):
         if self.boss.dead:
@@ -268,8 +268,9 @@ class BossLaser:
                                                laser['y'],
                                                1024, 90)
                 bbs = self.get_bb()
-                for bb in bbs:
-                    draw_rectangle(*bb)
+
+                #for bb in bbs:
+                    #draw_rectangle(*bb)
 
     def update(self):
         if self.boss.dead:

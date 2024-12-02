@@ -1,9 +1,6 @@
 from pico2d import *
 from grass import Grass
 from ground import Ground
-from obstacle import Obstacle
-from cyclicobstacle import CyclicObstacle
-import collision_utils
 import random
 import time
 
@@ -13,6 +10,7 @@ class Stage8:
         self.boy.stage = self
         self.last_obstacle_time = time.time()
         self.background_y = 6229
+        self.start_time = time.time()  #
 
         grass_positions = [
             (0, 0, 128),
@@ -33,6 +31,7 @@ class Stage8:
     def update(self):
         self.boy.update(self.grass)
 
+        # PAUSE 상태가 아닐 때만 배경 스크롤
         if self.boy.game_world.state != 'PAUSE':
             self.background_y -= 1
 
@@ -46,12 +45,15 @@ class Stage8:
         for bullet in self.bullets:
             bullet.update()
 
-
+        if time.time() - self.start_time >= 208:
+            print("Game Over - Time's up!")
+            self.boy.game_world.running = False
 
     def draw(self):
         self.ground.falling_draw(512, 384, self.background_y)
         self.grass.draw()
         self.boy.draw()
 
+        # 총알 그리기
         for bullet in self.bullets:
             bullet.draw()

@@ -131,8 +131,6 @@ class Stage6:
 
        Obstacle.death_count=0
 
-       self.base_color = 0
-
    def handle_event(self, event):
        self.boy.handle_event(event)
 
@@ -222,8 +220,6 @@ class Stage6:
            self.obstacle.obstacles.append(new_obstacle)
            self.last_obstacle_time = current_time
 
-       self.base_color = (self.base_color + 1) % 256
-
    def draw(self):
        self.ground.draw(512, 384)
        self.grass.draw()
@@ -233,16 +229,12 @@ class Stage6:
        for savepoint in self.savepoints:
            savepoint.draw()
 
-       self.font.draw(50, 190, "끝으로 이어진 땅으로 가서 탈출구를 찾으세요", (255, 255, 255))
-       self.font.draw(50, 160, f"죽은 횟수: {Obstacle.get_death_count()}", (255, 255, 255))
-
-       base_color = 50  
-       for i in range(5):
-           color = (self.base_color + i * 50) % 256  # 현재 base_color 기준으로 계산
-           if i < 2:
-               self.font.draw(16, 405 + i * 310, "<-", (color, color, color))
-           else:
-               self.font.draw(990, 425 + (i - 2) * 170, "->", (color, color, color))
+       self.font.draw(50, 190, "화살표가 그려진 땅으로 가서 탈출구를 찾으세요", (255, 255, 255))
+       self.font.draw(16, 405, "<-", (255, 255, 255))
+       self.font.draw(16, 715, "<-", (255, 255, 255))
+       self.font.draw(990, 725, "->", (255, 255, 255))
+       self.font.draw(990, 595, "->", (255, 255, 255))
+       self.font.draw(990, 425, "->", (255, 255, 255))
 
        for bullet in self.bullets:
            bullet.draw()

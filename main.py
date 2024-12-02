@@ -17,7 +17,7 @@ def main():
     game_world = GameWorld()
 
     game_world.state = 'PLAY'
-    game_world.change_stage(6)
+    game_world.change_stage(8)
     game_world.boy.x = 1
     game_world.boy.y = 700
 

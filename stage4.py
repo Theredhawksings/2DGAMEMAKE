@@ -70,6 +70,8 @@ class Stage4:
             'obstacle': {'x': 630, 'y': 730, 'image_direction': 2, 'move_direction': 3, 'move_speed': 20}},
            {'trigger': {'x_min': 610, 'x_max': 630, 'y_min': 500, 'y_max': None},
             'obstacle': {'x': -10, 'y': 565, 'image_direction': 3, 'move_direction': 1, 'move_speed': 10}},
+           {'trigger': {'x_min': 300, 'x_max': 320, 'y_min': 600, 'y_max': None},
+            'obstacle': {'x': 1030, 'y': 580, 'image_direction': 1, 'move_direction': 2, 'move_speed': 30}},
            {'trigger': {'x_min': 180, 'x_max': 800, 'y_min': 720, 'y_max': None},
             'obstacle': {'x': 20, 'y': 740, 'image_direction': 3, 'move_direction': 1, 'move_speed': 5}}
        ]
@@ -114,7 +116,7 @@ class Stage4:
        self.boy.update(self.grass)
        self.obstacle.update()
 
-       if self.boy.x < 2 and self.boy.y == 45:
+       if self.boy.x < 1 and self.boy.y == 45:
            self.boy.previous_stage = 4
            self.boy.current_stage = 3
            self.boy.x = 1020
@@ -129,7 +131,9 @@ class Stage4:
 
        self.check_and_create_obstacles()
 
-       if collision_utils.handle_collisions():
+       collision_utils.handle_collisions()
+
+       if self.boy.x == self.boy.savepointX and self.boy.y == self.boy.savepointY:
            self.obstacle_created = [False] * len(self.obstacle_definitions)
            self.obstacle.obstacles = self.initial_obstacles.copy()
 
@@ -143,11 +147,11 @@ class Stage4:
 
    def draw(self):
        self.ground.draw(512, 384)
+
        self.grass.draw()
        self.boy.draw()
        self.obstacle.draw()
-       self.font.draw(100, 300, "날아오는 장애물들을 피하세요.", (255, 255, 255))
-       self.font.draw(100, 270, "죽으면 리셋됩니다.", (255, 255, 255))
+       self.font.draw(100, 300, "날아오는 장애물들을 피하세요", (255, 255, 255))
 
        for bullet in self.bullets:
            bullet.draw()

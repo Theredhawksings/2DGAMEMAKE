@@ -6,7 +6,7 @@ from obstacle import Obstacle
 import collision_utils
 import random
 import time
-
+from font import Font
 
 class Stage3:
     def __init__(self, stage_change_call, boy):
@@ -31,6 +31,7 @@ class Stage3:
         collision_utils.add_collision_pair('boy:obstacle', self.boy, self.obstacle)
 
         self.bullets = []
+        self.font = Font(30)
 
     def handle_event(self, event):
         self.boy.handle_event(event)
@@ -100,6 +101,7 @@ class Stage3:
 
         if self.background_y < 400:
             self.grass.draw()
+            self.font.draw(512, 80, "오른쪽으로가세요.", (255, 255, 255))
 
         self.boy.draw()
         self.obstacle.draw()

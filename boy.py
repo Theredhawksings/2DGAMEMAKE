@@ -171,14 +171,16 @@ class Boy:
 
     def handle_collision(self, group, other):
         if group == 'boy:obstacle' and not self.is_invincible:
-
             if hasattr(self.stage, 'savepoints') and self.stage.savepoints:
+                last_activated = None
                 for savepoint in self.stage.savepoints:
                     if savepoint.is_activated:
-                        self.x = savepoint.x
-                        self.y = savepoint.y
-                        break
-                else:
+                        last_activated = savepoint
+
+                if last_activated:
+                    self.x = last_activated.x
+                    self.y = last_activated.y
+                else:  
                     self.x = self.savepointX
                     self.y = self.savepointY
             else:

@@ -44,16 +44,15 @@ def collide(a, b):
         return True
 
 def handle_collisions():
-    any_collision = False
     for group, pairs in collision_pairs.items():
         for a in pairs[0]:
+            if hasattr(a, 'should_remove') and a.should_remove:  # 제거 예정인 객체는 건너뛰기
+                continue
             for b in pairs[1]:
                 if collide(a, b):
-                    print(f"Handling collision for group {group} between {a} and {b}")
                     a.handle_collision(group, b)
                     b.handle_collision(group, a)
-                    any_collision = True
-    return any_collision
+                    # break 문 제거 - 모든 세이브포인트와의 충돌을 체크할 수 있도록
 
 def remove_collision_pair(group, a):
     if group in collision_pairs:

@@ -36,7 +36,7 @@ class Stage2:
            (250, 606, 2, 0, 0),
            (400, 606, 2, 0, 0),
            (500, 530, 0, 0, 0),
-           (650, 530, 0, 0, 0),
+           (620, 530, 0, 0, 0),
            (700, 606, 2, 0, 0),
            (1000, 530, 0, 0, 0),
 
@@ -54,7 +54,6 @@ class Stage2:
            (670, 360, 0, 0, 0),
 
            (770, 360, 0, 0, 0),
-           (810, 456, 2, 0, 0),
            (890, 360, 0, 0, 0),
        ]
 
@@ -70,6 +69,8 @@ class Stage2:
        self.fonts = [
            {"font": Font(30), "x": 30, "y": 750, "text": f"죽은 횟수: {Obstacle.get_death_count()}",
             "color": (0, 0, 0)},
+           {"font": Font(20), "x": 20, "y": 30, "text": "올라오는 장애물들을 피하세요",
+            "color": (255, 0, 0)},
        ]
        self.fonts[0]["text"] = f"죽은 횟수: {Obstacle.get_death_count()}"
        self.bullets = []
@@ -77,7 +78,8 @@ class Stage2:
        self.world = []
 
        savepoint_positions = [
-           (794, 605)
+           (794, 605),
+           (364, 455)
        ]
        self.savepoints = [SavePoint(x, y, 2) for x, y in savepoint_positions]
 
@@ -109,7 +111,7 @@ class Stage2:
 
        current_time = time.time()
 
-       if current_time - self.last_obstacle_time >= 0.1 and self.boy.y < 300 and self.boy.x >= 315:
+       if current_time - self.last_obstacle_time >= 0.2 and self.boy.y < 300 and self.boy.x >= 315:
            new_obstacle = {
                'x': random.randint(350, 900),
                'y': 300,

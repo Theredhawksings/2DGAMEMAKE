@@ -6,7 +6,7 @@ from obstacle import Obstacle
 from font import Font
 from bullet import Bullet
 import collision_utils
-
+from savepoint import SavePoint
 
 class Stage1:
     def __init__(self, stage_change_call, boy):
@@ -33,7 +33,13 @@ class Stage1:
             {"font": Font(30), "x": 200, "y": 490, "text": "조작법", "color": (0, 0, 0)},
             {"font": Font(30), "x": 200, "y": 450, "text": "조작: ← → 이동, Space 점프, e 총알 발사", "color": (0, 0, 0)},
             {"font": Font(30), "x": 200, "y": 410, "text": "장애물에 닿으면 시작했던 곳으로 돌아가니 잘 하시길 바랍니다", "color": (0, 0, 0)},
+            {"font": Font(30), "x": 230, "y": 370, "text": "<- 세이브 포인트에다가 총알을 발사해서 위치를 저장하세요", "color": (0, 0, 0)},
         ]
+
+        savepoint_positions = [
+            (210, 370)
+        ]
+        self.savepoints = [SavePoint(x, y, 1) for x, y in savepoint_positions]
 
         collision_utils.add_collision_pair('boy:obstacle', self.boy, self.obstacle)
 
@@ -41,6 +47,7 @@ class Stage1:
         self.world = []
         self.world.append(self.ground)
         self.world.append(self.grass)
+        self.world.extend(self.savepoints)
         self.world.append(self.boy)
         self.world.append(self.obstacle)
         self.world.append(self.bullets)

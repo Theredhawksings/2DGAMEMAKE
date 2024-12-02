@@ -14,7 +14,7 @@ def add_collision_pair(group, a, b):
     elif b:
         collision_pairs[group][1].append(b)
 
-    print(f"Collision pair added: {group}, {collision_pairs[group]}")
+    #print(f"Collision pair added: {group}, {collision_pairs[group]}")
 
 
 def collide(a, b):
@@ -26,9 +26,9 @@ def collide(a, b):
         for bb in b.get_bb():
             lb, bb_b, rb, tb = bb
             if not (la > rb or ra < lb or ta < bb_b or ba > tb):
-                print(f"Collision detected between {a} and {b}")
-                print(f"Boy BB: {a.get_bb()}")
-                print(f"Obstacle BB: {bb}")
+                #print(f"Collision detected between {a} and {b}")
+                #print(f"Boy BB: {a.get_bb()}")
+                #print(f"Obstacle BB: {bb}")
                 return True
         return False
 

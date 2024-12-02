@@ -32,7 +32,7 @@ class Boss:
 
    def draw(self):
        self.image.clip_composite_draw(0, 0, 500, 600, 0, '', self.x, self.y, self.width, self.height)
-       draw_rectangle(*self.get_bb())
+       #draw_rectangle(*self.get_bb())
 
    def update(self):
        if not self.active:

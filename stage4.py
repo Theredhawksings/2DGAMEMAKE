@@ -82,7 +82,7 @@ class Stage4:
        self.obstacle_created = [False] * len(self.obstacle_definitions)
        collision_utils.add_collision_pair('boy:obstacle', self.boy, self.obstacle)
 
-       self.boy.savepointX = 20
+       self.boy.savepointX = 10
        self.boy.savepointY = 50
 
        collision_utils.handle_collisions()
@@ -132,10 +132,6 @@ class Stage4:
        self.check_and_create_obstacles()
 
        collision_utils.handle_collisions()
-
-       if self.boy.x == self.boy.savepointX and self.boy.y == self.boy.savepointY:
-           self.obstacle_created = [False] * len(self.obstacle_definitions)
-           self.obstacle.obstacles = self.initial_obstacles.copy()
 
        if self.boy.y < -10:
            self.boy.x = self.boy.savepointX

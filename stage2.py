@@ -72,6 +72,7 @@ class Stage2:
            {"font": Font(20), "x": 20, "y": 30, "text": "올라오는 장애물들을 피하세요",
             "color": (255, 0, 0)},
        ]
+
        self.fonts[0]["text"] = f"죽은 횟수: {Obstacle.get_death_count()}"
        self.bullets = []
 

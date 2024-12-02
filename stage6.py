@@ -112,7 +112,7 @@ class Stage6:
        self.grass = Grass(grass_positions, current_stage=4)
        self.ground = Ground(current_stage=6)
        self.stage_change_call = stage_change_call
-       self.boy.savepointX = 1
+       self.boy.savepointX = 2
        self.boy.savepointY = 45
        self.bullets = []
 
@@ -130,6 +130,8 @@ class Stage6:
        collision_utils.add_collision_pair('bullet:savepoint', self.bullets, self.savepoints)
 
        Obstacle.death_count=0
+
+       self.base_color = 0
 
    def handle_event(self, event):
        self.boy.handle_event(event)
@@ -173,10 +175,19 @@ class Stage6:
 
        if self.boy.y < -1:
            Obstacle.death_count += 1
-           self.boy.x = self.boy.savepointX
-           self.boy.y = self.boy.savepointY
+
+           for savepoint in self.savepoints:
+               if savepoint.is_activated:
+                   self.boy.x = savepoint.x
+                   self.boy.y = savepoint.y
+                   break
+           else:
+               self.boy.x = self.boy.savepointX
+               self.boy.y = self.boy.savepointY
+
            self.obstacle_created = [False] * len(self.obstacle_definitions)
            self.obstacle.obstacles = self.initial_obstacles.copy()
+
 
        if self.boy.x > 1024:
            if self.boy.y == 595:
@@ -190,7 +201,8 @@ class Stage6:
 
        self.check_and_create_obstacles()
 
-       if collision_utils.handle_collisions():
+       collision_utils.handle_collisions()
+       if self.boy.x == self.boy.savepointX and self.boy.y == self.boy.savepointY:
            self.obstacle_created = [False] * len(self.obstacle_definitions)
            self.obstacle.obstacles = self.initial_obstacles.copy()
 
@@ -210,6 +222,8 @@ class Stage6:
            self.obstacle.obstacles.append(new_obstacle)
            self.last_obstacle_time = current_time
 
+       self.base_color = (self.base_color + 1) % 256
+
    def draw(self):
        self.ground.draw(512, 384)
        self.grass.draw()
@@ -221,6 +235,14 @@ class Stage6:
 
        self.font.draw(50, 190, "끝으로 이어진 땅으로 가서 탈출구를 찾으세요", (255, 255, 255))
        self.font.draw(50, 160, f"죽은 횟수: {Obstacle.get_death_count()}", (255, 255, 255))
+
+       base_color = 50  
+       for i in range(5):
+           color = (self.base_color + i * 50) % 256  # 현재 base_color 기준으로 계산
+           if i < 2:
+               self.font.draw(16, 405 + i * 310, "<-", (color, color, color))
+           else:
+               self.font.draw(990, 425 + (i - 2) * 170, "->", (color, color, color))
 
        for bullet in self.bullets:
            bullet.draw()

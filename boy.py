@@ -171,28 +171,28 @@ class Boy:
 
     def handle_collision(self, group, other):
         if group == 'boy:obstacle' and not self.is_invincible:
+            # 세이브포인트 체크 및 위치 이동
             if hasattr(self.stage, 'savepoints') and self.stage.savepoints:
-                last_activated = None
                 for savepoint in self.stage.savepoints:
                     if savepoint.is_activated:
-                        last_activated = savepoint
-
-                if last_activated:
-                    self.x = last_activated.x
-                    self.y = last_activated.y
-                else:  
+                        self.x = savepoint.x
+                        self.y = savepoint.y
+                        break
+                else:
                     self.x = self.savepointX
                     self.y = self.savepointY
             else:
                 self.x = self.savepointX
                 self.y = self.savepointY
 
-            # 물리 상태 초기화
+            if hasattr(self.stage, 'obstacle_created') and hasattr(self.stage, 'initial_obstacles'):
+                self.stage.obstacle_created = [False] * len(self.stage.obstacle_definitions)
+                self.stage.obstacle.obstacles = self.stage.initial_obstacles.copy()
+
             self.is_jumping = False
             self.jump_speed = 0
             self.gravity = -GRAVITY_PPS
             self.falling = False
-
 
     def update(self, grass):
         self.state_machine.update(grass)

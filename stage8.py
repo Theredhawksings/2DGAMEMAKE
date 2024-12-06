@@ -4,6 +4,9 @@ from ground import Ground
 import random
 import time
 
+from savepoint import SavePointManager
+
+
 class Stage8:
     def __init__(self, stage_change_call, boy):
         self.boy = boy
@@ -13,7 +16,7 @@ class Stage8:
         self.start_time = time.time()  #
 
         grass_positions = [
-            (0, 0, 128),
+            (0, 0, 1026),
         ]
 
         self.grass = Grass(grass_positions, current_stage=7)
@@ -38,15 +41,19 @@ class Stage8:
         if self.background_y <= 0:
             self.background_y = 0
 
-        if self.boy.y < -1:
-            self.boy.x = self.boy.savepointX
-            self.boy.y = self.boy.savepointY
+        if self.boy.x < 2:
+            self.boy.x = 2
+
+        if self.boy.x > 1024:
+            self.boy.x = 20
+            self.boy.y = 700
+            self.stage_change_call(1)
+            SavePointManager()._instance.states.clear()
 
         for bullet in self.bullets:
             bullet.update()
 
         if time.time() - self.start_time >= 208:
-            print("Game Over - Time's up!")
             self.boy.game_world.running = False
 
     def draw(self):

@@ -32,6 +32,8 @@ class SavePoint:
         self.manager = SavePointManager()
         self.is_activated = self.manager.get_state(stage, x, y)
 
+        self.damage_sound = load_wav(os.path.join('bgm', 'damage7.mp3'))
+
     def draw(self):
         if self.is_activated:
             SavePoint.images[0].clip_draw(0, 0, 60, 60, self.x, self.y, 30, 30)
@@ -48,4 +50,6 @@ class SavePoint:
 
     def handle_collision(self, group, other):
         if group == 'bullet:savepoint':
+            self.damage_sound.set_volume(10)
+            self.damage_sound.play()
             self.activate()

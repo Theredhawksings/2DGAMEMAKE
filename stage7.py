@@ -72,6 +72,8 @@ class Stage7:
             if self.boy.y == 45:
                 self.boy.y = 45
         elif self.boy.x >= 1024:
+            self.boy.x = 5
+            self.boy.y = 45
             self.stage_change_call(8)
 
         if self.boy.y < -1:
@@ -98,7 +100,7 @@ class Stage7:
             current_time = time.time()
 
             # 장애물 패턴
-            if current_time - self.last_obstacle_time >= 1.3:
+            if current_time - self.last_obstacle_time >= 1.0:
                 self.boss_obstacle.obstacles.append({
                     'x': randint(50, 180),
                     'y': 780,
@@ -157,6 +159,7 @@ class Stage7:
                 self.ground.update_stage(7)
                 self.ground.draw(512, 384)
                 self.grass = Grass([(512, 0, 520), ], current_stage=7)
+                self.font.draw(320, 180, "오른쪽으로 가세요", (255, 255, 255))
 
         self.grass.draw()
         self.boy.draw()

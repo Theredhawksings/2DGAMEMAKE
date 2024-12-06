@@ -138,6 +138,9 @@ class Boy:
         })
         self.state_machine.start(IdleState)
 
+        self.jump_sound = load_wav(os.path.join('bgm', 'cartoon-jump-6462.mp3'))
+        self.attack_sound = load_wav(os.path.join('bgm', 'bass-clarinet-attack.mp3'))
+
     def handle_gravity_and_jump(self, grass):
         if self.apply_gravity:
             if self.is_jumping:
@@ -171,6 +174,9 @@ class Boy:
 
     def handle_collision(self, group, other):
         if group == 'boy:obstacle' and not self.is_invincible:
+            self.attack_sound.set_volume(32)
+            self.attack_sound.play()
+
             if hasattr(self.stage, 'savepoints') and self.stage.savepoints:
                 activated_savepoints = [
                     savepoint for savepoint in self.stage.savepoints if savepoint.is_activated
@@ -214,6 +220,8 @@ class Boy:
                     self.is_jumping = True
                     self.jump_speed = JUMP_SPEED_PPS
                     self.gravity = -GRAVITY_PPS
+                    self.jump_sound.set_volume(32)
+                    self.jump_sound.play()
             elif event.key == ord('h'):
                 self.is_invincible = not self.is_invincible
             elif event.key == ord('e'):

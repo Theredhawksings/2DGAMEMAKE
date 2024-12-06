@@ -62,7 +62,7 @@ class Boss:
        if group == 'bullet:boss' :
            self.health -= 2
            self.damage_sound.play()
-           self.damage_sound.set_volume(10)
+           self.damage_sound.set_volume(20)
            other.should_remove = True
            other.is_collided = True
            if self.health <= 0:

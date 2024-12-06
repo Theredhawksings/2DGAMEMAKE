@@ -89,6 +89,7 @@ class BossObstacle:
         self.image = load_image(os.path.join('obstacle', 'boss_obstacle.png'))
         self.obstacles = []
         self.boss = None
+        self.attack_sound = load_wav(os.path.join('bgm', 'bass-clarinet-attack.mp3'))
 
         for x, y, move_speed in obstacle_data:
             self.obstacles.append({
@@ -138,6 +139,7 @@ class BossObstacle:
 
     def handle_collision(self, group, other):
         if group == 'boy:boss_obstacle':
+
             obstacles_to_remove = []
 
             for obstacle in self.obstacles:
@@ -149,6 +151,8 @@ class BossObstacle:
                 if obstacle in self.obstacles:
                     self.obstacles.remove(obstacle)
                     if self.boss:
+                        self.attack_sound.set_volume(16)
+                        self.attack_sound.play()
                         self.boss.health = min(200, self.boss.health + 20)
 
 class BossBomb:
@@ -156,6 +160,7 @@ class BossBomb:
         self.image = load_image(os.path.join('obstacle', 'boss_bomb.png'))
         self.bomb = []
         self.boss = None
+        self.attack_sound = load_wav(os.path.join('bgm', 'bass-clarinet-attack.mp3'))
 
         for x, y, move_speed in obstacle_data:
             self.bomb.append({
@@ -215,6 +220,8 @@ class BossBomb:
                 if bomb in self.bomb:
                     self.bomb.remove(bomb)
                     if self.boss:
+                        self.attack_sound.set_volume(16)
+                        self.attack_sound.play()
                         self.boss.health = min(200, self.boss.health + 20)
 
 class BossLaser:
@@ -224,7 +231,7 @@ class BossLaser:
         self.boss = None
         self.laser_sound = load_wav(os.path.join('bgm', '[Undertale] Gaster Blaster Sound Effect.mp3'))
         self.laser_sound.set_volume(15)
-
+        self.attack_sound = load_wav(os.path.join('bgm', 'bass-clarinet-attack.mp3'))
 
     def get_bb(self):
         bbs = []
@@ -301,10 +308,13 @@ class BossLaser:
 
     def handle_collision(self, group, other):
         if group == 'boy:boss_laser':
+
             for laser in self.lasers:
                 if not laser['charging'] and not laser.get('hit', False):
                     if laser['y'] - 45 < other.y < laser['y'] + 45:
                         laser['hit'] = True
                         laser['hit_time'] = time.time()
                         if self.boss:
+                            self.attack_sound.set_volume(16)
+                            self.attack_sound.play()
                             self.boss.health = min(200, self.boss.health + 20)

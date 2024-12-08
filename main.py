@@ -16,10 +16,10 @@ def main():
     open_canvas(1024, 768)
     game_world = GameWorld()
 
-    #game_world.state = 'PLAY'
-    #game_world.change_stage(7)
-    #game_world.boy.x = 1
-    #game_world.boy.y = 700
+    game_world.state = 'PLAY'
+    game_world.change_stage(8)
+    game_world.boy.x = 1
+    game_world.boy.y = 700
 
     while game_world.running:
         game_world.handle_events()
